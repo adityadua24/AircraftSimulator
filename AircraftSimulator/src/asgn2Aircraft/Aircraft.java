@@ -65,7 +65,33 @@ public abstract class Aircraft {
 	 * @throws AircraftException if isNull(flightCode) OR (departureTime <=0) OR ({first,business,premium,economy} <0)
 	 */
 	public Aircraft(String flightCode,int departureTime, int first, int business, int premium, int economy) throws AircraftException {
-		//Lots here 
+		//Exception checking
+		if (flightCode == null) {// Should this check for empty too?
+			throw new AircraftException("Flight code is null");
+		}
+
+		if (departureTime <= 0) {
+			throw new AircraftException("Departure time is less than or equal to 0.\n" +
+										"Flight Code: " + flightCode);
+		}
+
+		if (first < 0 || business < 0 || premium < 0 || economy < 0) {
+			// Displays all the flight classes when the error is thrown, along with the flight code for easier debugging.
+			throw new AircraftException("One or more of the flight classes are negative.\n" +
+										"Flight Code: " + flightCode + ":\n" +
+										"First: " + first + ", Business: " + business
+										+ "Premium: " + premium + ", Economy: " + economy);
+		}
+
+		this.flightCode = flightCode;
+		this.departureTime = departureTime;
+		this.firstCapacity = first;
+		this.businessCapacity = business;
+		this.premiumCapacity = premium;
+		this.economyCapacity = economy;
+
+		this.capacity = this.firstCapacity + this.businessCapacity + this.premiumCapacity + this.economyCapacity;
+
 		this.status = "";
 	}
 	
@@ -120,7 +146,8 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if aircraft empty; false otherwise 
 	 */
 	public boolean flightEmpty() {
-		
+		// If all classes are empty then the flight is empty
+		return (this.numFirst == 0 && this.numBusiness == 0 && this.numEconomy == 0 && this.numPremium == 0);
 	}
 	
 	/**
@@ -129,7 +156,9 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if aircraft full; false otherwise 
 	 */
 	public boolean flightFull() {
-		
+		// If the sum of all the classes is equal to the capacity it is full.
+		// This should never be able to go over capacity?
+		return (getNumPassengers() == this.capacity);
 	}
 	
 	/**
@@ -152,7 +181,8 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
-		
+		//FIXME: Implement properly
+		return null;
 	}
 	
 	/**
@@ -161,7 +191,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Business Class passengers 
 	 */
 	public int getNumBusiness() {
-		
+		return this.numBusiness;
 	}
 	
 	
@@ -171,7 +201,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Economy Class passengers 
 	 */
 	public int getNumEonomy() {
-		
+		return this.numEconomy;
 	}
 
 	/**
@@ -180,7 +210,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of First Class passengers 
 	 */
 	public int getNumFirst() {
-		
+		return this.numFirst;
 	}
 
 	/**
@@ -189,7 +219,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Confirmed passengers 
 	 */
 	public int getNumPassengers() {
-		
+		return (this.numFirst + this.numBusiness + this.numEconomy + this.numPremium);
 	}
 	
 	/**
@@ -198,7 +228,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Premium Economy Class passengers
 	 */
 	public int getNumPremium() {
-		
+		return this.numPremium;
 	}
 	
 	/**
@@ -208,7 +238,9 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		
+		//TODO: Confirm this is actually meant to be a copy, not just a reference.
+		//TODO: Check that it's fine to use an Array list here?
+		return new ArrayList<>(this.seats);
 	}
 	
 	/**
@@ -234,7 +266,8 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if isConfirmed(p); false otherwise 
 	 */
 	public boolean hasPassenger(Passenger p) {
-		
+		//FIXME: Implement Properly
+		return false;
 	}
 	
 
@@ -259,7 +292,8 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
 	public boolean seatsAvailable(Passenger p) {		
-		
+		//FIXME: Implement properly
+		return true;
 	}
 
 	/* 
