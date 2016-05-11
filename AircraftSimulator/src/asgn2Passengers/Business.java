@@ -20,7 +20,7 @@ public class Business extends Passenger {
 	 * @see asgnPassengers.Passenger#Passenger(int,int)
 	 */
 	public Business(int bookingTime, int departureTime) throws PassengerException {
-		//Stuff here
+		super(bookingTime, departureTime);
 		this.passID = "J:" + this.passID;
 	}
 	
@@ -38,6 +38,7 @@ public class Business extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-	
+		// FIXME: Implement Properly
+		return null;
 	}
 }

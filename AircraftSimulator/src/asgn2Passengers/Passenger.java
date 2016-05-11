@@ -72,10 +72,16 @@ public abstract class Passenger {
 	 * OR (departureTime < bookingTime) 
 	 */
 	public Passenger(int bookingTime, int departureTime) throws PassengerException  {
-		//Stuff here 
+
+		//TODO: Add Exception checks
+
+		this.bookingTime = bookingTime;
+		this.departureTime = departureTime;
+
 		this.passID = "" + Passenger.index; 
-		Passenger.index++; 
-		//Stuff here 
+		Passenger.index++;
+
+		//TODO: Stuff here
 	}
 	
 	/**
@@ -143,7 +149,7 @@ public abstract class Passenger {
 	 * @return the bookingTime
 	 */
 	public int getBookingTime() {
-		
+		return this.bookingTime;
 	}
 
 	/**
@@ -153,7 +159,7 @@ public abstract class Passenger {
 	 * @return the confirmationTime
 	 */
 	public int getConfirmationTime() {
-		
+		return this.confirmationTime;
 	}
 
 	/**
@@ -162,7 +168,7 @@ public abstract class Passenger {
 	 * @return the departureTime
 	 */
 	public int getDepartureTime() {
-		
+		return this.departureTime;
 	}
 	
 	/**
@@ -171,7 +177,7 @@ public abstract class Passenger {
 	 * @return the enterQueueTime
 	 */
 	public int getEnterQueueTime() {
-		
+		return this.enterQueueTime;
 	}
 
 	/**
@@ -180,7 +186,7 @@ public abstract class Passenger {
 	 * @return the exitQueueTime
 	 */
 	public int getExitQueueTime() {
-		
+		return this.exitQueueTime;
 	}
 
 	/**
@@ -189,7 +195,7 @@ public abstract class Passenger {
 	 * @return the passID
 	 */
 	public String getPassID() {
-		
+		return this.passID;
 	}
 
 	/**
@@ -198,7 +204,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Confirmed state; false otherwise 
 	 */
 	public boolean isConfirmed() {
-		
+		return this.confirmed;
 	}
 		
 	/**
@@ -207,7 +213,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Flown state; false otherwise 
 	 */
 	public boolean isFlown() {
-		
+		return this.flown;
 	}
 	
 	/**
@@ -216,7 +222,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if New state; false otherwise 
 	 */
 	public boolean isNew() {
-		
+		return this.newState;
 	}
 
 	/**
@@ -225,7 +231,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Queued state; false otherwise 
 	 */
 	public boolean isQueued() {
-		
+		return this.inQueue;
 	}
 	
 	/**
@@ -234,7 +240,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Refused state; false otherwise 
 	 */
 	public boolean isRefused() {
-		
+		return this.refused;
 	}
 	
 	/**
@@ -318,7 +324,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() {
-		
+		return this.confirmed;
 	}
 
 	/**
@@ -327,7 +333,8 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() {
-		
+		// FIXME: Implement Properly. How do you check if it was queued ever?
+		return false;
 	}
 	
 	/**

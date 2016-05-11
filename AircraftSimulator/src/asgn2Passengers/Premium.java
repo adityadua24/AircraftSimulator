@@ -20,7 +20,7 @@ public class Premium extends Passenger {
 	 * @see asgnPassengers.Passenger#Passenger(int,int)
 	 */
 	public Premium(int bookingTime,int departureTime) throws PassengerException {
-		//Stuff here
+		super(bookingTime, departureTime);
 		this.passID = "P:" + this.passID;
 	}
 	
@@ -33,7 +33,8 @@ public class Premium extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-		
+		// FIXME: Implement Properly
+		return null;
 	}
 	
 	@Override
