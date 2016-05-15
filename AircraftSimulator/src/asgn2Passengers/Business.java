@@ -37,6 +37,8 @@ public class Business extends Passenger {
 	}
 
 	@Override
+	//Create new passenger of first class and preserve current state as well,
+	// using copyPassengerState method in passenger class
 	public Passenger upgrade() {
 		// FIXME: Implement Properly
 		return null;

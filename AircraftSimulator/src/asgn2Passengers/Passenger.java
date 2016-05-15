@@ -148,7 +148,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the bookingTime
 	 */
-	public int getBookingTime() {
+	public int getBookingTime() throws PassengerException {
 		return this.bookingTime;
 	}
 
@@ -158,7 +158,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the confirmationTime
 	 */
-	public int getConfirmationTime() {
+	public int getConfirmationTime() throws PassengerException {
 		return this.confirmationTime;
 	}
 
@@ -167,7 +167,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the departureTime
 	 */
-	public int getDepartureTime() {
+	public int getDepartureTime() throws PassengerException {
 		return this.departureTime;
 	}
 	
@@ -176,7 +176,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the enterQueueTime
 	 */
-	public int getEnterQueueTime() {
+	public int getEnterQueueTime() throws PassengerException {
 		return this.enterQueueTime;
 	}
 
@@ -185,7 +185,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the exitQueueTime
 	 */
-	public int getExitQueueTime() {
+	public int getExitQueueTime() throws PassengerException {
 		return this.exitQueueTime;
 	}
 
@@ -194,7 +194,7 @@ public abstract class Passenger {
 	 * 
 	 * @return the passID
 	 */
-	public String getPassID() {
+	public String getPassID() throws PassengerException {
 		return this.passID;
 	}
 
@@ -203,7 +203,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if Confirmed state; false otherwise 
 	 */
-	public boolean isConfirmed() {
+	public boolean isConfirmed() throws PassengerException {
 		return this.confirmed;
 	}
 		
@@ -212,7 +212,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if Flown state; false otherwise 
 	 */
-	public boolean isFlown() {
+	public boolean isFlown() throws PassengerException {
 		return this.flown;
 	}
 	
@@ -221,7 +221,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if New state; false otherwise 
 	 */
-	public boolean isNew() {
+	public boolean isNew() throws PassengerException {
 		return this.newState;
 	}
 
@@ -230,7 +230,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if Queued state; false otherwise 
 	 */
-	public boolean isQueued() {
+	public boolean isQueued() throws PassengerException {
 		return this.inQueue;
 	}
 	
@@ -239,7 +239,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if Refused state; false otherwise 
 	 */
-	public boolean isRefused() {
+	public boolean isRefused() throws PassengerException {
 		return this.refused;
 	}
 	
@@ -248,7 +248,7 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>String</code> containing "no seats available" warning message
 	 */
-	public abstract String noSeatsMsg();
+	public abstract String noSeatsMsg() throws PassengerException;
 	
 	/**
 	 * Transition passenger to Queued<br>
@@ -292,21 +292,29 @@ public abstract class Passenger {
 	public String toString() {
 		String str = "passID: " + passID + "\nBT: " + this.bookingTime; 
 		//Queuing Information - duration may not be accurate if multiple queuing events 
-		if (this.wasQueued()) {
-			str += "\nExitQ:" + this.exitQueueTime; 
-			int queueTime = (this.exitQueueTime - this.bookingTime);
-			str += " QT: " + queueTime; 
-		} else {
-			str += "\nNotQ";
+		try {
+			if (this.wasQueued()) {
+                str += "\nExitQ:" + this.exitQueueTime;
+                int queueTime = (this.exitQueueTime - this.bookingTime);
+                str += " QT: " + queueTime;
+            } else {
+                str += "\nNotQ";
+            }
+		} catch (PassengerException e) {
+			e.printStackTrace();
 		}
-		
-		if (this.isFlown()) {
-			str+= "\nConfT: " + this.confirmationTime; 
-			str+= " Flew: " + this.departureTime; 
-		} else if (this.wasConfirmed()) {
-			str+= "\nConfT: " + this.confirmationTime;
-			str+= " NotFlown";
-		}	
+
+		try {
+			if (this.isFlown()) {
+                str+= "\nConfT: " + this.confirmationTime;
+                str+= " Flew: " + this.departureTime;
+            } else if (this.wasConfirmed()) {
+                str+= "\nConfT: " + this.confirmationTime;
+                str+= " NotFlown";
+            }
+		} catch (PassengerException e) {
+			e.printStackTrace();
+		}
 		return str;
 	}
 
@@ -316,14 +324,14 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>Passenger</code> of the upgraded fare class 
 	 */
-	public abstract Passenger upgrade();
+	public abstract Passenger upgrade() throws PassengerException;
 
 	/**
 	 * Boolean status indicating whether passenger was ever confirmed
 	 * 
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
-	public boolean wasConfirmed() {
+	public boolean wasConfirmed() throws PassengerException {
 		return this.confirmed;
 	}
 
@@ -332,11 +340,11 @@ public abstract class Passenger {
 	 * 
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
-	public boolean wasQueued() {
+	public boolean wasQueued() throws PassengerException {
 		// FIXME: Implement Properly. How do you check if it was queued ever?
 		return false;
 	}
-	
+
 	/**
 	 * Helper method to copy state to facilitate {@link #upgrade()}
 	 * 

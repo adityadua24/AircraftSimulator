@@ -98,7 +98,7 @@ public abstract class Aircraft {
 	/**
 	 * Method to remove passenger from the aircraft - passenger must have a confirmed 
 	 * seat prior to entry to this method.   
-	 *
+	 *Hint: use of Polymorphism here.
 	 * @param p <code>Passenger</code> to be removed from the aircraft 
 	 * @param cancellationTime <code>int</code> time operation performed 
 	 * @throws PassengerException if <code>Passenger</code> is not Confirmed OR cancellationTime 
@@ -114,7 +114,7 @@ public abstract class Aircraft {
 	/**
 	 * Method to add a Passenger to the aircraft seating. 
 	 * Precondition is a test that a seat is available in the required fare class
-	 * 
+	 * Hint: rely on polymorphism, not required to check the type of p.
 	 * @param p <code>Passenger</code> to be added to the aircraft 
 	 * @param confirmationTime <code>int</code> time operation performed 
 	 * @throws PassengerException if <code>Passenger</code> is in incorrect state 
@@ -238,7 +238,7 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		//TODO: Confirm this is actually meant to be a copy, not just a reference.
+		//TODO: This is meant to be a copy, not just a reference.
 		//TODO: Check that it's fine to use an Array list here?
 		return new ArrayList<>(this.seats);
 	}
@@ -348,7 +348,7 @@ public abstract class Aircraft {
 	 * @param p Passenger seeking a confirmed seat
 	 * @return msg string failure reason 
 	 */
-	private String noSeatsAvailableMsg(Passenger p) {
+	private String noSeatsAvailableMsg(Passenger p) throws PassengerException {
 		String msg = "";
 		return msg + p.noSeatsMsg(); 
 	}
