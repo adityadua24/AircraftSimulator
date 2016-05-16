@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
  * Created by eddy on 15/05/2016.
  */
 public class B747Tests {
+
     @org.junit.Before
     public void setUp() throws Exception {
 
