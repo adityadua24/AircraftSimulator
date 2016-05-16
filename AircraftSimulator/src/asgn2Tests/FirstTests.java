@@ -6,11 +6,11 @@ import asgn2Passengers.PassengerException;
 
 import static org.junit.Assert.*;
 
-
 /**
  * Created by eddy on 15/05/2016.
  */
-public class FirstTests extends Passenger {
+public class FirstTests {
+
     Passenger p;
 
     @org.junit.Before @org.junit.Test
@@ -29,6 +29,7 @@ public class FirstTests extends Passenger {
         Passenger p2 = new First(3, 12);
         assertEquals(3, p2.getBookingTime());
     }
+
     @org.junit.Test
     public void testPassengerConstructor_DepartureTime() throws PassengerException {
         Passenger p2 = new First(3, 12);
@@ -60,128 +61,113 @@ public class FirstTests extends Passenger {
     }
 
     @org.junit.Test
-    public String noSeatsMsg() throws PassengerException {
-
-        return null;
-    }
-
-    @org.junit.Test
-    public Passenger upgrade() throws PassengerException {
-
-        return null;
-    }
-
-    @org.junit.Test
-    public void cancelSeat() throws PassengerException {
+    public void testNoSeatsMsg() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public void confirmSeat() throws PassengerException {
+    public void testUpgrade() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public void flyPassenger() throws PassengerException {
+    public void testCancelSeat() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public int getBookingTime() throws PassengerException {
-
-        return 0;
-    }
-
-    @org.junit.Test
-    public int getConfirmationTime() throws PassengerException {
-
-        return 0;
-    }
-
-    @org.junit.Test
-    public int getDepartureTime() throws PassengerException {
-
-        return 0;
-    }
-
-    @org.junit.Test
-    public int getEnterQueueTime() throws PassengerException {
-
-        return 0;
-    }
-
-    @org.junit.Test
-    public int getExitQueueTime() throws PassengerException {
-
-        return 0;
-    }
-
-    @org.junit.Test
-    public String getPassID() throws PassengerException {
-
-        return null;
-    }
-
-    @org.junit.Test
-    public boolean isConfirmed() throws PassengerException {
-
-        return false;
-    }
-
-    @org.junit.Test
-    public boolean isFlown() throws PassengerException {
-
-        return false;
-    }
-
-    @org.junit.Test
-    public boolean isNew() throws PassengerException {
-
-        return false;
-    }
-
-    @org.junit.Test
-    public boolean isQueued() throws PassengerException {
-
-        return false;
-    }
-
-    @org.junit.Test
-    public boolean isRefused() throws PassengerException {
-
-        return false;
-    }
-
-    @org.junit.Test
-    public void noSeatsMsg1() throws PassengerException {
+    public void testConfirmSeat() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public void queuePassenger() throws PassengerException {
+    public void testFlyPassenger() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public void refusePassenger() throws PassengerException {
+    public void testGetBookingTime() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public void upgrade1() throws PassengerException {
+    public void testGetConfirmationTime() throws PassengerException {
 
     }
 
     @org.junit.Test
-    public boolean wasConfirmed() throws PassengerException {
+    public void testGetDepartureTime() throws PassengerException {
 
-        return false;
     }
 
     @org.junit.Test
-    public boolean wasQueued() throws PassengerException {
+    public void testGetEnterQueueTime() throws PassengerException {
 
-        return false;
+    }
+
+    @org.junit.Test
+    public void testExitQueueTime() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testGetPassID() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testIsConfirmed() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testIsFlown() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testIsNew() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testIsQueued() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testIsRefused() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testNoSeatsMsg1() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testQueuePassenger() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testRefusePassenger() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testUpgrade1() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testWasConfirmed() throws PassengerException {
+
+    }
+
+    @org.junit.Test
+    public void testWasQueued() throws PassengerException {
+
     }
 
 }

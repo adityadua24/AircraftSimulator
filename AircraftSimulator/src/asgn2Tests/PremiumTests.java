@@ -7,7 +7,8 @@ import asgn2Passengers.PassengerException;
 /**
  * Created by eddy on 15/05/2016.
  */
-public class PremiumTests extends Passenger {
+public class PremiumTests {
+
     @org.junit.Before
     public void setUp() throws PassengerException {
 
@@ -19,15 +20,13 @@ public class PremiumTests extends Passenger {
     }
 
     @org.junit.Test
-    public Passenger upgrade() throws PassengerException {
+    public void testUpgrade() throws PassengerException {
 
-        return null;
     }
 
     @org.junit.Test
-    public String noSeatsMsg() throws PassengerException {
+    public void testNoSeatsMsg() throws PassengerException {
 
-        return null;
     }
 
 }

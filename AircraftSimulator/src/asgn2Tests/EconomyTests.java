@@ -6,7 +6,8 @@ import asgn2Passengers.PassengerException;
 /**
  * Created by eddy on 15/05/2016.
  */
-public class EconomyTests extends Passenger {
+public class EconomyTests {
+
     @org.junit.Before
     public void setUp() throws PassengerException {
 
