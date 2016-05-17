@@ -104,22 +104,13 @@ public class FirstTests {
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testCancelSeat_StateCheckFlown() throws NoSuchFieldException, IllegalAccessException, PassengerException {
-
-        f = c.getDeclaredField("flown");
-        f.setAccessible(true);
-
-        f.setBoolean(p, true);
-
+        this.SetFlown(true);
         p.cancelSeat(6);
 
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testCancelSeat_StateCheckRefused() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-
-        f = c.getDeclaredField("refused");
-        f.setAccessible(true);
-
-        f.setBoolean(p, true);
+        this.SetRefused(true);
         p.cancelSeat(6);
     }
     @org.junit.Test
@@ -129,11 +120,7 @@ public class FirstTests {
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testCancelSeat_ConfirmedSeatCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-
-        f = c.getDeclaredField("confirmed");
-        f.setAccessible(true);
-
-        f.setBoolean(p, false);
+        this.SetConfirmed(false);
         p.cancelSeat(6);
 
     }
@@ -145,45 +132,29 @@ public class FirstTests {
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_ConfirmedCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-
-        f = c.getDeclaredField("confirmed");
-        f.setAccessible(true);
-        f.setBoolean(p, false);
-
+        this.SetConfirmed(false);
         p.flyPassenger(12);
 
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_NewStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        f = c.getDeclaredField("newState");
-        f.setAccessible(true);
-        f.setBoolean(p, true);
-
+        this.SetNewState(true);
         p.flyPassenger(12);
 
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_QueuedStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        f = c.getDeclaredField("inQueue");
-        f.setAccessible(true);
-        f.setBoolean(p, true);
-
+        this.SetInQueue(true);
         p.flyPassenger(12);
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_FlownStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        f = c.getDeclaredField("flown");
-        f.setAccessible(true);
-        f.setBoolean(p, true);
-
+        this.SetFlown(true);
         p.flyPassenger(12);
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_RefusedStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        f = c.getDeclaredField("refused");
-        f.setAccessible(true);
-        f.setBoolean(p, true);
-
+        this.SetRefused(true);
         p.flyPassenger(12);
     }
     @org.junit.Test(expected = PassengerException.class)
@@ -196,58 +167,33 @@ public class FirstTests {
     }
 
     @org.junit.Test
-    public void testGetBookingTime() throws PassengerException {
-        fail();
-    }
-
-    @org.junit.Test
-    public void testGetConfirmationTime() throws PassengerException {
-        fail();
-    }
-
-    @org.junit.Test
-    public void testGetDepartureTime() throws PassengerException {
-        fail();
-    }
-
-    @org.junit.Test
-    public void testGetEnterQueueTime() throws PassengerException {
-        fail();
-    }
-
-    @org.junit.Test
-    public void testExitQueueTime() throws PassengerException {
-        fail();
-    }
-
-    @org.junit.Test
-    public void testGetPassID() throws PassengerException {
-        fail();
+    public void testGetConfirmationTime_SeatNotConfirmed() throws PassengerException {
+        assertEquals(0, p.getConfirmationTime());
     }
 
     @org.junit.Test
     public void testIsConfirmed() throws PassengerException {
-        fail();
+        fail(); // Confirm if implementation is required or not
     }
 
     @org.junit.Test
     public void testIsFlown() throws PassengerException {
-        fail();
+        fail(); // Confirm if implementation is required or not
     }
 
     @org.junit.Test
     public void testIsNew() throws PassengerException {
-        fail();
+        fail(); // Confirm if implementation is required or not
     }
 
     @org.junit.Test
     public void testIsQueued() throws PassengerException {
-        fail();
+        fail(); // Confirm if implementation is required or not
     }
 
     @org.junit.Test
     public void testIsRefused() throws PassengerException {
-        fail();
+        fail(); // Confirm if implementation is required or not
     }
 
     @org.junit.Test
@@ -256,13 +202,76 @@ public class FirstTests {
     }
 
     @org.junit.Test
-    public void testQueuePassenger() throws PassengerException {
-        fail();
-    }
+    public void testQueuePassenger() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetNewState(true);
+        p.queuePassenger(7, 12);
+        assertTrue(p.isQueued());
 
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_QueueInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetInQueue(true);
+        p.queuePassenger(7, 12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_ConfirmedInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetConfirmed(true);
+        p.queuePassenger(7, 12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_FlownInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetFlown(true);
+        p.queuePassenger(7, 12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_RefusedInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetRefused(true);
+        p.queuePassenger(7, 12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_NegativeQueueTime() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        p.queuePassenger(-7, 12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testQueuePassenger_QueueTimePastDepartureTime() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+       p.queuePassenger(15, 12);
+    }
     @org.junit.Test
-    public void testRefusePassenger() throws PassengerException {
-        fail();
+    public void testRefusePassenger_NewInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetNewState(true);
+        p.refusePassenger(7);
+        assertTrue(p.isRefused());
+
+    }
+    @org.junit.Test
+    public void testRefusePassenger_QueueInitialState() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetInQueue(true);
+        p.refusePassenger(12);
+        assertTrue(p.isRefused());
+
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testRefusePassenger_isConfirmed() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetConfirmed(true);
+        p.refusePassenger(7);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testRefusePassenger_isRefused() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetRefused(true);
+        p.refusePassenger(7);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testRefusePassenger_isFlown() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        this.SetFlown(true);
+        p.refusePassenger(7);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testRefusePassenger_RefusalTimeCheck() throws PassengerException {
+        p.refusePassenger(-2);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testRefusePassenger_RefusalTimeAgainstBookingTimeCheck() throws PassengerException {
+        p.refusePassenger(1);
     }
 
     @org.junit.Test
@@ -271,13 +280,85 @@ public class FirstTests {
     }
 
     @org.junit.Test
-    public void testWasConfirmed() throws PassengerException {
-        fail();
+    public void testWasConfirmed_TrueExpected() throws PassengerException {
+        p.confirmSeat(6, 12);
+        p.cancelSeat(7);
+        assertTrue(p.wasConfirmed());
+    }
+    @org.junit.Test
+    public void testWasConfirmed_FalseExpected() throws PassengerException {
+        //TODO //Implement
+        assertTrue(p.wasConfirmed());
     }
 
     @org.junit.Test
-    public void testWasQueued() throws PassengerException {
-        fail();
+    public void testWasQueued_TrueExpected() throws PassengerException {
+        p.queuePassenger(5, 12);
+        assertTrue(p.wasQueued());
+    }
+    @org.junit.Test
+    public void testWasQueued_FalseExpected() throws PassengerException {
+        //TODO //Implement
+        assertFalse(p.wasQueued());
+    }
+    @org.junit.Test
+    public void testCopyPassengerState() {
+
+    }
+    private void SetConfirmed(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = null;
+        f = c.getDeclaredField("confirmed");
+        f.setAccessible(true);
+        if(state) {
+            f.setBoolean(p, true);
+        }
+        else {
+            f.setBoolean(p, false);
+        }
+    }
+    private void SetInQueue(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = null;
+        f = c.getDeclaredField("inQueue");
+        f.setAccessible(true);
+        if(state) {
+            f.setBoolean(p, true);
+        }
+        else {
+            f.setBoolean(p, false);
+        }
+    }
+    private void SetFlown(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = null;
+        f = c.getDeclaredField("flown");
+        f.setAccessible(true);
+        if(state) {
+            f.setBoolean(p, true);
+        }
+        else {
+            f.setBoolean(p, false);
+        }
+    }
+    private void SetRefused(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = null;
+        f = c.getDeclaredField("refused");
+        f.setAccessible(true);
+        if(state) {
+            f.setBoolean(p, true);
+        }
+        else {
+            f.setBoolean(p, false);
+        }
+    }
+    private void SetNewState(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = null;
+        f = c.getDeclaredField("newState");
+        f.setAccessible(true);
+        if(state) {
+            f.setBoolean(p, true);
+        }
+        else {
+            f.setBoolean(p, false);
+        }
     }
 
 }
