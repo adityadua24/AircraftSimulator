@@ -3,6 +3,7 @@ package asgn2Tests;
 import asgn2Passengers.First;
 import asgn2Passengers.Passenger;
 import asgn2Passengers.PassengerException;
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
@@ -12,10 +13,13 @@ import static org.junit.Assert.*;
 public class FirstTests {
 
     Passenger p;
+    Class c = Passenger.class;
+    Field f;
 
     @org.junit.Before @org.junit.Test
     public void setUp() throws PassengerException {
         p = new First(3, 12);
+        f = null;
     }
 
     @org.junit.After
@@ -71,18 +75,124 @@ public class FirstTests {
     }
 
     @org.junit.Test
-    public void testCancelSeat() throws PassengerException {
-        fail();
+    public void testCancelSeat_NewStateCheck() throws PassengerException {
+        p.cancelSeat(5);
+        assertTrue(p.isNew());
     }
-
     @org.junit.Test
-    public void testConfirmSeat() throws PassengerException {
-        fail();
+    public void testCancelSeat_BookingTimeCheck() throws PassengerException {
+        p.cancelSeat(5);
+        assertEquals(5, p.getBookingTime());
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_inValidCancelTime() throws PassengerException {
+        p.cancelSeat(13);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_NegativeCancelTime() throws PassengerException {
+        p.cancelSeat(-7);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_StateCheckNew() throws PassengerException {
+        p.cancelSeat(5);
+        p.cancelSeat(7);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_StateCheckQueued() throws PassengerException {
+        p.queuePassenger(3, 12);
+        p.cancelSeat(5);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_StateCheckFlown() throws NoSuchFieldException, IllegalAccessException, PassengerException {
+
+        f = c.getDeclaredField("flown");
+        f.setAccessible(true);
+
+        f.setBoolean(p, true);
+
+        p.cancelSeat(6);
+
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_StateCheckRefused() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+
+        f = c.getDeclaredField("refused");
+        f.setAccessible(true);
+
+        f.setBoolean(p, true);
+        p.cancelSeat(6);
+    }
+    @org.junit.Test
+    public void testCancelSeat_SameDepartureTime() throws PassengerException {
+        p.cancelSeat(6);
+        assertEquals(12, p.getDepartureTime());
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testCancelSeat_ConfirmedSeatCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+
+        f = c.getDeclaredField("confirmed");
+        f.setAccessible(true);
+
+        f.setBoolean(p, false);
+        p.cancelSeat(6);
+
     }
 
     @org.junit.Test
     public void testFlyPassenger() throws PassengerException {
-        fail();
+        p.flyPassenger(12);
+        assertTrue(p.isFlown());
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_ConfirmedCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+
+        f = c.getDeclaredField("confirmed");
+        f.setAccessible(true);
+        f.setBoolean(p, false);
+
+        p.flyPassenger(12);
+
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_NewStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = c.getDeclaredField("newState");
+        f.setAccessible(true);
+        f.setBoolean(p, true);
+
+        p.flyPassenger(12);
+
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_QueuedStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = c.getDeclaredField("inQueue");
+        f.setAccessible(true);
+        f.setBoolean(p, true);
+
+        p.flyPassenger(12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_FlownStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = c.getDeclaredField("flown");
+        f.setAccessible(true);
+        f.setBoolean(p, true);
+
+        p.flyPassenger(12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_RefusedStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        f = c.getDeclaredField("refused");
+        f.setAccessible(true);
+        f.setBoolean(p, true);
+
+        p.flyPassenger(12);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_DepartureTimeZeroCheck() throws PassengerException {
+        p.flyPassenger(0);
+    }
+    @org.junit.Test(expected = PassengerException.class)
+    public void testFlyPassenger_DepartureTimeNegativeCheck() throws PassengerException {
+        p.flyPassenger(-5);
     }
 
     @org.junit.Test
