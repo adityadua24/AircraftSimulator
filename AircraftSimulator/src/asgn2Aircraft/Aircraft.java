@@ -79,8 +79,8 @@ public abstract class Aircraft {
 			// Displays all the flight classes when the error is thrown, along with the flight code for easier debugging.
 			throw new AircraftException("One or more of the flight classes are negative.\n" +
 										"Flight Code: " + flightCode + ":\n" +
-										"First: " + first + ", Business: " + business
-										+ "Premium: " + premium + ", Economy: " + economy);
+										"First: " + first + ", Business: " + business +
+										"Premium: " + premium + ", Economy: " + economy);
 		}
 
 		this.flightCode = flightCode;
@@ -90,6 +90,7 @@ public abstract class Aircraft {
 		this.premiumCapacity = premium;
 		this.economyCapacity = economy;
 
+		this.seats = new ArrayList<>();
 		this.capacity = this.firstCapacity + this.businessCapacity + this.premiumCapacity + this.economyCapacity;
 
 		this.status = "";
