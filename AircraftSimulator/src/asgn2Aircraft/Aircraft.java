@@ -109,6 +109,7 @@ public abstract class Aircraft {
 		//Stuff here
 		this.status += Log.setPassengerMsg(p,"C","N");
 		//Stuff here
+		//TODO decrement numbers here
 	}
 
 	/**
@@ -324,7 +325,7 @@ public abstract class Aircraft {
 	 * See {@link asgn2Passengers.Passenger#upgrade()}
 	 */
 	public void upgradeBookings() throws PassengerException { 
-		
+		//Use Java Streams?
 	}
 
 	/**

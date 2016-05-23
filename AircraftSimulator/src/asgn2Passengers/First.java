@@ -40,7 +40,6 @@ public class First extends Passenger {
 	@Override
 	//return current passenger or null.
 	public Passenger upgrade() {
-		// FIXME: Implement Properly
 		return null;
 	}
 }

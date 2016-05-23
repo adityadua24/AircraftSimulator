@@ -31,7 +31,7 @@ public class Economy extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-		// FIXME: Implement Properly
+
 		return null;
 	}
 }

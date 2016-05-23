@@ -66,12 +66,14 @@ public class FirstTests {
     }
     @org.junit.Test
     public void testNoSeatsMsg() throws PassengerException {
-        fail();
+        String str = p.noSeatsMsg();
+        assertEquals(0, str.compareTo("No seats available in First"));
     }
 
     @org.junit.Test
     public void testUpgrade() throws PassengerException {
-        fail();
+        Passenger test = p.upgrade();
+        assertNull(test);
     }
     //Cancel Seat tests
     @org.junit.Test
@@ -327,8 +329,8 @@ public class FirstTests {
         assertEquals(0, p.getConfirmationTime());
     }
     @org.junit.Test
-    public void testGetPassID() {
-
+    public void testGetPassID() throws PassengerException {
+        assertEquals(0, "F:0".compareTo(p.getPassID()));
     }
 
     @org.junit.Test
@@ -513,10 +515,6 @@ public class FirstTests {
         p.refusePassenger(1);
     }
     @org.junit.Test
-    public void testUpgrade1() throws PassengerException {
-        fail();
-    }
-    @org.junit.Test
     public void testWasConfirmed_TrueExpected() throws PassengerException {
         p.confirmSeat(6, 12);
         p.cancelSeat(7);
@@ -536,10 +534,6 @@ public class FirstTests {
     public void testWasQueued_FalseExpected() throws PassengerException {
         //TODO //Implement
         assertFalse(p.wasQueued());
-    }
-    @org.junit.Test
-    public void testCopyPassengerState() {
-
     }
     private void SetConfirmed(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
         f = null;
