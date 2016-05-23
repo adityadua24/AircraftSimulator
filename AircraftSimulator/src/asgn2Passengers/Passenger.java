@@ -49,7 +49,7 @@ public abstract class Passenger {
 
 	private static int index = 0;
 	protected String passID;
-	protected boolean newState; 
+	protected boolean newState;
 	protected boolean confirmed;
 	protected boolean inQueue;
 	protected boolean flown;
@@ -74,12 +74,25 @@ public abstract class Passenger {
 	public Passenger(int bookingTime, int departureTime) throws PassengerException  {
 
 		//TODO: Add Exception checks
+		if( bookingTime < 0 || departureTime <= 0 || departureTime < bookingTime ) {
+			throw new PassengerException("Invalid Values passed to Passenger Constructor");
+		}
+		else{
+			this.bookingTime = bookingTime;
+			this.departureTime = departureTime;
+			this.newState = true;
+			this.flown = false;
+			this.confirmed = false;
+			this.refused = false;
+			this.inQueue = false;
+			this.enterQueueTime = 0;
+			this.exitQueueTime = 0;
+			this.confirmationTime = 0;
+			this.passID = "" + Passenger.index;
+			Passenger.index++;
+		}
 
-		this.bookingTime = bookingTime;
-		this.departureTime = departureTime;
 
-		this.passID = "" + Passenger.index; 
-		Passenger.index++;
 
 		//TODO: Stuff here
 	}
@@ -125,7 +138,7 @@ public abstract class Passenger {
 	 * 		   OR (confirmationTime < 0) OR (departureTime < confirmationTime)
 	 */
 	public void confirmSeat(int confirmationTime, int departureTime) throws PassengerException {
-	
+
 	}
 
 	/**
@@ -341,7 +354,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() throws PassengerException {
-		// FIXME: Implement Properly. How do you check if it was queued ever?
+		// FIXME: Implement Properly. How do you check if it was ever queued?
 		return false;
 	}
 
