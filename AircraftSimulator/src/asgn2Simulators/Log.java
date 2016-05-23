@@ -19,28 +19,15 @@ import asgn2Passengers.Passenger;
 import asgn2Passengers.Premium;
 
 /**
- * Class to support logging for the Aircraft Simulator
- * 
- * [Initially supplied incomplete to allow compilation of the Aircraft class]
+ * Class to support logging for the Aircraft Simulator 
  *  
  * @author hogan
  *
  */
 public class Log {
-	BufferedWriter writer = null;
 	
-	/**
-	 * Constructor establishes a log file based on the current time in the canonical directory 
-	 * @throws IOException if log file  or BufferedWriter cannot be created
-	 */
-	public Log () throws IOException {
-		//File management based on http://stackoverflow.com/questions/15754523/how-to-write-text-file-java 
-        File logFile = new File(getLogTime());
-
-        // This will output the full path where the file will be written to...
-        System.out.println(logFile.getCanonicalPath());
-        this.writer = new BufferedWriter(new FileWriter(logFile));
-	}
+	//Controls logging of detailed status information 
+	public static final boolean SAVE_STATUS = false; 
 	
 	/**
 	 * Helper to set Passenger transition messages
@@ -80,6 +67,105 @@ public class Log {
 			str += "Y>P";
 		}
 		return "|U:"+str+"|";
+	}
+	
+	private BufferedWriter writer = null;
+	private BufferedWriter detWriter = null;
+	
+	/**
+	 * Constructor establishes log files based on the current time in the canonical directory 
+	 *
+	 * @throws IOException if the log files or BufferedWriters cannot be created
+	 */
+	public Log () throws IOException {
+		//File management based on http://stackoverflow.com/questions/15754523/how-to-write-text-file-java 
+        File logFile = new File(getLogTime());
+
+        // This will output the full path where the file will be written to...
+        System.out.println(logFile.getCanonicalPath());
+        this.writer = new BufferedWriter(new FileWriter(logFile));
+        
+        if (Log.SAVE_STATUS) {
+	        File detFile = new File(getLogTime()+"Detail");
+	        this.detWriter = new BufferedWriter(new FileWriter(detFile));
+        }
+	}
+	
+	/**
+	 * Log final state information and clean up 
+	 * 
+	 * @param sim <code>Simulator</code> being used 
+	 * @throws IOException on write or closure failures 
+	 */
+	public void finalise(Simulator sim) throws IOException {
+		String time = getLogTime(); 
+		writer.write("\n" + time + ": End of Simulation\n");
+		writer.write(sim.finalState());
+		writer.close();
+		
+		if (Log.SAVE_STATUS) {
+			detWriter.write("\n" + time + ": End of Simulation\n");
+			detWriter.close(); 
+		}
+	}
+	
+	/**
+	 * Log initial state of the simulation and aircraft
+	 * Note we grab aircraft from first valid schedule 
+	 * 
+	 * @param sim <code>Simulator</code> providing parameters 
+	 * @throws IOException on write failures 
+	 * @throws SimulationException See {@link asgn2Simulators.Simulator#getFlights(int)}
+	 */
+	public void initialEntry(Simulator sim) throws IOException, SimulationException {
+		writer.write(getLogTime() + ": Start of Simulation\n");
+		writer.write(sim.toString() + "\n");
+		String capacities = sim.getFlights(Constants.FIRST_FLIGHT).initialState();
+		writer.write(capacities);
+	}
+	
+	/**
+	 * Log summary entry for each time step 
+	 * Note: Aircraft bookings appear only once Flights have begun 
+	 * 
+	 * @param time <code>int</code> holding current simulation time step 
+	 * @param sim <code>Simulator</code> controlling simulation 
+	 * @throws SimulationException See {@link asgn2Simulators.Simulator#getSummary(int, boolean)}
+	 * @throws IOException on write failures 
+	 */
+	public void logEntry(int time,Simulator sim) throws IOException, SimulationException {
+		boolean flying = (time >= Constants.FIRST_FLIGHT);
+		writer.write(sim.getSummary(time, flying));
+	}
+	
+	/**
+	 * Log Queue and Refused Transitions for each time step. 
+	 * Logging controlled by {@link #SAVE_STATUS} 
+	 * 
+	 * @param time <code>int</code> holding current simulation time step 
+	 * @param sim <code>Simulator</code> controlling simulation 
+	 * @throws IOException on write failures 
+	 */
+	public void logQREntries(int time,Simulator sim) throws IOException {
+		if (Log.SAVE_STATUS) {
+			detWriter.write(sim.getStatus(time));
+		}
+	}
+	
+	/**
+	 * Log Aircraft Transitions for each time step. 
+	 * Logging controlled by {@link #SAVE_STATUS} 
+	 * 
+	 * @param time <code>int</code> holding current simulation time step 
+	 * @param sim <code>Simulator</code> controlling simulation 
+	 * @throws IOException on write failures 
+	 * @throws SimulationException See {@link Simulator#getFlights(int)}
+	 */
+	public void logFlightEntries(int time,Simulator sim) throws IOException, SimulationException {
+		if (Log.SAVE_STATUS) {
+			Flights flights = sim.getFlights(time); 
+			detWriter.write(flights.getStatus(time));
+		}
 	}
 	
 	/**

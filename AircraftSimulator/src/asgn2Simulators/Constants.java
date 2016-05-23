@@ -7,7 +7,8 @@
 package asgn2Simulators;
 
 /**
- * Global constants for the simulation
+ * Global constants for the simulation.
+ * 
  * @author hogan
  *
  */
