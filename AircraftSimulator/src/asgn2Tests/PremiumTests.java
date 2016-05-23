@@ -108,5 +108,4 @@ public class PremiumTests {
     public void testPremiumConstructor_passId() throws PassengerException {
         assertEquals(0, "P:0".compareTo(p.getPassID()));
     }
-
 }
