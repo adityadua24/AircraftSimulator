@@ -7,6 +7,10 @@
 package asgn2Passengers;
 
 
+import asgn2Simulators.Constants;
+
+import java.util.Random;
+
 /**
  * Passenger is an abstract class specifying the basic state of an airline passenger,  
  * and providing methods to set and access that state. A passenger is created upon booking, 
@@ -92,8 +96,6 @@ public abstract class Passenger {
 			Passenger.index++;
 		}
 
-
-
 		//TODO: Stuff here
 	}
 	
@@ -121,7 +123,14 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (cancellationTime < 0) OR (departureTime < cancellationTime)
 	 */
 	public void cancelSeat(int cancellationTime) throws PassengerException {
-
+		if(this.isNew() || this.isQueued() || this.isRefused() || this.isFlown() || (cancellationTime < 0) || (departureTime < cancellationTime)){
+			throw new PassengerException("Invalid state or values");
+		}
+		else if(this.isConfirmed()){
+			this.newState = true;
+			this.confirmed = false;
+			this.bookingTime = cancellationTime;
+		}
 	}
 
 	/**
@@ -138,7 +147,19 @@ public abstract class Passenger {
 	 * 		   OR (confirmationTime < 0) OR (departureTime < confirmationTime)
 	 */
 	public void confirmSeat(int confirmationTime, int departureTime) throws PassengerException {
-
+		if(this.isConfirmed() || this.isRefused() || this.isFlown() || (confirmationTime < 0) || (departureTime < confirmationTime)){
+			throw new PassengerException("Invalid values or state");
+		}
+		else if( this.isNew() || this.isQueued()) {
+			if(this.isQueued()){
+				this.exitQueueTime = confirmationTime;
+			}
+			this.newState = false;
+			this.inQueue = false;
+			this.confirmed = true;
+			this.confirmationTime = confirmationTime;
+			this.departureTime = departureTime;
+		}
 	}
 
 	/**
@@ -153,7 +174,14 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (departureTime <= 0)
 	 */
 	public void flyPassenger(int departureTime) throws PassengerException {
-		
+		if(this.isNew() || this.isQueued() || this.isRefused() || this.isFlown() || (departureTime <= 0)){
+			throw new PassengerException("Invalid values or state");
+		}
+		else if(this.isConfirmed()){
+			this.confirmed = false;
+			this.flown = true;
+			this.departureTime = departureTime;
+		}
 	}
 
 	/**
