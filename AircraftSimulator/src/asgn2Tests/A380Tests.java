@@ -167,33 +167,27 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testCancelBooking_ValidCancellation() throws AircraftException, PassengerException {
+    public void testCancelBooking_PassengerRemovedFromAircraft() throws AircraftException, PassengerException {
         basicAircraft.confirmBooking(testPassenger, 8);
 
         basicAircraft.cancelBooking(testPassenger, 11);
+
+        assertEquals(0, basicAircraft.getNumPassengers());
     }
 
-    @org.junit.Test(expected = PassengerException.class)
-    public void testCancelBooking_NegativeCancellationTime() throws AircraftException, PassengerException {
+    @org.junit.Test
+    public void testCancelBooking_PassengerIsNew() throws AircraftException, PassengerException {
         basicAircraft.confirmBooking(testPassenger, 8);
 
-        basicAircraft.cancelBooking(testPassenger, -10);
-    }
+        basicAircraft.cancelBooking(testPassenger, 11);
 
-    @org.junit.Test(expected = PassengerException.class)
-    public void testCancelBooking_CancelledAfterDeparture() throws AircraftException, PassengerException {
-        basicAircraft.confirmBooking(testPassenger, 8);
-
-        // The cancellation time is invalid when departure time is less than cancellation time.
-        basicAircraft.cancelBooking(testPassenger, 13);
+        assertTrue(testPassenger.isNew());
     }
 
     @org.junit.Test(expected = AircraftException.class)
     public void testCancelBooking_PassengerNotConfirmed() throws AircraftException, PassengerException {
         basicAircraft.cancelBooking(testPassenger, 14);
     }
-
-    // TODO: Add extra Cancel booking tests. Check that i need to check any Passenger exceptions here as well?
 
     @org.junit.Test
     public void testConfirmBooking_ValidConfirmation() throws AircraftException, PassengerException {
