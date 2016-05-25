@@ -240,8 +240,6 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		//TODO: This is meant to be a copy, not just a reference.
-		//TODO: Check that it's fine to use an Array list here?
 		return new ArrayList<>(this.seats);
 	}
 	
