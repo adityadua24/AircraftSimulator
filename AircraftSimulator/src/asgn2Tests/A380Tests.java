@@ -4,7 +4,10 @@ import asgn2Aircraft.A380;
 import asgn2Aircraft.Aircraft;
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.*;
+
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -15,9 +18,9 @@ import static org.junit.Assert.*;
  */
 public class A380Tests {
 
-    A380 basicAircraft;
+    Aircraft basicAircraft;
 
-    First testPassenger;
+    Passenger testPassenger;
 
     Class aircraftClass = Aircraft.class;
 
@@ -190,17 +193,42 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testConfirmBooking_ValidConfirmation() throws AircraftException, PassengerException {
-        // Upper limit/Latest possible booking someone can do in this situation.
+    public void testConfirmBooking_PassengerAddedToCorrectClass() throws AircraftException, PassengerException {
         basicAircraft.confirmBooking(testPassenger, 12);
 
-        // Checks that the passenger is not only added to the right class
-        // But also that they are only added once
         assertEquals(1, basicAircraft.getNumFirst());
+    }
+
+    @org.junit.Test
+    public void testConfirmBooking_CorrectNumberOfPassengersAddedTotal() throws AircraftException, PassengerException {
+        basicAircraft.confirmBooking(testPassenger, 12);
+
         assertEquals(1, basicAircraft.getNumPassengers());
     }
 
-    // TODO: Add extra Confirm Booking tests. Namely any exceptions
+    @org.junit.Test
+    public void testConfirmBooking_PassengerStateChanged() throws AircraftException, PassengerException {
+        // Acts both as a base test that the passenger state is changing, and the case for ALL seats available
+        basicAircraft.confirmBooking(testPassenger, 12);
+
+        assertTrue(testPassenger.isConfirmed());
+    }
+
+    @org.junit.Test
+    public void testConfirmBooking_OneSeatAvailable() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException  {
+        SetField("numFirst", basicAircraft, 13);
+
+        basicAircraft.confirmBooking(testPassenger, 12);
+
+        assertTrue(testPassenger.isConfirmed());
+    }
+
+    @org.junit.Test(expected = AircraftException.class)
+    public void testConfirmBooking_NoSeatsAvailable() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException  {
+        SetField("numFirst", basicAircraft, 14);
+
+        basicAircraft.confirmBooking(testPassenger, 12);
+    }
 
     @org.junit.Test
     public void testFinalState_NoPassengers() throws AircraftException {
@@ -233,8 +261,13 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testFlightFull_IsFullAircraft() throws AircraftException {
-        // Still deciding best way to to this. Probably reflection and artificially fill the plane.
+    public void testFlightFull_IsFullAircraft() throws AircraftException, IllegalAccessException, NoSuchFieldException {
+        SetField("numFirst", basicAircraft, 14);
+        SetField("numBusiness", basicAircraft, 64);
+        SetField("numPremium", basicAircraft, 35);
+        SetField("numEconomy", basicAircraft, 371);
+
+        assertTrue(basicAircraft.flightFull());
     }
 
     @org.junit.Test
@@ -250,7 +283,22 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testFlyPassengers() throws AircraftException, PassengerException {
+    public void testFlyPassengers_NoPassengers() throws AircraftException, PassengerException {
+        // Nothing should go wrong with no passengers, and nothing should change
+        basicAircraft.flyPassengers(12);
+    }
+
+    @org.junit.Test
+    public void testFlyPassengers_OnePassenger() throws AircraftException, PassengerException {
+        basicAircraft.confirmBooking(testPassenger, 8);
+
+        basicAircraft.flyPassengers(12);
+
+        assertTrue(testPassenger.isFlown());
+    }
+
+    @org.junit.Test
+    public void testFlyPassengers_MultiplePassengers() throws AircraftException, PassengerException {
         Economy testPassenger2 = new Economy(3, 12);
 
         basicAircraft.confirmBooking(testPassenger, 8);
@@ -258,8 +306,7 @@ public class A380Tests {
 
         basicAircraft.flyPassengers(12);
 
-        // Makes sure that it doesn't just work for the first passenger, but all of them.
-        assertTrue(testPassenger.isFlown());
+        // Checks that the second passenger gets flown. We already know that passenger 1 gets flown
         assertTrue(testPassenger2.isFlown());
     }
 
@@ -277,79 +324,101 @@ public class A380Tests {
         assertEquals(4, basicAircraft.getNumPassengers());
     }
 
-    //Do test this
     @org.junit.Test
-    public void testGetPassengers() throws AircraftException {
-        //TODO: What does this need to test?
-    }
-
-    @org.junit.Test
-    public void testGetStatus() throws AircraftException {
-        // Should this really be tested?
-    }
-
-    @org.junit.Test
-    public void testHasPassenger() throws AircraftException, PassengerException {
+    public void testGetPassengers_SeparateReferences() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException {
         basicAircraft.confirmBooking(testPassenger, 8);
+
+        List<Passenger> passengerCopy = basicAircraft.getPassengers();
+
+        assertNotEquals(GetField("seats", basicAircraft), passengerCopy);
     }
 
     @org.junit.Test
-    public void testInitialState() throws AircraftException {
-        // This shouldn't be tested right?
+    public void testGetPassengers_ValuesEqual() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException {
+        basicAircraft.confirmBooking(testPassenger, 8);
+
+        List<Passenger> passengerCopy = basicAircraft.getPassengers();
+        List<Passenger> originalPassengers = (List<Passenger>) GetField("seats", basicAircraft);
+
+        for (int i = 0; i < originalPassengers.size(); i++){
+            assertEquals(originalPassengers.get(i), passengerCopy.get(i));
+        }
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_FirstClassPassengerWithAvailableSeats() throws AircraftException {
+    public void testHasPassenger_PassengerInAircraft() throws AircraftException, PassengerException {
+        basicAircraft.confirmBooking(testPassenger, 8);
+
+        assertTrue(basicAircraft.hasPassenger(testPassenger));
+    }
+
+    @org.junit.Test
+    public void testHasPassenger_PassengerNotInAircraft() throws AircraftException, PassengerException {
+        assertFalse(basicAircraft.hasPassenger(testPassenger));
+    }
+
+    @org.junit.Test
+    public void testSeatsAvailable_FirstClassPassengerWithAvailableSeat() throws IllegalAccessException, NoSuchFieldException {
+        SetField("numFirst", basicAircraft, 13);
         assertTrue(basicAircraft.seatsAvailable(testPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_FirstClassPassengerWithNoAvailableSeats() throws AircraftException {
-        // FIXME: Add reflection to artificially 'fill' the first class seats
+    public void testSeatsAvailable_FirstClassPassengerWithNoAvailableSeats() throws IllegalAccessException, NoSuchFieldException {
+        SetField("numFirst", basicAircraft, 14);
         assertFalse(basicAircraft.seatsAvailable(testPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_EconomyPassengerWithAvailableSeats() throws AircraftException, PassengerException {
+    public void testSeatsAvailable_EconomyPassengerWithAvailableSeat() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Economy economyPassenger = new Economy(3, 12);
+
+        SetField("numEconomy", basicAircraft, 370);
 
         assertTrue(basicAircraft.seatsAvailable(economyPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_EconomyPassengerWithNoAvailableSeats() throws AircraftException, PassengerException {
-        // FIXME: Add reflection to artificially 'fill' the first class seats
+    public void testSeatsAvailable_EconomyPassengerWithNoAvailableSeats() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Economy economyPassenger = new Economy(3, 12);
+
+        SetField("numEconomy", basicAircraft, 371);
 
         assertFalse(basicAircraft.seatsAvailable(economyPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_BusinessPassengerWithAvailableSeats() throws AircraftException, PassengerException {
+    public void testSeatsAvailable_BusinessPassengerWithAvailableSeat() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Business businessPassenger = new Business(3, 12);
+
+        SetField("numBusiness", basicAircraft, 63);
 
         assertTrue(basicAircraft.seatsAvailable(businessPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_BusinessPassengerWithNoAvailableSeats() throws AircraftException, PassengerException {
-        // FIXME: Add reflection to artificially 'fill' the first class seats
+    public void testSeatsAvailable_BusinessPassengerWithNoAvailableSeats() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Business businessPassenger = new Business(3, 12);
+
+        SetField("numBusiness", basicAircraft, 64);
 
         assertFalse(basicAircraft.seatsAvailable(businessPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_PremiumPassengerWithAvailableSeats() throws AircraftException, PassengerException {
+    public void testSeatsAvailable_PremiumPassengerWithAvailableSeat() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Premium premiumPassenger = new Premium(3, 12);
+
+        SetField("numPremium", basicAircraft, 34);
 
         assertTrue(basicAircraft.seatsAvailable(premiumPassenger));
     }
 
     @org.junit.Test
-    public void testSeatsAvailable_PremiumPassengerWithNoAvailableSeats() throws AircraftException, PassengerException {
-        // FIXME: Add reflection to artificially 'fill' the first class seats
+    public void testSeatsAvailable_PremiumPassengerWithNoAvailableSeats() throws PassengerException, IllegalAccessException, NoSuchFieldException {
         Premium premiumPassenger = new Premium(3, 12);
+
+        SetField("numPremium", basicAircraft, 35);
 
         assertFalse(basicAircraft.seatsAvailable(premiumPassenger));
     }
@@ -357,6 +426,20 @@ public class A380Tests {
     @org.junit.Test
     public void testUpgradeBookings() throws AircraftException {
         // Don't fully understand what this one is actually doing... Or more so WHY it is doing it.
+    }
+
+    private void SetField(String fieldName, Object inst, Object value) throws NoSuchFieldException, IllegalAccessException {
+        Field flightCodeField = aircraftClass.getDeclaredField(fieldName);
+        flightCodeField.setAccessible(true);
+
+        flightCodeField.set(inst, value);
+    }
+
+    private Object GetField(String fieldName, Object inst) throws NoSuchFieldException, IllegalAccessException {
+        Field flightCodeField = aircraftClass.getDeclaredField(fieldName);
+        flightCodeField.setAccessible(true);
+
+        return flightCodeField.get(inst);
     }
 
 }
