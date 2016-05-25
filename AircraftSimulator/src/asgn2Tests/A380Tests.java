@@ -238,7 +238,9 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testFinalState_WithPassenger() throws AircraftException {
+    public void testFinalState_WithPassenger() throws AircraftException, PassengerException {
+        basicAircraft.confirmBooking(testPassenger, 8);
+
         // TThis may be wrong. It's quite hard to tell with all the \n's
         String expectedResult = "A380:TE35T:12 Pass: 0\n" +
                 "passID: F:0\n" +
