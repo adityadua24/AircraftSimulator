@@ -26,7 +26,7 @@ public class PremiumTests {
     @org.junit.Test
     public void  testUpgrade_PassID() throws PassengerException {
         Passenger pUpgraded = p.upgrade();
-        String str = "J(U)" + p.getPassID();
+        String str = "P(U)" + p.getPassID();
         assertEquals(0, str.compareTo(pUpgraded.getPassID()));
     }
     @org.junit.Test
@@ -98,7 +98,7 @@ public class PremiumTests {
     }
     @org.junit.Test
     public void testPremiumConstructor_DepartureTime() throws PassengerException {
-        assertEquals(30, p.getBookingTime());
+        assertEquals(30, p.getDepartureTime());
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testPremiumConstructor_DepartureTimeZero() throws PassengerException {

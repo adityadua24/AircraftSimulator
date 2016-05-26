@@ -44,6 +44,8 @@ public class Business extends Passenger {
 
 		upgradedPassenger.copyPassengerState(this);
 
+		upgradedPassenger.passID = "J(U)" + this.passID;
+
 		return upgradedPassenger;
 	}
 }

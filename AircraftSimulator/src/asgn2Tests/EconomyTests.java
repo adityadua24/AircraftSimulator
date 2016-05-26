@@ -30,7 +30,7 @@ public class EconomyTests {
     @org.junit.Test
     public void  testUpgrade_PassID() throws PassengerException {
         Passenger pUpgraded = p.upgrade();
-        String str = "P(U)" + p.getPassID();
+        String str = "Y(U)" + p.getPassID();
         assertEquals(0, str.compareTo(pUpgraded.getPassID()));
     }
     @org.junit.Test
@@ -101,7 +101,7 @@ public class EconomyTests {
     }
     @org.junit.Test
     public void testEconomyConstructor_DepartureTime() throws PassengerException {
-        assertEquals(30, p.getBookingTime());
+        assertEquals(30, p.getDepartureTime());
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testEconomyConstructor_DepartureTimeZero() throws PassengerException {

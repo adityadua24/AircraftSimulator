@@ -37,6 +37,8 @@ public class Premium extends Passenger {
 
 		upgradedPassenger.copyPassengerState(this);
 
+		upgradedPassenger.passID = "P(U)" + this.passID;
+
 		return upgradedPassenger;
 	}
 	
