@@ -40,7 +40,10 @@ public class Business extends Passenger {
 	//Create new passenger of first class and preserve current state as well,
 	// using copyPassengerState method in passenger class
 	public Passenger upgrade() {
-		// FIXME: Implement Properly
-		return null;
+		Passenger upgradedPassenger = new First();
+
+		upgradedPassenger.copyPassengerState(this);
+
+		return upgradedPassenger;
 	}
 }

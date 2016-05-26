@@ -363,7 +363,32 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (queueTime < 0) OR (departureTime < queueTime)
 	 */
 	public void queuePassenger(int queueTime, int departureTime) throws PassengerException {
-		
+		if (this.isQueued()){
+			throw new PassengerException("Passenger (" + this.passID + ") is already queued and cannot be queued again");
+		}
+		if (this.isConfirmed()){
+			throw new PassengerException("Passenger (" + this.passID + ") has already been confirmed and cannot be queued");
+		}
+		if (this.isRefused()){
+			throw new PassengerException("Passenger (" + this.passID + ") has already been refused and cannot be queued");
+		}
+		if (this.isFlown()){
+			throw new PassengerException("Passenger (" + this.passID + ") has already flown and cannot be queued");
+		}
+
+		if (queueTime < 0){
+			throw new PassengerException("Queue time is negative for passenger " + this.passID + ", and they cannot be flown");
+		}
+		if (departureTime < queueTime){
+			throw new PassengerException("Departure time (" + departureTime + ") is less than queue time (" + queueTime + ") for passenger " + this.passID + ", and they cannot be queued");
+		}
+
+		if (isNew()){
+			this.inQueue = true;
+			this.newState = false;
+
+			this.enterQueueTime = queueTime;
+		}
 	}
 	
 	/**
@@ -379,7 +404,30 @@ public abstract class Passenger {
 	 * 			OR (refusalTime < 0) OR (refusalTime < bookingTime)
 	 */
 	public void refusePassenger(int refusalTime) throws PassengerException {
-		
+		if (this.isConfirmed()){
+			throw new PassengerException("Passenger (" + this.passID + ") is already confirmed and cannot be refused");
+		}
+		if (this.isRefused()){
+			throw new PassengerException("Passenger (" + this.passID + ") has already been confirmed and cannot be refused again");
+		}
+		if (this.isFlown()){
+			throw new PassengerException("Passenger (" + this.passID + ") has already been flown and cannot be refused");
+		}
+
+		if (refusalTime < 0){
+			throw new PassengerException("Refusal time is negative for passenger " + this.passID + ", and they cannot be refused");
+		}
+		if (refusalTime < this.bookingTime){
+			throw new PassengerException("Refusal time (" + refusalTime + ") is less than the booking time (" + this.bookingTime + ") for passenger " + this.passID + ", so they cannot be refused");
+		}
+
+		if (this.isNew() || this.isQueued()){
+			this.refused = true;
+			this.newState = false;
+			this.inQueue = false;
+
+			this.exitQueueTime = refusalTime;
+		}
 	}
 	
 	/* (non-Javadoc) (Supplied) 
@@ -429,7 +477,11 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() throws PassengerException {
-		return this.confirmed;
+		if (this.confirmationTime != 0){
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -438,7 +490,10 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() throws PassengerException {
-		// FIXME: Implement Properly. How do you check if it was ever queued?
+		if (this.enterQueueTime != 0){
+			return true;
+		}
+
 		return false;
 	}
 
@@ -448,7 +503,20 @@ public abstract class Passenger {
 	 * @param <code>Passenger</code> state to transfer
 	 */
 	protected void copyPassengerState(Passenger p) {
-		
+		this.newState = p.newState;
+		this.flown = p.flown;
+		this.refused = p.refused;
+		this.inQueue = p.inQueue;
+		this.confirmed = p.confirmed;
+
+		this.bookingTime = p.bookingTime;
+		this.confirmationTime = p.confirmationTime;
+		this.departureTime = p.departureTime;
+		this.enterQueueTime = p.enterQueueTime;
+		this.exitQueueTime = p.exitQueueTime;
+
+		// FIXME: This changes right?
+		this.passID = p.passID;
 	}
 	
 	//Various private helper methods to check arguments and throw exceptions

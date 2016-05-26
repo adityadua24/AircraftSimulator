@@ -80,7 +80,7 @@ public class A380Tests {
     public void testAircraftConstructor_EconomyCorrect() throws AircraftException {
         int expectedEconomy = 371;
 
-        assertEquals(expectedEconomy, basicAircraft.getNumEonomy());
+        assertEquals(expectedEconomy, basicAircraft.getNumEconomy());
     }
 
     @org.junit.Test(expected = AircraftException.class)

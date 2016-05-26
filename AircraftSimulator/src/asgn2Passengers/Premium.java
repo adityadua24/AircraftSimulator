@@ -33,8 +33,11 @@ public class Premium extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-		// FIXME: Implement Properly
-		return null;
+		Passenger upgradedPassenger = new Business();
+
+		upgradedPassenger.copyPassengerState(this);
+
+		return upgradedPassenger;
 	}
 	
 	@Override
