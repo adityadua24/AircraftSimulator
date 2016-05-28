@@ -2,10 +2,10 @@ package asgn2Tests;
 
 import asgn2Aircraft.A380;
 import asgn2Aircraft.Aircraft;
+import asgn2Aircraft.Bookings;
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.*;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -63,10 +63,24 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testAircraftConstructor_BusinessCorrect() throws AircraftException {
+    public void testAircraftConstructor_FirstCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
         int expectedBusiness = 64;
 
+        assertEquals(expectedBusiness, GetField("firstCapacity", basicAircraft));
+    }
+
+    @org.junit.Test
+    public void testAircraftConstructor_BusinessCorrect() throws AircraftException {
+        int expectedBusiness = 0;
+
         assertEquals(expectedBusiness, basicAircraft.getNumBusiness());
+    }
+
+    @org.junit.Test
+    public void testAircraftConstructor_BusinessCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
+        int expectedBusiness = 64;
+
+        assertEquals(expectedBusiness, GetField("businessCapacity", basicAircraft));
     }
 
     @org.junit.Test
@@ -77,10 +91,24 @@ public class A380Tests {
     }
 
     @org.junit.Test
+    public void testAircraftConstructor_PremiumCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
+        int expectedBusiness = 64;
+
+        assertEquals(expectedBusiness, GetField("premiumCapacity", basicAircraft));
+    }
+
+    @org.junit.Test
     public void testAircraftConstructor_EconomyCorrect() throws AircraftException {
         int expectedEconomy = 371;
 
         assertEquals(expectedEconomy, basicAircraft.getNumEconomy());
+    }
+
+    @org.junit.Test
+    public void testAircraftConstructor_EconomyCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
+        int expectedBusiness = 64;
+
+        assertEquals(expectedBusiness, GetField("economyCapacity", basicAircraft));
     }
 
     @org.junit.Test(expected = AircraftException.class)
@@ -208,7 +236,6 @@ public class A380Tests {
 
     @org.junit.Test
     public void testConfirmBooking_PassengerStateChanged() throws AircraftException, PassengerException {
-        // Acts both as a base test that the passenger state is changing, and the case for ALL seats available
         basicAircraft.confirmBooking(testPassenger, 12);
 
         assertTrue(testPassenger.isConfirmed());
@@ -428,6 +455,50 @@ public class A380Tests {
     @org.junit.Test
     public void testUpgradeBookings() throws AircraftException {
         // Don't fully understand what this one is actually doing... Or more so WHY it is doing it.
+    }
+
+    @org.junit.Test
+    public void testGetBookings_CorrectFirstPassengers() throws PassengerException, AircraftException {
+        Passenger newPassenger = new First(3, 12);
+
+        basicAircraft.confirmBooking(newPassenger, 8);
+
+        Bookings testBookings = basicAircraft.getBookings();
+
+        assertEquals(1, testBookings.getNumFirst());
+    }
+
+    @org.junit.Test
+    public void testGetBookings_CorrectBusinessPassengers() throws PassengerException, AircraftException {
+        Passenger newPassenger = new Business(3, 12);
+
+        basicAircraft.confirmBooking(newPassenger, 8);
+
+        Bookings testBookings = basicAircraft.getBookings();
+
+        assertEquals(1, testBookings.getNumBusiness());
+    }
+
+    @org.junit.Test
+    public void testGetBookings_CorrectPremiumPassengers() throws PassengerException, AircraftException {
+        Passenger newPassenger = new Premium(3, 12);
+
+        basicAircraft.confirmBooking(newPassenger, 8);
+
+        Bookings testBookings = basicAircraft.getBookings();
+
+        assertEquals(1, testBookings.getNumPremium());
+    }
+
+    @org.junit.Test
+    public void testGetBookings_CorrectEconomyPassengers() throws PassengerException, AircraftException {
+        Passenger newPassenger = new Economy(3, 12);
+
+        basicAircraft.confirmBooking(newPassenger, 8);
+
+        Bookings testBookings = basicAircraft.getBookings();
+
+        assertEquals(1, testBookings.getNumEconomy());
     }
 
     private void SetField(String fieldName, Object inst, Object value) throws NoSuchFieldException, IllegalAccessException {

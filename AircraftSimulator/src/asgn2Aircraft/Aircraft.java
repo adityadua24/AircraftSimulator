@@ -17,6 +17,7 @@ import asgn2Passengers.Passenger;
 import asgn2Passengers.PassengerException;
 import asgn2Passengers.Premium;
 import asgn2Simulators.Log;
+import sun.security.provider.certpath.BuildStep;
 
 /**
  * The <code>Aircraft</code> class provides facilities for modelling a commercial jet 
@@ -99,7 +100,7 @@ public abstract class Aircraft {
 	/**
 	 * Method to remove passenger from the aircraft - passenger must have a confirmed 
 	 * seat prior to entry to this method.   
-	 *Hint: use of Polymorphism here.
+	 * Hint: use of Polymorphism here.
 	 * @param p <code>Passenger</code> to be removed from the aircraft 
 	 * @param cancellationTime <code>int</code> time operation performed 
 	 * @throws PassengerException if <code>Passenger</code> is not Confirmed OR cancellationTime 
@@ -107,10 +108,15 @@ public abstract class Aircraft {
 	 * @throws AircraftException if <code>Passenger</code> is not recorded in aircraft seating 
 	 */
 	public void cancelBooking(Passenger p,int cancellationTime) throws PassengerException, AircraftException {
-		//Stuff here
+		if (!hasPassenger(p)){
+			throw new AircraftException("The passenger to be removed from the aircraft cannot be found");
+		}
+		seats.remove(p);
+		p.cancelSeat(cancellationTime);
+
 		this.status += Log.setPassengerMsg(p,"C","N");
-		//Stuff here
-		//TODO decrement numbers here
+
+		// How can we decrease the passengers class count without checking the passengers type?
 	}
 
 	/**
@@ -123,10 +129,17 @@ public abstract class Aircraft {
 	 * OR confirmationTime OR departureTime is invalid. See {@link asgn2Passengers.Passenger#confirmSeat(int, int)}
 	 * @throws AircraftException if no seats available in <code>Passenger</code> fare class. 
 	 */
-	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 
-		//Stuff here
+	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException {
+		if (!seatsAvailable(p)){
+			throw new AircraftException(p.noSeatsMsg());
+		}
+
+		seats.add(p);
+		p.confirmSeat(confirmationTime, departureTime);
+
 		this.status += Log.setPassengerMsg(p,"N/Q","C");
-		//Stuff here
+
+		// How can we increase the passengers class count without checking the passengers type?
 	}
 	
 	/**
@@ -158,8 +171,6 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if aircraft full; false otherwise 
 	 */
 	public boolean flightFull() {
-		// If the sum of all the classes is equal to the capacity it is full.
-		// This should never be able to go over capacity?
 		return (getNumPassengers() == this.capacity);
 	}
 	
@@ -173,7 +184,9 @@ public abstract class Aircraft {
 	 * See {@link asgn2Passengers.Passenger#flyPassenger(int)}. 
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
-		
+		for (Passenger passenger : seats) {
+			passenger.flyPassenger(departureTime);
+		}
 	}
 	
 	/**
@@ -183,8 +196,9 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
-		//FIXME: Implement properly
-		return null;
+		int availableSeats = this.capacity - this.getNumPassengers();
+
+		return new Bookings(this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, this.getNumPassengers(), availableSeats);
 	}
 	
 	/**
@@ -266,7 +280,12 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if isConfirmed(p); false otherwise 
 	 */
 	public boolean hasPassenger(Passenger p) {
-		//FIXME: Implement Properly
+		for (Passenger passenger : seats){
+			if (passenger == p){
+				return true;
+			}
+		}
+
 		return false;
 	}
 	
@@ -291,9 +310,21 @@ public abstract class Aircraft {
 	 * @param p <code>Passenger</code> to be Confirmed
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
-	public boolean seatsAvailable(Passenger p) {		
-		//FIXME: Implement properly
-		return true;
+	public boolean seatsAvailable(Passenger p) {
+		if (this.numFirst != this.firstCapacity && p.getClass() == First.class){
+			return true;
+		}
+		if (this.numPremium != this.premiumCapacity && p.getClass() == Premium.class){
+			return true;
+		}
+		if (this.numEconomy != this.economyCapacity && p.getClass() == Economy.class){
+			return true;
+		}
+		if (this.numBusiness != this.businessCapacity && p.getClass() == Business.class){
+			return true;
+		}
+
+		return false;
 	}
 
 	/* 

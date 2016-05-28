@@ -74,7 +74,7 @@ public class FirstTests {
     @org.junit.Test
     public void testUpgrade() throws PassengerException {
         Passenger test = p.upgrade();
-        assertNull(test);
+        assertEquals(p, test);
     }
     //Cancel Seat tests
     @org.junit.Test
@@ -161,16 +161,6 @@ public class FirstTests {
         p.cancelSeat(6);
         assertEquals(12, p.getDepartureTime());
     }
-    @org.junit.Test(expected = PassengerException.class)
-    public void testCancelSeat_ConfirmedSeat() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        // FIXME: Why should is confirmed make cancel seat throw an error? That's the only time it shouldn't right?
-        SetNewState(false);
-        SetConfirmed(true);
-        SetInQueue(false);
-        SetRefused(false);
-        SetFlown(false);
-        p.cancelSeat(6);
-    }
     //Confirm Seat Tests
     @org.junit.Test
     public void testConfirmSeat_InitialStateNew() throws IllegalAccessException, NoSuchFieldException, PassengerException {
@@ -237,17 +227,6 @@ public class FirstTests {
         SetFlown(false);
         p.confirmSeat(16, 12);
     }
-    @org.junit.Test(expected = PassengerException.class)
-    public void testConfirmSeat_NegativeDepartureTime() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        // FIXME: Looking at the Java Doc/Method description, it doesn't look like a negative departure time SHOULD throw an error.
-        // FIXME: As stupid as that seems, i guess it will just never happen, so we don't test that here.
-        SetNewState(true);
-        SetConfirmed(false);
-        SetInQueue(false);
-        SetRefused(false);
-        SetFlown(false);
-        p.confirmSeat(5, -12);
-    }
     //Fly Passenger tests
     @org.junit.Test
     public void testFlyPassenger_InitialStateConfirmed() throws PassengerException, NoSuchFieldException, IllegalAccessException {
@@ -258,17 +237,6 @@ public class FirstTests {
         SetInQueue(false);
         p.flyPassenger(12);
         assertTrue(p.isFlown());
-    }
-    @org.junit.Test(expected = PassengerException.class)
-    public void testFlyPassenger_InitialStateNotConfirmed() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-        // FIXME: This method doesn't actually throw an error if they aren't confirmed (It probably should).
-        // FIXME: But looking at the method description/Java doc, it shouldn't explicitly throw an error.
-        SetConfirmed(false);
-        SetNewState(false);
-        SetInQueue(false);
-        SetRefused(false);
-        SetFlown(false);
-        p.flyPassenger(12);
     }
     @org.junit.Test(expected = PassengerException.class)
     public void testFlyPassenger_NewStateCheck() throws PassengerException, NoSuchFieldException, IllegalAccessException {
@@ -334,13 +302,7 @@ public class FirstTests {
         SetFlown(false);
         assertEquals(0, p.getConfirmationTime());
     }
-    @org.junit.Test
-    public void testGetPassID() throws PassengerException {
-        //FIXME: This is not a valid test as the ID changes every time you create a new passenger (Every test).
-        //Is this really needed though? Like what's the point in testing this?
-        assertEquals(0, "F:0".compareTo(p.getPassID()));
-    }
-
+    
     @org.junit.Test
     public void testIsConfirmed() throws PassengerException, NoSuchFieldException, IllegalAccessException {
         SetConfirmed(true);
@@ -531,7 +493,7 @@ public class FirstTests {
     @org.junit.Test
     public void testWasConfirmed_FalseExpected() throws PassengerException {
         //TODO //Implement
-        assertTrue(p.wasConfirmed());
+        assertFalse(p.wasConfirmed());
     }
     @org.junit.Test
     public void testWasQueued_TrueExpected() throws PassengerException {
