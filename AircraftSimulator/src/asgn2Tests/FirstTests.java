@@ -58,12 +58,11 @@ public class FirstTests {
     }
     @org.junit.Test
     public void testPassengerConstructor_StateTransitionCheck() throws PassengerException {
-        assertTrue(p.isConfirmed() || p.isQueued() || p.isRefused());
+        assertFalse(p.isConfirmed() || p.isQueued() || p.isRefused());
     }
     @org.junit.Test
     public void testPassengerConstructor_NewStateTransitionCheck() throws PassengerException {
-        // FIXME: What is this and the above method meant to be testing? The passenger is meant to be in this state when they are first created
-        assertFalse(p.isNew());
+        assertTrue(p.isNew());
     }
     @org.junit.Test
     public void testNoSeatsMsg() throws PassengerException {

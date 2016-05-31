@@ -17,7 +17,6 @@ import asgn2Passengers.Passenger;
 import asgn2Passengers.PassengerException;
 import asgn2Passengers.Premium;
 import asgn2Simulators.Log;
-import sun.security.provider.certpath.BuildStep;
 
 /**
  * The <code>Aircraft</code> class provides facilities for modelling a commercial jet 
@@ -46,10 +45,10 @@ public abstract class Aircraft {
 	protected int numFirst;
 	protected int numBusiness;
 	protected int numPremium; 
-	protected int numEconomy; 
+	protected int numEconomy;
 
 	protected String flightCode;
-	protected String type; 
+	protected String type;
 	protected int departureTime; 
 	protected String status;
 	protected List<Passenger> seats;
@@ -67,8 +66,8 @@ public abstract class Aircraft {
 	 */
 	public Aircraft(String flightCode,int departureTime, int first, int business, int premium, int economy) throws AircraftException {
 		//Exception checking
-		if (flightCode == null) {// Should this check for empty too?
-			throw new AircraftException("Flight code is null");
+		if (flightCode == null || (flightCode.equals(""))) {// Should this check for empty too?
+			throw new AircraftException("Flight code is null or empty");
 		}
 
 		if (departureTime <= 0) {
@@ -117,6 +116,7 @@ public abstract class Aircraft {
 		this.status += Log.setPassengerMsg(p,"C","N");
 
 		// How can we decrease the passengers class count without checking the passengers type?
+		this.updateFareClassCount(p, false);
 	}
 
 	/**
@@ -138,10 +138,41 @@ public abstract class Aircraft {
 		p.confirmSeat(confirmationTime, departureTime);
 
 		this.status += Log.setPassengerMsg(p,"N/Q","C");
-
-		// How can we increase the passengers class count without checking the passengers type?
+		this.updateFareClassCount(p, true);
 	}
-	
+
+	private void updateFareClassCount(Passenger p, boolean change) {
+		if(change == true){
+			if(p.getClass() == First.class){
+				numFirst++;
+			}
+			else if(p.getClass() == Economy.class){
+				numEconomy++;
+			}
+			else if(p.getClass() == Business.class){
+				numBusiness++;
+			}
+			else if(p.getClass() == Premium.class){
+				numPremium++;
+			}
+		}
+		else if(change == false){
+			if(p.getClass() == First.class){
+				numFirst--;
+			}
+			else if(p.getClass() == Economy.class){
+				numEconomy--;
+			}
+			else if(p.getClass() == Business.class){
+				numBusiness--;
+			}
+			else if(p.getClass() == Premium.class){
+				numPremium--;
+			}
+		}
+
+	}
+
 	/**
 	 * State dump intended for use in logging the final state of the aircraft. (Supplied) 
 	 * 
@@ -285,7 +316,6 @@ public abstract class Aircraft {
 				return true;
 			}
 		}
-
 		return false;
 	}
 	
@@ -323,7 +353,6 @@ public abstract class Aircraft {
 		if (this.numBusiness != this.businessCapacity && p.getClass() == Business.class){
 			return true;
 		}
-
 		return false;
 	}
 
@@ -355,7 +384,36 @@ public abstract class Aircraft {
 	 * See {@link asgn2Passengers.Passenger#upgrade()}
 	 */
 	public void upgradeBookings() throws PassengerException { 
-		//Use Java Streams?
+		while(this.firstCapacity > this.numFirst) {
+			for (Passenger p : seats) {
+				if (p.getClass() == Business.class) {
+					p.upgrade();
+					this.numFirst++;
+					this.numBusiness--;
+
+				}
+			}
+		}
+		while(this.businessCapacity > this.numBusiness){
+			for (Passenger p : seats) {
+				if (p.getClass() == Premium.class) {
+					p.upgrade();
+					this.numPremium--;
+					this.numBusiness++;
+
+				}
+			}
+		}
+		while(this.premiumCapacity > this.numPremium){
+			for (Passenger p : seats) {
+				if (p.getClass() == Economy.class) {
+					p.upgrade();
+					this.numPremium++;
+					this.numEconomy--;
+
+				}
+			}
+		}
 	}
 
 	/**
