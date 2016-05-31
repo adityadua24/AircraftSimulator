@@ -4,6 +4,8 @@ import asgn2Passengers.Business;
 import asgn2Passengers.Passenger;
 import asgn2Passengers.PassengerException;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.*;
 
 /**
@@ -103,8 +105,12 @@ public class BusinessTests {
         Passenger pTest = new Business(10, 0);
     }
     @org.junit.Test
-    public void testBusinessConstructor_passId() throws PassengerException {
-        assertEquals(0, "J:0".compareTo(p.getPassID()));
+    public void testBusinessConstructor_passId() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        String original = p.getPassID();
+        Field f = Passenger.class.getDeclaredField("index");
+        f.setAccessible(true);
+        String expected = "J:"+ (f.getInt(p) - 1);
+        assertEquals(0, original.compareTo(expected));
     }
 
 }

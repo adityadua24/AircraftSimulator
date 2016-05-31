@@ -108,7 +108,11 @@ public class EconomyTests {
         Passenger pTest = new Economy(10, 0);
     }
     @org.junit.Test
-    public void testEconomyConstructor_passId() throws PassengerException {
-        assertEquals(0, "Y:0".compareTo(p.getPassID()));
+    public void testEconomyConstructor_passId() throws PassengerException, IllegalAccessException, NoSuchFieldException {
+        String original = p.getPassID();
+        Field f = Passenger.class.getDeclaredField("index");
+        f.setAccessible(true);
+        String expected = "Y:"+ (f.getInt(p) - 1);
+        assertEquals(0, original.compareTo(expected));
     }
 }

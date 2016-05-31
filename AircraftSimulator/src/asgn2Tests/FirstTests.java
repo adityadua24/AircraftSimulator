@@ -491,18 +491,27 @@ public class FirstTests {
     }
     @org.junit.Test
     public void testWasConfirmed_FalseExpected() throws PassengerException {
-        //TODO //Implement
+        p.queuePassenger(6, 12);
         assertFalse(p.wasConfirmed());
     }
     @org.junit.Test
     public void testWasQueued_TrueExpected() throws PassengerException {
         p.queuePassenger(5, 12);
+        p.confirmSeat(7, 12);
         assertTrue(p.wasQueued());
     }
     @org.junit.Test
     public void testWasQueued_FalseExpected() throws PassengerException {
-        //TODO //Implement
+        p.confirmSeat(8, 12);
         assertFalse(p.wasQueued());
+    }
+    @org.junit.Test
+    public void testFirstConstructor_passID() throws PassengerException, IllegalAccessException, NoSuchFieldException {
+        String original = p.getPassID();
+        Field f = Passenger.class.getDeclaredField("index");
+        f.setAccessible(true);
+        String expected = "F:"+ (f.getInt(p) - 1);
+        assertEquals(0, original.compareTo(expected));
     }
     private void SetConfirmed(boolean state) throws PassengerException, NoSuchFieldException, IllegalAccessException {
         f = null;

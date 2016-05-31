@@ -4,6 +4,8 @@ import asgn2Passengers.Passenger;
 import asgn2Passengers.PassengerException;
 import asgn2Passengers.Premium;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.*;
 
 
@@ -105,7 +107,11 @@ public class PremiumTests {
         Passenger pTest = new Premium(10, 0);
     }
     @org.junit.Test
-    public void testPremiumConstructor_passId() throws PassengerException {
-        assertEquals(0, "P:0".compareTo(p.getPassID()));
+    public void testPremiumConstructor_passId() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+        String original = p.getPassID();
+        Field f = Passenger.class.getDeclaredField("index");
+        f.setAccessible(true);
+        String expected = "P:"+ (f.getInt(p) - 1);
+        assertEquals(0, original.compareTo(expected));
     }
 }
