@@ -96,9 +96,9 @@ public abstract class Passenger {
 		this.confirmed = false;
 		this.refused = false;
 		this.inQueue = false;
-		this.enterQueueTime = 0;
-		this.exitQueueTime = 0;
-		this.confirmationTime = 0;
+		this.enterQueueTime = -1;
+		this.exitQueueTime = -1;
+		this.confirmationTime = -1;
 		this.passID = "" + Passenger.index;
 		Passenger.index++;
 
@@ -386,6 +386,7 @@ public abstract class Passenger {
 		if (isNew()){
 			this.inQueue = true;
 			this.newState = false;
+			this.departureTime = departureTime;
 
 			this.enterQueueTime = queueTime;
 		}
@@ -477,7 +478,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() throws PassengerException {
-		if (this.confirmationTime != 0){
+		if (this.confirmationTime != -1){
 			return true;
 		}
 
@@ -490,7 +491,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() throws PassengerException {
-		if (this.enterQueueTime != 0){
+		if (this.enterQueueTime != -1){
 			return true;
 		}
 
@@ -515,7 +516,6 @@ public abstract class Passenger {
 		this.enterQueueTime = p.enterQueueTime;
 		this.exitQueueTime = p.exitQueueTime;
 
-		// FIXME: This changes right?
 		this.passID = p.passID;
 	}
 	
