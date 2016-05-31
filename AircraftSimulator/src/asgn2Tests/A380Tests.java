@@ -116,7 +116,7 @@ public class A380Tests {
         new A380(null, 12, 14, 64, 35, 371);
     }
 
-    @org.junit.Test
+    @org.junit.Test(expected = AircraftException.class)
     public void testAircraftConstructor_FlightCodeEmpty() throws AircraftException {
         //TODO: Check this is correct and it is not meant to throw an error when empty
         assertNotNull(new A380("", 12, 14, 64, 35, 371));
@@ -273,8 +273,10 @@ public class A380Tests {
                 "passID: F:0\n" +
                 "BT: 3\n" +
                 "NotQ\n\n";
-
-        assertEquals(expectedResult, basicAircraft.finalState());
+        expectedResult = expectedResult.replace("\n", "").replace(" ", "");
+        String temp = basicAircraft.finalState();
+        temp = temp.replace("\n", "").replace(" ", "");
+        assertEquals(0, temp.compareTo(expectedResult));
     }
 
     @org.junit.Test
