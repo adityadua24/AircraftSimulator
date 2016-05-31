@@ -300,9 +300,9 @@ public class FirstTests {
         SetInQueue(true);
         SetRefused(false);
         SetFlown(false);
-        assertEquals(0, p.getConfirmationTime());
+        assertEquals(-1, p.getConfirmationTime());
     }
-    
+
     @org.junit.Test
     public void testIsConfirmed() throws PassengerException, NoSuchFieldException, IllegalAccessException {
         SetConfirmed(true);

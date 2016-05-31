@@ -57,16 +57,16 @@ public class A380Tests {
 
     @org.junit.Test
     public void testAircraftConstructor_FirstCorrect() throws AircraftException {
-        int expectedFirst = 14;
+        int expectedFirst = 0;
 
         assertEquals(expectedFirst, basicAircraft.getNumFirst());
     }
 
     @org.junit.Test
     public void testAircraftConstructor_FirstCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
-        int expectedBusiness = 64;
+        int expectedFirst = 14;
 
-        assertEquals(expectedBusiness, GetField("firstCapacity", basicAircraft));
+        assertEquals(expectedFirst, GetField("firstCapacity", basicAircraft));
     }
 
     @org.junit.Test
@@ -85,30 +85,30 @@ public class A380Tests {
 
     @org.junit.Test
     public void testAircraftConstructor_PremiumCorrect() throws AircraftException {
-        int expectedPremium = 35;
+        int expectedPremium = 0;
 
         assertEquals(expectedPremium, basicAircraft.getNumPremium());
     }
 
     @org.junit.Test
     public void testAircraftConstructor_PremiumCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
-        int expectedBusiness = 64;
+        int expectedPremium = 35;
 
-        assertEquals(expectedBusiness, GetField("premiumCapacity", basicAircraft));
+        assertEquals(expectedPremium, GetField("premiumCapacity", basicAircraft));
     }
 
     @org.junit.Test
     public void testAircraftConstructor_EconomyCorrect() throws AircraftException {
-        int expectedEconomy = 371;
+        int expectedEconomy = 0;
 
         assertEquals(expectedEconomy, basicAircraft.getNumEconomy());
     }
 
     @org.junit.Test
     public void testAircraftConstructor_EconomyCapacityCorrect() throws AircraftException, IllegalAccessException, NoSuchFieldException {
-        int expectedBusiness = 64;
+        int expectedEconomy = 371;
 
-        assertEquals(expectedBusiness, GetField("economyCapacity", basicAircraft));
+        assertEquals(expectedEconomy, GetField("economyCapacity", basicAircraft));
     }
 
     @org.junit.Test(expected = AircraftException.class)
