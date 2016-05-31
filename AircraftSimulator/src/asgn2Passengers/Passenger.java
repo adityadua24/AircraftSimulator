@@ -7,10 +7,6 @@
 package asgn2Passengers;
 
 
-import asgn2Simulators.Constants;
-
-import java.util.Random;
-
 /**
  * Passenger is an abstract class specifying the basic state of an airline passenger,  
  * and providing methods to set and access that state. A passenger is created upon booking, 
@@ -62,7 +58,8 @@ public abstract class Passenger {
 	protected int enterQueueTime;
 	protected int exitQueueTime;
 	protected int confirmationTime;
-	protected int departureTime; 
+	protected int departureTime;
+    private String stateHistory = "";
 	
 	
 	/**
@@ -101,6 +98,7 @@ public abstract class Passenger {
 		this.confirmationTime = -1;
 		this.passID = "" + Passenger.index;
 		Passenger.index++;
+        this.stateHistory += "New";
 
 		//TODO: Stuff here
 	}
@@ -155,7 +153,9 @@ public abstract class Passenger {
 			this.newState = true;
 			this.confirmed = false;
 			this.bookingTime = cancellationTime;
+            this.stateHistory += "Cancelled";
 		}
+
 	}
 
 	/**
@@ -201,6 +201,7 @@ public abstract class Passenger {
 			this.confirmed = true;
 			this.confirmationTime = confirmationTime;
 			this.departureTime = departureTime;
+            this.stateHistory += "Confirmed";
 		}
 	}
 
@@ -237,6 +238,7 @@ public abstract class Passenger {
 			this.confirmed = false;
 			this.flown = true;
 			this.departureTime = departureTime;
+            this.stateHistory += "Flown";
 		}
 	}
 
@@ -389,6 +391,7 @@ public abstract class Passenger {
 			this.departureTime = departureTime;
 
 			this.enterQueueTime = queueTime;
+            this.stateHistory += "Queued";
 		}
 	}
 	
@@ -428,6 +431,7 @@ public abstract class Passenger {
 			this.inQueue = false;
 
 			this.exitQueueTime = refusalTime;
+            this.stateHistory = "Refused";
 		}
 	}
 	
@@ -478,11 +482,13 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() throws PassengerException {
-		if (this.confirmationTime != -1){
+		/*
+        if (this.confirmationTime != -1){
 			return true;
 		}
+		*/
 
-		return false;
+		return this.stateHistory.contains("Confirmed");
 	}
 
 	/**
@@ -491,11 +497,13 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() throws PassengerException {
-		if (this.enterQueueTime != -1){
+		/*
+        if (this.enterQueueTime != -1){
 			return true;
 		}
+		*/
 
-		return false;
+		return this.stateHistory.contains("Queued");
 	}
 
 	/**

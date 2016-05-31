@@ -7,6 +7,7 @@ import asgn2Aircraft.AircraftException;
 import asgn2Passengers.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -269,13 +270,10 @@ public class A380Tests {
         basicAircraft.confirmBooking(testPassenger, 8);
 
         // TThis may be wrong. It's quite hard to tell with all the \n's
-        String expectedResult = "A380:TE35T:12 Pass: 0\n" +
-                "passID: F:0\n" +
-                "BT: 3\n" +
-                "NotQ\n\n";
+        String expectedResult = "A380:TE35T:12 Pass: 1\n" + testPassenger.toString();
+
         expectedResult = expectedResult.replace("\n", "").replace(" ", "");
-        String temp = basicAircraft.finalState();
-        temp = temp.replace("\n", "").replace(" ", "");
+        String temp = basicAircraft.finalState().replace("\n", "").replace(" ", "");
         assertEquals(0, temp.compareTo(expectedResult));
     }
 
@@ -356,16 +354,15 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testGetPassengers_SeparateReferences() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException {
-        basicAircraft.confirmBooking(testPassenger, 8);
+    public void testGetPassengers_SeparateReferences() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+            basicAircraft.confirmBooking(testPassenger, 8);
 
         List<Passenger> passengerCopy = basicAircraft.getPassengers();
-
         assertNotEquals(GetField("seats", basicAircraft), passengerCopy);
     }
 
     @org.junit.Test
-    public void testGetPassengers_ValuesEqual() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException {
+    public void testGetPassengers_ValuesEqual() throws AircraftException, PassengerException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
         basicAircraft.confirmBooking(testPassenger, 8);
 
         List<Passenger> passengerCopy = basicAircraft.getPassengers();

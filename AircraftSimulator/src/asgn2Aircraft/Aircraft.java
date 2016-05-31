@@ -8,6 +8,7 @@ package asgn2Aircraft;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import asgn2Passengers.Business;
@@ -285,7 +286,7 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		return new ArrayList<>(this.seats);
+		return new ArrayList<Passenger>(this.seats);
 	}
 	
 	/**
