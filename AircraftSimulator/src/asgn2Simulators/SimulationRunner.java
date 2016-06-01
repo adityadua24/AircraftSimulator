@@ -25,9 +25,10 @@ public class SimulationRunner {
 	 * @param args Arguments to the simulation - 
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		final int NUM_ARGS = 9; 
-		Simulator s = null; 
+		Simulator s = null;
+        GUISimulator.main(args);
 		Log l = null;
 		
 		try {

@@ -23,7 +23,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	GridBagLayout layoutManager;
 
 	JButton runSimButton, showGraphButton; JLabel label; JTextField rngSeedTxtF, dailyMeanTxtF, queueSizeTxtF, cancellationTxtF, firstTxtF, businessTxtF, premiumTxtF, economyTxtF; JTextArea txtA;
-    double rngseed, dailymean, queueSize, cancellation; int first, business, economy, premium;
+    volatile double rngseed, dailymean, queueSize, cancellation, first, business, economy, premium;
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -31,157 +31,118 @@ public class GUISimulator extends JFrame implements Runnable {
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
 	}
+    private void createAndShowGUI(){
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setPreferredSize(new Dimension(800, 500));
+        this.setVisible(true);
 
+        layoutManager = new GridBagLayout();
+        getContentPane().setLayout(layoutManager);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.weightx = 100;
+        constraints.weighty = 100;
+
+        runSimButton = new JButton("Run Simulation");
+        runSimButton.addActionListener(new captureValues());
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        addToPanel(runSimButton, constraints, 0,0,2,1);
+
+        showGraphButton = new JButton("Show Chart");
+        addToPanel(showGraphButton, constraints, 2, 0, 2, 1);
+
+        label = new JLabel("Simulation");
+        addToPanel(label, constraints, 0, 1, 1, 1);
+
+        label = new JLabel("RNG Seed");
+        addToPanel(label, constraints, 0, 2, 1, 1);
+
+        label = new JLabel("Daily Mean");
+        addToPanel(label, constraints, 0, 3, 1, 1);
+
+        label = new JLabel("Queue Size");
+        addToPanel(label, constraints, 0, 4, 1, 1);
+
+        label = new JLabel("Cancellation");
+        addToPanel(label, constraints, 0, 5, 1, 1);
+
+        rngSeedTxtF = new JTextField();
+        addToPanel(rngSeedTxtF, constraints, 1, 2, 1, 1);
+
+        dailyMeanTxtF = new JTextField();
+        addToPanel(dailyMeanTxtF, constraints, 1, 3, 1, 1);
+
+        queueSizeTxtF = new JTextField();
+        addToPanel(queueSizeTxtF, constraints, 1, 4, 1, 1);
+
+        cancellationTxtF = new JTextField();
+        addToPanel(cancellationTxtF, constraints, 1, 5, 1, 1);
+
+
+        label = new JLabel("Fare Classes");
+        addToPanel(label, constraints, 2, 1, 2, 1);
+
+        label = new JLabel("First");
+        addToPanel(label, constraints, 2, 2, 1, 1);
+
+        label = new JLabel("Business");
+        addToPanel(label, constraints, 2, 3, 1, 1);
+
+        label = new JLabel("Premium");
+        addToPanel(label, constraints, 2, 4, 1, 1);
+
+        label = new JLabel("Economy");
+        addToPanel(label, constraints, 2, 5, 1, 1);
+
+        firstTxtF = new JTextField();
+        addToPanel(firstTxtF, constraints, 3, 2, 1, 1);
+
+        businessTxtF = new JTextField();
+        addToPanel(businessTxtF, constraints, 3, 3, 1, 1);
+
+        premiumTxtF = new JTextField();
+        addToPanel(premiumTxtF, constraints, 3, 4, 1, 1);
+
+        economyTxtF = new JTextField();
+        addToPanel(economyTxtF, constraints, 3, 5, 1, 1);
+
+        label = new JLabel("Output Log");
+        addToPanel(label, constraints, 0, 6, 1, 1);
+
+        txtA = new JTextArea();
+        constraints.ipady = 60;
+        txtA.setEditable(false);
+        txtA.setLineWrap(true);
+        txtA.setFont(new Font("Arial",Font.BOLD,24));
+        txtA.setBorder(BorderFactory.createEtchedBorder());
+        addToPanel(txtA, constraints, 0, 7, 4, 5);
+
+
+        this.pack();
+        this.loadDefaults();
+    }
+    private void addToPanel(Component c, GridBagConstraints constraints,int x, int y, int w, int h) {
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.gridwidth = w;
+        constraints.gridheight = h;
+        getContentPane().add(c, constraints);
+    }
+    /*
+    private JButton createButton(String str) {
+        JButton jb = new JButton(str);
+        jb.addActionListener(this);
+        return jb;
+    }
+    */
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
-
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setPreferredSize(new Dimension(800, 500));
-		this.setVisible(true);
-
-        layoutManager = new GridBagLayout();
-		getContentPane().setLayout(layoutManager);
-		GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-
-        runSimButton = new JButton("Run Simulation");
-        constraints.insets = new Insets(10, 10, 10, 10);
-        constraints.weightx = 0.5;
-        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        runSimButton.addActionListener(new captureValues());
-		this.add(runSimButton, constraints);
-
-        showGraphButton = new JButton("Show Chart");
-        constraints.gridx = 2;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        getContentPane().add(showGraphButton, constraints);
-
-        label = new JLabel("Simulation");
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
-        //constraints.weighty = 1.0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        getContentPane().add(label, constraints);
-
-        label = new JLabel("RNG Seed");
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Daily Mean");
-        constraints.gridx = 0;
-        constraints.gridy = 3;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Queue Size");
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Cancellation");
-        constraints.gridx = 0;
-        constraints.gridy = 5;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-
-        rngSeedTxtF = new JTextField();
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        getContentPane().add(rngSeedTxtF, constraints);
-        dailyMeanTxtF = new JTextField();
-        constraints.gridx = 1;
-        constraints.gridy = 3;
-        constraints.gridwidth = 1;
-        getContentPane().add(dailyMeanTxtF, constraints);
-        queueSizeTxtF = new JTextField();
-        constraints.gridx = 1;
-        constraints.gridy = 4;
-        constraints.gridwidth = 1;
-        getContentPane().add(queueSizeTxtF, constraints);
-        cancellationTxtF = new JTextField();
-        constraints.gridx = 1;
-        constraints.gridy = 5;
-        constraints.gridwidth = 1;
-        getContentPane().add(cancellationTxtF, constraints);
-
-
-        label = new JLabel("Fare Classes");
-        constraints.gridx = 2;
-        constraints.gridy = 1;
-        constraints.gridwidth = 2;
-        getContentPane().add(label, constraints);
-
-        label = new JLabel("First");
-        constraints.ipadx = 10;
-        constraints.gridx = 2;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Business");
-        constraints.gridx = 2;
-        constraints.gridy = 3;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Premium");
-        constraints.gridx = 2;
-        constraints.gridy = 4;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        label = new JLabel("Economy");
-        constraints.gridx = 2;
-        constraints.gridy = 5;
-        constraints.gridwidth = 1;
-        getContentPane().add(label, constraints);
-        firstTxtF = new JTextField();
-        constraints.gridx = 3;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        getContentPane().add(firstTxtF, constraints);
-        businessTxtF = new JTextField();
-        constraints.gridx = 3;
-        constraints.gridy = 3;
-        constraints.gridwidth = 1;
-        getContentPane().add(businessTxtF, constraints);
-        premiumTxtF = new JTextField();
-        constraints.gridx = 3;
-        constraints.gridy = 4;
-        constraints.gridwidth = 1;
-        getContentPane().add(premiumTxtF, constraints);
-        economyTxtF = new JTextField();
-        constraints.gridx = 3;
-        constraints.gridy = 5;
-        constraints.gridwidth = 1;
-        getContentPane().add(economyTxtF, constraints);
-
-        label = new JLabel("Output Log");
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.gridx = 0;
-        constraints.gridy = 6;
-        getContentPane().add(label, constraints);
-
-        txtA = new JTextArea();
-        constraints.gridwidth = 4;
-        constraints.gridheight = 5;
-        //constraints.fill = GridBagConstraints.HORIZONTAL;
-        //constraints.fill = GridBagConstraints.VERTICAL;
-        constraints.gridx = 0;
-        constraints.gridy = 7;
-        constraints.ipady = 60;
-        getContentPane().add(txtA, constraints);
-
-
-        this.pack();
-        this.loadDefaults();
+		createAndShowGUI();
 	}
 
     private void loadDefaults() {
@@ -204,22 +165,21 @@ public class GUISimulator extends JFrame implements Runnable {
                 dailymean = Double.parseDouble(dailyMeanTxtF.getText());
                 cancellation = Double.parseDouble(cancellationTxtF.getText());
                 queueSize = Double.parseDouble(queueSizeTxtF.getText());
-                first = Integer.parseInt(firstTxtF.getText());
-                business = Integer.parseInt(businessTxtF.getText());
-                premium = Integer.parseInt(premiumTxtF.getText());
-                economy = Integer.parseInt(economyTxtF.getText());
+                first = Double.parseDouble(firstTxtF.getText());
+                business = Double.parseDouble(businessTxtF.getText());
+                premium = Double.parseDouble(premiumTxtF.getText());
+                economy = Double.parseDouble(economyTxtF.getText());
 
                 //TODO pass obtained values to simulation constructor!
+
             }
         }
     }
     /**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws  InterruptedException{
         JFrame.setDefaultLookAndFeelDecorated(true);
-		javax.swing.SwingUtilities.invokeLater(new GUISimulator("Aircraft Simulator"));
-	}
-
-
+        javax.swing.SwingUtilities.invokeLater(new GUISimulator("Aircraft Simulator"));
+    }
 }
