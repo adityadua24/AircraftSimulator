@@ -1,6 +1,7 @@
 package asgn2Simulators;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -9,7 +10,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by eddy on 1/06/2016.
  */
-public class guiDesign {
+public class GUISimulator2 extends JFrame implements Runnable{
     private JButton drawChart;
     private JTextField rngSeedValue;
     private JPanel mainPanel;
@@ -24,7 +25,7 @@ public class guiDesign {
     private JTextArea textArea1;
     private JLabel rngSeed;
 
-    public guiDesign() {
+    public GUISimulator2() {
         rngSeedValue.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) { //Listener for RNG seed
@@ -57,7 +58,24 @@ public class guiDesign {
         });
     }
 
-    private void createUIComponents() {
+    private static void createAndShowGUI() {
         // TODO: place custom component creation code here
+        JFrame frame = new JFrame("Aircraft Simulator");
+        frame.setContentPane(new GUISimulator2().mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(800, 500));
+        frame.pack();
+        frame.setVisible(true);
+    }
+    public static void main(String[] args){
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+
+    @Override
+    public void run() {
     }
 }
