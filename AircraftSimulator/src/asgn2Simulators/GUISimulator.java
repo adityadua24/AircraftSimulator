@@ -9,6 +9,7 @@ package asgn2Simulators;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.*;
 
 /**
  * @author hogan
@@ -17,13 +18,16 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class GUISimulator extends JFrame implements Runnable {
 
+	GridBagLayout layoutManager;
+
+	JButton testBtn;
+
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
 	 */
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
-        
 	}
 
 	/* (non-Javadoc)
@@ -31,15 +35,30 @@ public class GUISimulator extends JFrame implements Runnable {
 	 */
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		layoutManager = new GridBagLayout();
 
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setPreferredSize(new Dimension(800, 500));
+		this.pack();
+		this.setVisible(true);
+
+		this.setLayout(layoutManager);
+
+		GridBagConstraints constraints = new GridBagConstraints();
+
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+
+		testBtn = new JButton("Test Button");
+
+		this.add(testBtn, constraints);
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		javax.swing.SwingUtilities.invokeLater(new GUISimulator("Aircraft Simulator"));
 	}
 
 }
