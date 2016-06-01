@@ -28,7 +28,7 @@ public class SimulationRunner {
 	public static void main(String[] args) {
 		final int NUM_ARGS = 9; 
 		Simulator s = null; 
-		Log l = null; 
+		Log l = null;
 		
 		try {
 			switch (args.length) {
