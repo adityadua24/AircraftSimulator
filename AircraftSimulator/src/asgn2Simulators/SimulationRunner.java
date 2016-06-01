@@ -33,7 +33,7 @@ public class SimulationRunner {
 		try {
 			switch (args.length) {
 				case NUM_ARGS: {
-					s = createSimulatorUsingArgs(args); 
+					s = createSimulatorUsingArgs(args);
 					break;
 				}
 				case 0: {
