@@ -386,6 +386,7 @@ public abstract class Aircraft {
 	 */
 	public void upgradeBookings() throws PassengerException {
 		for (Passenger p : seats) {
+			if(this.numFirst >= this.firstCapacity) break;
 			if (p.getClass() == Business.class) {
 				p.upgrade();
 				this.numFirst++;
@@ -394,7 +395,8 @@ public abstract class Aircraft {
 			}
 		}
 		for (Passenger p : seats) {
-			if (p.getClass() == Premium.class) {
+			if(this.numBusiness >= this.businessCapacity) break;
+				if (p.getClass() == Premium.class) {
 				p.upgrade();
 				this.numPremium--;
 				this.numBusiness++;
@@ -402,6 +404,7 @@ public abstract class Aircraft {
 			}
 		}
 		for (Passenger p : seats) {
+			if(this.numPremium >= this.premiumCapacity) break;
 			if (p.getClass() == Economy.class) {
 				p.upgrade();
 				this.numPremium++;
