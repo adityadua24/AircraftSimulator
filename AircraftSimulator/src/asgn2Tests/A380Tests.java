@@ -355,10 +355,13 @@ public class A380Tests {
 
     @org.junit.Test
     public void testGetPassengers_SeparateReferences() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-            basicAircraft.confirmBooking(testPassenger, 8);
+        basicAircraft.confirmBooking(testPassenger, 8);
 
-        List<Passenger> passengerCopy = basicAircraft.getPassengers();
-        assertNotEquals(GetField("seats", basicAircraft), passengerCopy);
+        List<Passenger> passengersCopy = basicAircraft.getPassengers();
+
+        List<Passenger> originalPassengers = (List<Passenger>)GetField("seats", basicAircraft);
+
+        assertFalse(originalPassengers == passengersCopy);
     }
 
     @org.junit.Test

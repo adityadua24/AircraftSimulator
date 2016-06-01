@@ -99,8 +99,6 @@ public abstract class Passenger {
 		this.passID = "" + Passenger.index;
 		Passenger.index++;
         this.stateHistory += "New";
-
-		//TODO: Stuff here
 	}
 	
 	/**
@@ -186,8 +184,8 @@ public abstract class Passenger {
 			throw new PassengerException("Confirmation time is negative for passenger: " + this.passID + ", and cannot confirm their seat ");
 		}
 
-		if (this.departureTime < confirmationTime){
-			throw new PassengerException("Departure time (" + this.departureTime + ") is less than confirmation time (" + this.confirmationTime + ") " +
+		if (departureTime < confirmationTime){
+			throw new PassengerException("Departure time (" + this.departureTime + ") is less than confirmation time (" + confirmationTime + ") " +
 					"for passenger " + this.passID + ", and cannot confirm their seat");
 		}
 
@@ -237,7 +235,6 @@ public abstract class Passenger {
 		if(this.isConfirmed()){
 			this.confirmed = false;
 			this.flown = true;
-			this.departureTime = departureTime;
             this.stateHistory += "Flown";
 		}
 	}
@@ -430,7 +427,9 @@ public abstract class Passenger {
 			this.newState = false;
 			this.inQueue = false;
 
-			this.exitQueueTime = refusalTime;
+			if (this.isQueued()) {
+				this.exitQueueTime = refusalTime;
+			}
             this.stateHistory = "Refused";
 		}
 	}
@@ -482,12 +481,6 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() throws PassengerException {
-		/*
-        if (this.confirmationTime != -1){
-			return true;
-		}
-		*/
-
 		return this.stateHistory.contains("Confirmed");
 	}
 
@@ -497,12 +490,6 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() throws PassengerException {
-		/*
-        if (this.enterQueueTime != -1){
-			return true;
-		}
-		*/
-
 		return this.stateHistory.contains("Queued");
 	}
 
@@ -524,9 +511,8 @@ public abstract class Passenger {
 		this.enterQueueTime = p.enterQueueTime;
 		this.exitQueueTime = p.exitQueueTime;
 
+		this.stateHistory = p.stateHistory;
+
 		this.passID = p.passID;
 	}
-	
-	//Various private helper methods to check arguments and throw exceptions
-
 }

@@ -286,7 +286,7 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		return new ArrayList<Passenger>(this.seats);
+		return new ArrayList<>(this.seats);
 	}
 	
 	/**
@@ -384,35 +384,29 @@ public abstract class Aircraft {
 	 * @throws PassengerException if <code>Passenger</code> is in incorrect state 
 	 * See {@link asgn2Passengers.Passenger#upgrade()}
 	 */
-	public void upgradeBookings() throws PassengerException { 
-		while(this.firstCapacity > this.numFirst) {
-			for (Passenger p : seats) {
-				if (p.getClass() == Business.class) {
-					p.upgrade();
-					this.numFirst++;
-					this.numBusiness--;
+	public void upgradeBookings() throws PassengerException {
+		for (Passenger p : seats) {
+			if (p.getClass() == Business.class) {
+				p.upgrade();
+				this.numFirst++;
+				this.numBusiness--;
 
-				}
 			}
 		}
-		while(this.businessCapacity > this.numBusiness){
-			for (Passenger p : seats) {
-				if (p.getClass() == Premium.class) {
-					p.upgrade();
-					this.numPremium--;
-					this.numBusiness++;
+		for (Passenger p : seats) {
+			if (p.getClass() == Premium.class) {
+				p.upgrade();
+				this.numPremium--;
+				this.numBusiness++;
 
-				}
 			}
 		}
-		while(this.premiumCapacity > this.numPremium){
-			for (Passenger p : seats) {
-				if (p.getClass() == Economy.class) {
-					p.upgrade();
-					this.numPremium++;
-					this.numEconomy--;
+		for (Passenger p : seats) {
+			if (p.getClass() == Economy.class) {
+				p.upgrade();
+				this.numPremium++;
+				this.numEconomy--;
 
-				}
 			}
 		}
 	}
