@@ -141,6 +141,8 @@ public class SimulationRunner {
 			this.log.logQREntries(time, sim);
 			this.log.logEntry(time,this.sim);
 		}
+		this.sim.finaliseQueuedAndCancelledPassengers(Constants.DURATION); 
+		this.log.logQREntries(Constants.DURATION, sim);
 		this.log.finalise(this.sim);
 	}
 }

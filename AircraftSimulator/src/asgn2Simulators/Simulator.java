@@ -57,7 +57,6 @@ public class Simulator {
 	private double firstProb;
 	private double businessProb;
 	private double premiumProb; 
-	@SuppressWarnings("unused")
 	private double economyProb;
 	
 	private Queue<Passenger> queue;
@@ -72,7 +71,7 @@ public class Simulator {
 	private int totalEconomy; 
 	private int totalFlown; 
 	private int totalEmpty;
-
+ 
 	private String status;
 
 
@@ -149,11 +148,12 @@ public class Simulator {
 		double testValue = rng.nextDouble();
 		double busTest = this.firstProb+this.businessProb;
 		double premTest = busTest+this.premiumProb;
+		
 		if (testValue >= (1.0 - this.firstProb)) {
 			return new First(bookingTime,departureTime);
 		} else if (testValue >= (1.0 - busTest)) {
 			return new Business(bookingTime,departureTime); 
-		} else if (testValue >= premTest) {
+		} else if (testValue >= (1.0 - premTest)) {
 			return new Premium(bookingTime,departureTime); 
 		} else {
 			return new Economy(bookingTime,departureTime);
@@ -169,6 +169,29 @@ public class Simulator {
 		for (int time=0; time<=Constants.DURATION-Constants.FIRST_FLIGHT; time++) {
 			this.schedule.add(new Flights(time+Constants.FIRST_FLIGHT));
 		}
+	}
+
+	/**
+	 * Method to clear queued and cancelled passengers at the end of the simulation. States changed 
+	 * to Refused and added to the refused collection. 
+	 *  
+	 * @param time <code>int</code> time operation performed. 
+	 * @throws PassengerException See {@link asgn2Passengers.Passenger#refusePassenger(int)}
+	 */
+	public void finaliseQueuedAndCancelledPassengers(int time) throws PassengerException {
+		for (Passenger p : this.queue) {
+			p.refusePassenger(time);
+			this.status += Log.setPassengerMsg(p,"Q","R");
+		}
+		this.refused.addAll(this.queue);
+		this.queue.clear();
+		
+		for (Passenger p : this.cancelled) {
+			p.refusePassenger(time);
+			this.status += Log.setPassengerMsg(p,"N","R");
+		}
+		this.refused.addAll(this.cancelled);
+		this.cancelled.clear();
 	}
 
 	/**
@@ -244,7 +267,7 @@ public class Simulator {
 		int bookings = ((int) x);
 		return Math.max(bookings,Constants.MINIMUM_BOOKINGS);
 	}
-
+	
 	/**
 	 * Method to grab the flight schedule for the specified day
 	 * 
@@ -257,7 +280,7 @@ public class Simulator {
 		checkValidDepartureTimeAndThrowException(departureTime);
 		return this.schedule.get(departureTime-Constants.FIRST_FLIGHT);
 	}
-	
+
 	/**
 	 * Method to report on the status of the flight schedule for the selected time 
 	 * 
@@ -269,15 +292,15 @@ public class Simulator {
 		Flights flights = this.getFlights(time);
 		return flights.getCurrentCounts();
 	}
-
+	
 	/**
-	 * @param time
-	 * @return
+	 * @param time <code>int</code> current time - presently unused
+	 * @return <code>String</code> with current status string and newline 
 	 */
 	public String getStatus(int time) {
-		return this.status;
+		return this.status + "\n";
 	}
-	
+
 	/**
 	 * Status update at current time showing passengers across all aircraft in the schedule.
 	 * Additional information supplied if in flying period (see <code>boolean</code>). 
@@ -303,7 +326,7 @@ public class Simulator {
 			   ":R" + this.numRefused() +"\n";
 		return str; 
 	}
-
+	
 	/**
 	 * Simple getter for total Business Passengers flown 
 	 * 
@@ -321,7 +344,7 @@ public class Simulator {
 	public int getTotalEconomy() {
 		return totalEconomy;
 	}
-	
+
 	/**
 	 * Simple getter for total seats remaining empty
 	 *  
@@ -330,7 +353,7 @@ public class Simulator {
 	public int getTotalEmpty() {
 		return totalEmpty;
 	}
-
+	
 	/**
 	 * Simple getter for total First Passengers flown 
 	 * 
@@ -348,7 +371,7 @@ public class Simulator {
 	public int getTotalFlown() {
 		return totalFlown;
 	}
-	
+
 	/**
 	 * Simple getter for total Premium Passengers flown
 	 *  
@@ -366,7 +389,7 @@ public class Simulator {
 	public int numInQueue() {
 		return this.queue.size();
 	}
-
+	
 	/**
 	 * Simple status for number of passengers refused (cumulative)
 	 * 
@@ -375,7 +398,7 @@ public class Simulator {
 	public int numRefused() {
 		return this.refused.size();
 	}
-	
+
 	/**
 	 * Method to traverse the flights over the cancellation period, performing Bernoulli 
 	 * trials for cancellation of each passenger. We consider cancellations up to 
@@ -397,7 +420,7 @@ public class Simulator {
 			this.cancelled.addAll(flights.cancelBookings(this.rng, this.cancelProb, time)); 
 		}
 	}
-
+	
 	/**
 	 * Method to process the queue based on state at time specified. Passengers remaining in the 
 	 * Queue longer than the limit are discarded. 
@@ -442,7 +465,7 @@ public class Simulator {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to process upgrades across the daily flights at time specified 
 	 * 
@@ -547,7 +570,7 @@ public class Simulator {
 	public void resetStatus(int time) {
 		this.status = time + ":";
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -555,9 +578,11 @@ public class Simulator {
 	public String toString() {
 		return "Simulator [meanDailyBookings=" + meanDailyBookings + ", sdDailyBookings=" + sdDailyBookings
 				+ ", seed=" + seed + ", firstProb=" + firstProb + ", businessProb="
-				+ businessProb + ", premiumProb=" + premiumProb + "]";
+				+ businessProb + ", premiumProb=" + premiumProb 
+				+ ", economyProb=" + economyProb + ", maxQueueSize=" + maxQueueSize 
+				+ ", cancellationProb=" + cancelProb + "]";
 	}
-	
+
 	/**
 	 * Helper to update the total passenger counts with the latest flight schedule 
 	 * 
