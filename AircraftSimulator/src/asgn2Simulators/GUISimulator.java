@@ -7,22 +7,15 @@
 package asgn2Simulators;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Arc2D;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import javax.swing.*;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.general.Dataset;
-import org.jfree.data.xy.XYDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -38,8 +31,12 @@ public class GUISimulator extends JFrame implements Runnable {
 	private GridBagLayout layoutManager;
 
 	private JButton runSimButton,
-			showGraphButton;
+            showTextButton,
+            showGraph1Button,
+            showGraph2Button;
+
 	private JLabel label;
+
 	private JTextField rngSeedTxtF,
 			dailyMeanTxtF,
 			queueSizeTxtF,
@@ -49,25 +46,34 @@ public class GUISimulator extends JFrame implements Runnable {
 			premiumTxtF,
 			economyTxtF;
 	JTextArea txtA;
+
     private volatile double dailyMean, cancellation, first, business, economy, premium;
     private volatile int rngSeed, queueSize;
+
 	private String[] simulatorArgs;
 	private String forTxtA;
 
-    ChartPanel chartPanel1;
-    JFreeChart displayChart;
+    private ChartPanel chart1Panel;
+    private JFreeChart chart1;
 
-    XYSeriesCollection chart1DataSet;
+    private ChartPanel chart2Panel;
+    private JFreeChart chart2;
 
-    XYSeries firstSeries;
-    XYSeries businessSeries;
-    XYSeries premiumSeries;
-    XYSeries economySeries;
-    XYSeries totalSeries;
-    XYSeries emptySeries;
+    private XYSeriesCollection chart1DataSet;
+    private XYSeriesCollection chart2DataSet;
 
-    JScrollPane scrollText;
-    JPanel textPanel;
+    private XYSeries firstSeries;
+    private XYSeries businessSeries;
+    private XYSeries premiumSeries;
+    private XYSeries economySeries;
+    private XYSeries totalSeries;
+    private XYSeries emptySeries;
+
+    private XYSeries queueSeries;
+    private XYSeries refusedSeries;
+
+    private JScrollPane scrollText;
+    private JPanel textPanel;
 
     private SwingWorker simWorker;
 
@@ -82,7 +88,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	}
     private void createAndShowGUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(800, 700));
+        this.setPreferredSize(new Dimension(800, 900));
         this.setVisible(true);
 
         this.setResizable(false);
@@ -97,13 +103,29 @@ public class GUISimulator extends JFrame implements Runnable {
         constraints.weighty = 100;
 
         runSimButton = new JButton("Run Simulation");
-        runSimButton.addActionListener(new captureValues());
+        runSimButton.addActionListener(e ->  {
+            runSimulationPressed();
+        });
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        addToPanel(runSimButton, constraints, 0,0,2,1);
+        addToPanel(runSimButton, constraints, 0,0,1,1);
 
-        showGraphButton = new JButton("Show Chart");
-        showGraphButton.addActionListener(new captureValues());
-        addToPanel(showGraphButton, constraints, 2, 0, 2, 1);
+        showTextButton = new JButton("Simulation Results Text");
+        showTextButton.addActionListener(e ->  {
+            showTextPressed();
+        });
+        addToPanel(showTextButton, constraints, 1, 0, 1, 1);
+
+        showGraph1Button = new JButton("Simulation Results Graph 1");
+        showGraph1Button.addActionListener(e ->  {
+            showGraph1Pressed();
+        });
+        addToPanel(showGraph1Button, constraints, 2, 0, 1, 1);
+
+        showGraph2Button = new JButton("Simulation Results Graph 2");
+        showGraph2Button.addActionListener(e ->  {
+            showGraph2Pressed();
+        });
+        addToPanel(showGraph2Button, constraints, 3, 0, 1, 1);
 
         label = new JLabel("Simulation");
         addToPanel(label, constraints, 0, 1, 1, 1);
@@ -167,7 +189,7 @@ public class GUISimulator extends JFrame implements Runnable {
         txtA = new JTextArea();
         scrollText = new JScrollPane(textPanel);
         textPanel.add(txtA, BorderLayout.CENTER);
-        constraints.ipady = 300;
+        constraints.ipady = 500;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
         txtA.setFont(new Font("Arial",Font.BOLD,14));
@@ -177,11 +199,14 @@ public class GUISimulator extends JFrame implements Runnable {
 
         setUpChartVariables(constraints);
 
+        showTextPressed();
+
         this.pack();
         this.loadDefaults();
     }
 
     private void setUpChartVariables(GridBagConstraints constraints) {
+        // Chart 1 set up
         chart1DataSet = new XYSeriesCollection();
 
         firstSeries = new XYSeries("First");
@@ -198,13 +223,26 @@ public class GUISimulator extends JFrame implements Runnable {
         chart1DataSet.addSeries(totalSeries);
         chart1DataSet.addSeries(emptySeries);
 
-        displayChart = ChartFactory.createXYLineChart("Simulation Results", "Passengers", "Day", chart1DataSet);
+        chart1 = ChartFactory.createXYLineChart("Simulation Results Passenger Info", "Passengers", "Day", chart1DataSet);
+        chart1Panel = new ChartPanel(chart1);
+        chart1Panel.setVisible(false);
 
-        chartPanel1 = new ChartPanel(displayChart);
+        addToPanel(chart1Panel, constraints, 0, 7, 4, 5);
 
-        chartPanel1.setVisible(false);
+        // Chart 2 set up
+        chart2DataSet = new XYSeriesCollection();
 
-        addToPanel(chartPanel1, constraints, 0, 7, 4, 5);
+        queueSeries = new XYSeries("Queued");
+        refusedSeries = new XYSeries("Refused");
+
+        chart2DataSet.addSeries(queueSeries);
+        chart2DataSet.addSeries(refusedSeries);
+
+        chart2 = ChartFactory.createXYLineChart("Simulation Results Queued/Refused", "Passengers", "Day", chart2DataSet);
+        chart2Panel = new ChartPanel(chart2);
+        chart2Panel.setVisible(false);
+
+        addToPanel(chart2Panel, constraints, 0, 7, 4, 5);
     }
 
     private void addToPanel(Component c, GridBagConstraints constraints,int x, int y, int w, int h) {
@@ -225,43 +263,49 @@ public class GUISimulator extends JFrame implements Runnable {
     private void loadDefaults() {
         rngSeedTxtF.setText(String.valueOf((int)(Constants.DEFAULT_DAILY_BOOKING_MEAN*0.33))); //TODO confirm this value and rest too(others are prob right)
         dailyMeanTxtF.setText(String.valueOf(Constants.DEFAULT_DAILY_BOOKING_MEAN));
-        queueSizeTxtF.setText(String.valueOf((int)Constants.DEFAULT_MAX_QUEUE_SIZE));
+        queueSizeTxtF.setText(String.valueOf(Constants.DEFAULT_MAX_QUEUE_SIZE));
         cancellationTxtF.setText(String.valueOf(Constants.DEFAULT_CANCELLATION_PROB));
         firstTxtF.setText(String.valueOf(Constants.DEFAULT_FIRST_PROB));
         businessTxtF.setText(String.valueOf(Constants.DEFAULT_BUSINESS_PROB));
         premiumTxtF.setText(String.valueOf(Constants.DEFAULT_PREMIUM_PROB));
         economyTxtF.setText(String.valueOf(Constants.DEFAULT_ECONOMY_PROB));
     }
-    private class captureValues implements ActionListener{
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Component source = (Component) e.getSource();
-            if(source == runSimButton){
-                runSimulationPressed();
-            }
-            else if(source == showGraphButton){
-                showGraphPressed();
-            }
-        }
+    private void showTextPressed(){
+        showTextButton.setEnabled(false);
+        showGraph1Button.setEnabled(true);
+        showGraph2Button.setEnabled(true);
+
+        setTextAreaVisible(true);
+        chart1Panel.setVisible(false);
+        chart2Panel.setVisible(false);
     }
-    private void showGraphPressed(){
 
-        if (txtA.isVisible()){
-            txtA.setVisible(false);
-            scrollText.setVisible(false);
+    private void showGraph1Pressed(){
+        showTextButton.setEnabled(true);
+        showGraph1Button.setEnabled(false);
+        showGraph2Button.setEnabled(true);
 
-            displayChart = ChartFactory.createXYLineChart("Simulation Results", "Passengers", "Day", chart1DataSet);
-            chartPanel1.setVisible(true);
-        } else {
-            txtA.setVisible(true);
-            scrollText.setVisible(true);
-            chartPanel1.setVisible(false);
-        }
+        setTextAreaVisible(false);
+        chart1Panel.setVisible(true);
+        chart2Panel.setVisible(false);
     }
+
+    private void showGraph2Pressed(){
+        showTextButton.setEnabled(true);
+        showGraph1Button.setEnabled(true);
+        showGraph2Button.setEnabled(false);
+
+        setTextAreaVisible(false);
+        chart1Panel.setVisible(false);
+        chart2Panel.setVisible(true);
+    }
+
     private void runSimulationPressed() {
         runSimButton.setEnabled(false);
-        showGraphButton.setEnabled(false);
+        showTextButton.setEnabled(false);
+        showGraph1Button.setEnabled(false);
+        showGraph2Button.setEnabled(false);
         rngSeed = Integer.parseInt(rngSeedTxtF.getText());
         queueSize = Integer.parseInt(queueSizeTxtF.getText());
         dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
@@ -292,7 +336,9 @@ public class GUISimulator extends JFrame implements Runnable {
             @Override
             protected void done() {
                 runSimButton.setEnabled(true);
-                showGraphButton.setEnabled(true);
+                showTextButton.setEnabled(true);
+                showGraph1Button.setEnabled(true);
+                showGraph2Button.setEnabled(true);
 
                 txtA.setText(forTxtA);
             }
@@ -301,6 +347,7 @@ public class GUISimulator extends JFrame implements Runnable {
         simWorker.execute();
 
     }
+
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
         Log simLog = new Log();
@@ -312,6 +359,7 @@ public class GUISimulator extends JFrame implements Runnable {
             System.exit(-1);
         }
     }
+
     private void buildStringArgs() {
         simulatorArgs[0] = String.valueOf(this.rngSeed); // seed value
         simulatorArgs[1] = String.valueOf(this.queueSize);
@@ -323,6 +371,12 @@ public class GUISimulator extends JFrame implements Runnable {
         simulatorArgs[7] = String.valueOf(this.economy);
         simulatorArgs[8] = String.valueOf(this.cancellation);
     }
+
+    private void setTextAreaVisible(boolean state) {
+        txtA.setVisible(state);
+        scrollText.setVisible(state);
+    }
+
 
     public void initialEntry(Simulator sim) throws IOException, SimulationException {
         forTxtA += getLogTime() + ": Start of Simulation\n";
@@ -348,6 +402,9 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     public void chartFlightDetails(Simulator sim, int time) throws SimulationException {
+        queueSeries.add(time, sim.numInQueue());
+        refusedSeries.add(time, sim.numRefused());
+
         if (time < Constants.FIRST_FLIGHT)
             return ;
 
