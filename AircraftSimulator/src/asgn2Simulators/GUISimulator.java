@@ -19,15 +19,25 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class GUISimulator extends JFrame implements Runnable {
 
-	GridBagLayout layoutManager;
-    Log l;
+	private GridBagLayout layoutManager;
 
-	JButton runSimButton, showGraphButton; JLabel label; JTextField rngSeedTxtF, dailyMeanTxtF, queueSizeTxtF, cancellationTxtF, firstTxtF, businessTxtF, premiumTxtF, economyTxtF; JTextArea txtA;
+	private JButton runSimButton,
+			showGraphButton;
+	private JLabel label;
+	private JTextField rngSeedTxtF,
+			dailyMeanTxtF,
+			queueSizeTxtF,
+			cancellationTxtF,
+			firstTxtF,
+			businessTxtF,
+			premiumTxtF,
+			economyTxtF;
+	JTextArea txtA;
     private volatile double queueSize, cancellation, first, business, economy, premium;
-    private volatile int rngseed, dailymean;
-    String[] simulatorArgs;
-    Simulator sim;
-    String forTxtA;
+    private volatile int rngSeed, dailyMean;
+	private String[] simulatorArgs;
+	private Simulator sim;
+	private String forTxtA;
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -145,8 +155,8 @@ public class GUISimulator extends JFrame implements Runnable {
 	}
 
     private void loadDefaults() {
-        rngSeedTxtF.setText(String.valueOf(Constants.DEFAULT_DAILY_BOOKING_MEAN*0.33)); //TODO confirm this value and rest too(others are prob right)
-        dailyMeanTxtF.setText(String.valueOf(Constants.DEFAULT_DAILY_BOOKING_MEAN));
+        rngSeedTxtF.setText(String.valueOf((int)(Constants.DEFAULT_DAILY_BOOKING_MEAN*0.33))); //TODO confirm this value and rest too(others are prob right)
+        dailyMeanTxtF.setText(String.valueOf((int)Constants.DEFAULT_DAILY_BOOKING_MEAN));
         queueSizeTxtF.setText(String.valueOf(Constants.DEFAULT_MAX_QUEUE_SIZE));
         cancellationTxtF.setText(String.valueOf(Constants.DEFAULT_CANCELLATION_PROB));
         firstTxtF.setText(String.valueOf(Constants.DEFAULT_FIRST_PROB));
@@ -160,14 +170,15 @@ public class GUISimulator extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
-                rngseed = Integer.parseInt(rngSeedTxtF.getText());
-                dailymean = Integer.parseInt(dailyMeanTxtF.getText());
+                rngSeed = Integer.parseInt(rngSeedTxtF.getText());
+                dailyMean = Integer.parseInt(dailyMeanTxtF.getText());
                 cancellation = Double.parseDouble(cancellationTxtF.getText());
                 queueSize = Double.parseDouble(queueSizeTxtF.getText());
                 first = Double.parseDouble(firstTxtF.getText());
                 business = Double.parseDouble(businessTxtF.getText());
                 premium = Double.parseDouble(premiumTxtF.getText());
                 economy = Double.parseDouble(economyTxtF.getText());
+
                 txtA.setText("Works");
 
                 buildStringArgs();
@@ -196,8 +207,8 @@ public class GUISimulator extends JFrame implements Runnable {
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
 
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
-        l = new Log();
-        SimulationRunner sr = new SimulationRunner(s, l);
+        Log simLog = new Log();
+        SimulationRunner sr = new SimulationRunner(s, simLog);
         try {
             sr.runSimulation();
         } catch (Exception e) {
@@ -221,10 +232,10 @@ public class GUISimulator extends JFrame implements Runnable {
 
     }
     private void buildStringArgs() {
-        simulatorArgs[0] = String.valueOf(this.rngseed); // seed value
+        simulatorArgs[0] = String.valueOf(this.rngSeed); // seed value
         simulatorArgs[1] = String.valueOf(this.queueSize);
-        simulatorArgs[2] = String.valueOf(this.dailymean);
-        simulatorArgs[3] = String.valueOf(0.33*this.dailymean); //SD booking value
+        simulatorArgs[2] = String.valueOf(this.dailyMean);
+        simulatorArgs[3] = String.valueOf(0.33*this.dailyMean); //SD booking value
         simulatorArgs[4] = String.valueOf(this.first);
         simulatorArgs[5] = String.valueOf(this.business);
         simulatorArgs[6] = String.valueOf(this.premium);
