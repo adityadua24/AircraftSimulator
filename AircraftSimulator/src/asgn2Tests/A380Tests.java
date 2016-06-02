@@ -455,8 +455,81 @@ public class A380Tests {
     }
 
     @org.junit.Test
-    public void testUpgradeBookings() throws AircraftException {
-        // Don't fully understand what this one is actually doing... Or more so WHY it is doing it.
+    public void testUpgradeBookings_BusinessToFirstUpgrade() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Business(3, 12);
+        Passenger testPassenger2 = new Business(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(2, basicAircraft.getNumFirst());
+    }
+
+    @org.junit.Test
+    public void testUpgradeBookings_OldBusinessPassengersRemoved() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Business(3, 12);
+        Passenger testPassenger2 = new Business(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(0, basicAircraft.getNumBusiness());
+    }
+
+    @org.junit.Test
+    public void testUpgradeBookings_PremiumToBusinessUpgrade() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Premium(3, 12);
+        Passenger testPassenger2 = new Premium(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(2, basicAircraft.getNumBusiness());
+    }
+
+    @org.junit.Test
+    public void testUpgradeBookings_OldPremiumPassengersRemoved() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Premium(3, 12);
+        Passenger testPassenger2 = new Premium(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(0, basicAircraft.getNumPremium());
+    }
+
+    @org.junit.Test
+    public void testUpgradeBookings_EconomyToPremiumUpgrade() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Economy(3, 12);
+        Passenger testPassenger2 = new Economy(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(2, basicAircraft.getNumPremium());
+    }
+
+    @org.junit.Test
+    public void testUpgradeBookings_OldEconomyPassengersRemoved() throws AircraftException, PassengerException {
+        Passenger testPassenger1 = new Premium(3, 12);
+        Passenger testPassenger2 = new Premium(3, 12);
+
+        basicAircraft.confirmBooking(testPassenger1, 8);
+        basicAircraft.confirmBooking(testPassenger2, 8);
+
+        basicAircraft.upgradeBookings();
+
+        assertEquals(0, basicAircraft.getNumEconomy());
     }
 
     @org.junit.Test
