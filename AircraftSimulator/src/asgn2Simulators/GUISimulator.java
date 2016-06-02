@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.*;
 
 /**
@@ -37,8 +39,11 @@ public class GUISimulator extends JFrame implements Runnable {
     private volatile double dailyMean, cancellation, first, business, economy, premium;
     private volatile int rngSeed, queueSize;
 	private String[] simulatorArgs;
-	private Simulator sim;
 	private String forTxtA;
+
+    JScrollPane scroll;
+
+
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -129,12 +134,13 @@ public class GUISimulator extends JFrame implements Runnable {
         addToPanel(label, constraints, 0, 6, 1, 1);
 
         txtA = new JTextArea();
-        constraints.ipady = 60;
+        scroll = new JScrollPane(txtA);
+        constraints.ipady = 100;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
-        txtA.setFont(new Font("Arial",Font.BOLD,24));
+        txtA.setFont(new Font("Arial",Font.BOLD,14));
         txtA.setBorder(BorderFactory.createEtchedBorder());
-        addToPanel(txtA, constraints, 0, 7, 4, 5);
+        addToPanel(scroll, constraints, 0, 7, 4, 5);
 
 
         this.pack();
@@ -171,6 +177,9 @@ public class GUISimulator extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
+                showGraphButton.setEnabled(false);
+                revalidate();
+
                 rngSeed = Integer.parseInt(rngSeedTxtF.getText());
                 queueSize = Integer.parseInt(queueSizeTxtF.getText());
                 dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
@@ -179,8 +188,6 @@ public class GUISimulator extends JFrame implements Runnable {
                 business = Double.parseDouble(businessTxtF.getText());
                 premium = Double.parseDouble(premiumTxtF.getText());
                 economy = Double.parseDouble(economyTxtF.getText());
-
-                txtA.setText("Works");
 
                 buildStringArgs();
                 try {
@@ -193,35 +200,23 @@ public class GUISimulator extends JFrame implements Runnable {
                     e1.printStackTrace();
                 }
 
+                runSimButton.setEnabled(true);
+                showGraphButton.setEnabled(true);
+
                 txtA.setText(forTxtA);
             }
         }
     }
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
-        Log simLog = null;
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
-        simLog = new Log();
+        Log simLog = new Log();
         SimulationRunner sr = new SimulationRunner(s, simLog);
         try {
-            sr.runSimulation();
+            sr.runSimulation(this);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
         }
-    }
-    private void getLog() throws IOException {
-        String file_path = "";
-        FileReader fr = new FileReader(file_path);
-        BufferedReader bf = new BufferedReader(fr);
-        String line = "";
-
-        while ((line = bf.readLine()) != null) {
-            forTxtA += line;
-        }
-
-        // Clean up
-        fr.close();
-        bf.close();
     }
     private void buildStringArgs() {
         simulatorArgs[0] = String.valueOf(this.rngSeed); // seed value
@@ -233,6 +228,29 @@ public class GUISimulator extends JFrame implements Runnable {
         simulatorArgs[6] = String.valueOf(this.premium);
         simulatorArgs[7] = String.valueOf(this.economy);
         simulatorArgs[8] = String.valueOf(this.cancellation);
+    }
+
+    public void initialEntry(Simulator sim) throws IOException, SimulationException {
+        forTxtA += getLogTime() + ": Start of Simulation\n";
+        forTxtA += sim.toString() + "\n";
+        String capacities = sim.getFlights(Constants.FIRST_FLIGHT).initialState();
+        forTxtA += capacities;
+    }
+
+    public void LogEntry(int time,Simulator sim) throws IOException, SimulationException {
+        boolean flying = (time >= Constants.FIRST_FLIGHT);
+        forTxtA += sim.getSummary(time, flying);
+    }
+
+    public void finalise(Simulator sim) throws IOException {
+        String time = getLogTime();
+        forTxtA += "\n" + time + ": End of Simulation\n";
+        forTxtA += sim.finalState();
+    }
+
+    private String getLogTime() {
+        String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        return timeLog;
     }
     /**
 	 * @param args

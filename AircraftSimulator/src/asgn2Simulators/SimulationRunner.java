@@ -26,11 +26,15 @@ public class SimulationRunner {
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
 	public static void main(String[] args) throws InterruptedException {
+
+		if (true){
+			javax.swing.SwingUtilities.invokeLater(new GUISimulator("Aircraft Simulator"));
+			// Temporary to stop 2 copies of the SimRunner
+			return;
+		}
+
 		final int NUM_ARGS = 9;
 		Simulator s = null;
-        GUISimulator.main(args);
-        //Thread guiThread = new Thread(new GUISimulator("Aircraft Simulator"));
-        //guiThread.start();
 
 		Log l = null;
 
@@ -61,7 +65,7 @@ public class SimulationRunner {
 		//Run the simulation
 		SimulationRunner sr = new SimulationRunner(s,l);
 		try {
-			sr.runSimulation();
+			sr.runSimulation(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -126,8 +130,13 @@ public class SimulationRunner {
 	 * @throws IOException on logging failures See methods from {@link asgn2Simulators.Log} 
 
 	 */
-	public void runSimulation() throws AircraftException, PassengerException, SimulationException, IOException {
+	public void runSimulation(GUISimulator guiSim) throws AircraftException, PassengerException, SimulationException, IOException {
 		this.sim.createSchedule();
+
+		if (guiSim != null){
+			guiSim.initialEntry(this.sim);
+		}
+
 		this.log.initialEntry(this.sim);
 		
 		//Main simulation loop 
@@ -145,12 +154,21 @@ public class SimulationRunner {
 			} else {
 				this.sim.processQueue(time);
 			}
-			//Log progress 
+			if (guiSim != null){
+				guiSim.LogEntry(time, this.sim);
+			}
+
 			this.log.logQREntries(time, sim);
 			this.log.logEntry(time,this.sim);
 		}
+
 		this.sim.finaliseQueuedAndCancelledPassengers(Constants.DURATION); 
 		this.log.logQREntries(Constants.DURATION, sim);
+
+		if (guiSim != null){
+			guiSim.finalise(this.sim);
+		}
+
 		this.log.finalise(this.sim);
 	}
 }
