@@ -41,7 +41,9 @@ public class GUISimulator extends JFrame implements Runnable {
 	private String[] simulatorArgs;
 	private String forTxtA;
 
-    JScrollPane scroll;
+    JScrollPane scrollText, scrollGraph;
+    JPanel graphPanel;
+    JPanel textPanel;
 
     private SwingWorker simWorker;
 
@@ -135,15 +137,23 @@ public class GUISimulator extends JFrame implements Runnable {
         label = new JLabel("Output Log");
         addToPanel(label, constraints, 0, 6, 1, 1);
 
+        textPanel = new JPanel(new BorderLayout());
         txtA = new JTextArea();
-        scroll = new JScrollPane(txtA);
+        scrollText = new JScrollPane(textPanel);
+        textPanel.add(txtA, BorderLayout.CENTER);
         constraints.ipady = 100;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
         txtA.setFont(new Font("Arial",Font.BOLD,14));
         txtA.setBorder(BorderFactory.createEtchedBorder());
-        addToPanel(scroll, constraints, 0, 7, 4, 5);
+        addToPanel(scrollText, constraints, 0, 7, 4, 5);
 
+        graphPanel = new JPanel();
+        scrollGraph = new JScrollPane(graphPanel);
+        graphPanel.setOpaque(true);
+        graphPanel.setBackground(Color.black);
+        addToPanel(graphPanel, constraints, 0, 7, 4, 5);
+        graphPanel.setVisible(false);
 
         this.pack();
         this.loadDefaults();
@@ -179,42 +189,61 @@ public class GUISimulator extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
-                runSimButton.setEnabled(false);
-                showGraphButton.setEnabled(false);
-
-                rngSeed = Integer.parseInt(rngSeedTxtF.getText());
-                queueSize = Integer.parseInt(queueSizeTxtF.getText());
-                dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
-                cancellation = Double.parseDouble(cancellationTxtF.getText());
-                first = Double.parseDouble(firstTxtF.getText());
-                business = Double.parseDouble(businessTxtF.getText());
-                premium = Double.parseDouble(premiumTxtF.getText());
-                economy = Double.parseDouble(economyTxtF.getText());
-
-                buildStringArgs();
-
-                forTxtA = "";
-
-                simWorker = new SwingWorker() {
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        runSimulation();
-                        return null;
-                    }
-
-                    @Override
-                    protected void done() {
-                        runSimButton.setEnabled(true);
-                        showGraphButton.setEnabled(true);
-
-                        txtA.setText(forTxtA);
-                    }
-                };
-
-                simWorker.execute();
-
+                runSimulationPressed();
+            }
+            else if(source == showGraphButton){
+                showGraphPressed();
             }
         }
+    }
+    private void showGraphPressed(){
+        //TODO - Charts implementation !! event handler proabaly not working
+        graphPanel.setVisible(true);
+        textPanel.setVisible(false);
+        this.revalidate();
+        JFrame graphFrame = new JFrame("Graphs");
+        graphFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        graphFrame.setPreferredSize(new Dimension(800, 500));
+        graphFrame.setVisible(true);
+        graphFrame.setVisible(true);
+
+    }
+    private void runSimulationPressed(){
+        runSimButton.setEnabled(false);
+        showGraphButton.setEnabled(false);
+        textPanel.setVisible(true);
+        graphPanel.setVisible(false);
+        rngSeed = Integer.parseInt(rngSeedTxtF.getText());
+        queueSize = Integer.parseInt(queueSizeTxtF.getText());
+        dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
+        cancellation = Double.parseDouble(cancellationTxtF.getText());
+        first = Double.parseDouble(firstTxtF.getText());
+        business = Double.parseDouble(businessTxtF.getText());
+        premium = Double.parseDouble(premiumTxtF.getText());
+        economy = Double.parseDouble(economyTxtF.getText());
+
+        buildStringArgs();
+
+        forTxtA = "";
+
+        simWorker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                runSimulation();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                runSimButton.setEnabled(true);
+                showGraphButton.setEnabled(true);
+
+                txtA.setText(forTxtA);
+            }
+        };
+
+        simWorker.execute();
+
     }
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
