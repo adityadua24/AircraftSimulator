@@ -43,6 +43,22 @@ public class GUISimulator extends JFrame implements Runnable {
 
     JScrollPane scroll;
 
+    private SwingWorker simWorker = new SwingWorker() {
+        @Override
+        protected Object doInBackground() throws Exception {
+            runSimulation();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            runSimButton.setEnabled(true);
+            showGraphButton.setEnabled(true);
+
+            txtA.setText(forTxtA);
+        }
+    };
+
 
 	/**
 	 * @param arg0
@@ -177,8 +193,8 @@ public class GUISimulator extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
+                runSimButton.setEnabled(false);
                 showGraphButton.setEnabled(false);
-                revalidate();
 
                 rngSeed = Integer.parseInt(rngSeedTxtF.getText());
                 queueSize = Integer.parseInt(queueSizeTxtF.getText());
@@ -190,6 +206,12 @@ public class GUISimulator extends JFrame implements Runnable {
                 economy = Double.parseDouble(economyTxtF.getText());
 
                 buildStringArgs();
+
+                simWorker.execute();
+
+/*
+
+
                 try {
                     runSimulation();
                 } catch (InterruptedException e1) {
@@ -199,11 +221,7 @@ public class GUISimulator extends JFrame implements Runnable {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-
-                runSimButton.setEnabled(true);
-                showGraphButton.setEnabled(true);
-
-                txtA.setText(forTxtA);
+*/
             }
         }
     }
