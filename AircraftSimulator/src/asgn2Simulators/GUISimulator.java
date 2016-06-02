@@ -12,11 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.*;
 
-import asgn2Passengers.Business;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -46,7 +44,8 @@ public class GUISimulator extends JFrame implements Runnable {
 			businessTxtF,
 			premiumTxtF,
 			economyTxtF;
-	JTextArea txtA;
+
+	JTextArea outputTextArea;
 
     private volatile double dailyMean, cancellation, first, business, economy, premium;
     private volatile int rngSeed, queueSize;
@@ -54,12 +53,15 @@ public class GUISimulator extends JFrame implements Runnable {
 	private String[] simulatorArgs;
 	private String forTxtA;
 
+    // Chart 1 which displayed the passenger variables
     private ChartPanel chart1Panel;
     private JFreeChart chart1;
 
+    // Chart 2 which displayed the refused/queued variables
     private ChartPanel chart2Panel;
     private JFreeChart chart2;
 
+    // Series collections which group all the series into 1 variable
     private XYSeriesCollection chart1DataSet;
     private XYSeriesCollection chart2DataSet;
 
@@ -187,15 +189,15 @@ public class GUISimulator extends JFrame implements Runnable {
         addToPanel(label, constraints, 0, 6, 1, 1);
 
         textPanel = new JPanel(new BorderLayout());
-        txtA = new JTextArea();
+        outputTextArea = new JTextArea();
         scrollText = new JScrollPane(textPanel);
-        textPanel.add(txtA, BorderLayout.CENTER);
+        textPanel.add(outputTextArea, BorderLayout.CENTER);
         constraints.ipady = 500;
-        txtA.setEditable(false);
-        txtA.setLineWrap(true);
-        txtA.setFont(new Font("Arial",Font.BOLD,14));
-        txtA.setBorder(BorderFactory.createEtchedBorder());
-        txtA.setVisible(true);
+        outputTextArea.setEditable(false);
+        outputTextArea.setLineWrap(true);
+        outputTextArea.setFont(new Font("Arial",Font.BOLD,14));
+        outputTextArea.setBorder(BorderFactory.createEtchedBorder());
+        outputTextArea.setVisible(true);
         addToPanel(scrollText, constraints, 0, 7, 4, 5);
 
         setUpChartVariables(constraints);
@@ -303,20 +305,6 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     private void runSimulationPressed() {
-        runSimButton.setEnabled(false);
-        showTextButton.setEnabled(false);
-        showGraph1Button.setEnabled(false);
-        showGraph2Button.setEnabled(false);
-        rngSeed = Integer.parseInt(rngSeedTxtF.getText());
-        queueSize = Integer.parseInt(queueSizeTxtF.getText());
-        dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
-        cancellation = Double.parseDouble(cancellationTxtF.getText());
-        first = Double.parseDouble(firstTxtF.getText());
-        business = Double.parseDouble(businessTxtF.getText());
-        premium = Double.parseDouble(premiumTxtF.getText());
-        economy = Double.parseDouble(economyTxtF.getText());
-
-        boolean run = doValueChecks();
         buildStringArgs();
 
         firstSeries.clear();
@@ -342,54 +330,63 @@ public class GUISimulator extends JFrame implements Runnable {
                 showGraph1Button.setEnabled(true);
                 showGraph2Button.setEnabled(true);
 
-                txtA.setText(forTxtA);
+                outputTextArea.setText(forTxtA);
             }
         };
 
-        if(run) simWorker.execute();
-        else if(run == false){
-            runSimButton.setEnabled(true);
-            showTextButton.setEnabled(true);
-            showGraph1Button.setEnabled(true);
-            showGraph2Button.setEnabled(true);
-        }
+        if(allValuesValid()) {
+            runSimButton.setEnabled(false);
 
+            simWorker.execute();
+        }
     }
 
-    private boolean doValueChecks() {
+    // This checks that the values valid inputs
+    private boolean allValuesValid() {
         boolean shouldRun = true;
         String valuechecks = "";
         if((rngSeed < 0) || (dailyMean < 0) || (queueSize< 0) || (cancellation < 0) || (first < 0) || (business < 0) || (premium < 0) || (economy <0)){
             valuechecks += "negative values not allowed\n";
             shouldRun = false;
         }
-        if ( (first + business + premium + economy ) > 1){
+        if ( roughlyEquals(first + business + premium + economy,  1)) {
             valuechecks += "Probabilities of Fare classes should not sum up to more than 1\n";
             shouldRun = false;
         }
-        if( first > 0.3 ){
-            valuechecks += "Probability of first fare class higher than likely to be\n";
+
+        // Checks that all values are valid
+        try {
+            parseValues();
+        } catch (NumberFormatException e) {
+            valuechecks += "One or more of the values are invalid. \nCheck that there are no letter in any inputs. \nAlso check that the Seed and Queue inputs do not contain decimal points.";
             shouldRun = false;
         }
-        if(business > 0.4 ){
-            valuechecks += "Probability of Business fare class higher than likely to be\n";
-            shouldRun = false;
-        }
-        if(economy > 0.7 ){
-            valuechecks += "Probability of Economy fare class higher than likely to be\n";
-            shouldRun = false;
-        }
-        if(premium > 0.3 ){
-            valuechecks += "Probability of Premium fare class higher than likely to be\n";
-            shouldRun = false;
-        }
-        if(cancellation > 0.2){
-            valuechecks += "Probability of cancellation fare class higher than likely to be\n";
-            shouldRun = false;
-        }
-        txtA.setText(valuechecks);
+
+        outputTextArea.setText(valuechecks);
         return shouldRun;
 
+    }
+
+    private void parseValues() {
+        rngSeed = Integer.parseInt(rngSeedTxtF.getText());
+        queueSize = Integer.parseInt(queueSizeTxtF.getText());
+        dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
+        cancellation = Double.parseDouble(cancellationTxtF.getText());
+        first = Double.parseDouble(firstTxtF.getText());
+        business = Double.parseDouble(businessTxtF.getText());
+        premium = Double.parseDouble(premiumTxtF.getText());
+        economy = Double.parseDouble(economyTxtF.getText());
+    }
+
+    // Allows for small floating point errors in floating point math
+    private boolean roughlyEquals(double value, float expected) {
+        double epsilon = 0.000001;
+
+        if (value == expected || Math.abs(value - expected) < epsilon){
+            return true;
+        }
+
+        return false;
     }
 
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
@@ -417,7 +414,7 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     private void setTextAreaVisible(boolean state) {
-        txtA.setVisible(state);
+        outputTextArea.setVisible(state);
         scrollText.setVisible(state);
     }
 
