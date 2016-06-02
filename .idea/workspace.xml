@@ -29,12 +29,12 @@
       <file leaf-file-name="GUISimulator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="328" column="30" selection-start-line="328" selection-start-column="30" selection-end-line="328" selection-end-column="30" />
+            <state relative-caret-position="-2402">
+              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#10283#10284#0" expanded="true" />
-                <element signature="e#10344#10345#0" expanded="true" />
+                <element signature="e#10715#10716#0" expanded="true" />
+                <element signature="e#10776#10777#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -708,7 +708,7 @@
       <workItem from="1464500533398" duration="1280000" />
       <workItem from="1464862359203" duration="4390000" />
       <workItem from="1464866835760" duration="3409000" />
-      <workItem from="1464873433152" duration="1734000" />
+      <workItem from="1464873433152" duration="2031000" />
     </task>
     <task id="LOCAL-00001" summary="GUI values check">
       <created>1464866699112</created>
@@ -738,7 +738,14 @@
       <option name="project" value="LOCAL" />
       <updated>1464874000510</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed last minute bug">
+      <created>1464875178911</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1464875178911</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -747,7 +754,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15350000" />
+    <option name="totallyTimeSpent" value="15647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2552" y="634" width="1936" height="1056" extended-state="6" />
@@ -797,7 +804,8 @@
     <MESSAGE value="value checking" />
     <MESSAGE value="Value Checking Works" />
     <MESSAGE value="Fixed Logic error in the value checking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Logic error in the value checking" />
+    <MESSAGE value="Fixed last minute bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed last minute bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1187,12 +1195,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="328" column="30" selection-start-line="328" selection-start-column="30" selection-end-line="328" selection-end-column="30" />
+        <state relative-caret-position="-2402">
+          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10283#10284#0" expanded="true" />
-            <element signature="e#10344#10345#0" expanded="true" />
+            <element signature="e#10715#10716#0" expanded="true" />
+            <element signature="e#10776#10777#0" expanded="true" />
           </folding>
         </state>
       </provider>

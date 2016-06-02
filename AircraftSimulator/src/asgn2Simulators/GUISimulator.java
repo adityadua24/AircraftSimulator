@@ -101,6 +101,22 @@ public class GUISimulator extends JFrame implements Runnable {
         constraints.weightx = 100;
         constraints.weighty = 100;
 
+        setUpButtons(constraints);
+
+        setUpLabels(constraints);
+        setUpTextFields(constraints);
+
+        setUpOutputText(constraints);
+
+        setUpChartVariables(constraints);
+
+        showTextPressed();
+
+        this.pack();
+        this.loadDefaults();
+    }
+
+    private void setUpButtons(GridBagConstraints constraints) {
         runSimButton = new JButton("Run Simulation");
         runSimButton.addActionListener(e ->  {
             runSimulationPressed();
@@ -125,7 +141,9 @@ public class GUISimulator extends JFrame implements Runnable {
             showGraph2Pressed();
         });
         addToPanel(showGraph2Button, constraints, 3, 0, 1, 1);
+    }
 
+    private void setUpLabels(GridBagConstraints constraints) {
         label = new JLabel("Simulation");
         addToPanel(label, constraints, 0, 1, 1, 1);
 
@@ -141,19 +159,6 @@ public class GUISimulator extends JFrame implements Runnable {
         label = new JLabel("Cancellation");
         addToPanel(label, constraints, 0, 5, 1, 1);
 
-        rngSeedTxtF = new JTextField();
-        addToPanel(rngSeedTxtF, constraints, 1, 2, 1, 1);
-
-        dailyMeanTxtF = new JTextField();
-        addToPanel(dailyMeanTxtF, constraints, 1, 3, 1, 1);
-
-        queueSizeTxtF = new JTextField();
-        addToPanel(queueSizeTxtF, constraints, 1, 4, 1, 1);
-
-        cancellationTxtF = new JTextField();
-        addToPanel(cancellationTxtF, constraints, 1, 5, 1, 1);
-
-
         label = new JLabel("Fare Classes");
         addToPanel(label, constraints, 2, 1, 2, 1);
 
@@ -168,6 +173,20 @@ public class GUISimulator extends JFrame implements Runnable {
 
         label = new JLabel("Economy");
         addToPanel(label, constraints, 2, 5, 1, 1);
+    }
+
+    private void setUpTextFields(GridBagConstraints constraints) {
+        rngSeedTxtF = new JTextField();
+        addToPanel(rngSeedTxtF, constraints, 1, 2, 1, 1);
+
+        dailyMeanTxtF = new JTextField();
+        addToPanel(dailyMeanTxtF, constraints, 1, 3, 1, 1);
+
+        queueSizeTxtF = new JTextField();
+        addToPanel(queueSizeTxtF, constraints, 1, 4, 1, 1);
+
+        cancellationTxtF = new JTextField();
+        addToPanel(cancellationTxtF, constraints, 1, 5, 1, 1);
 
         firstTxtF = new JTextField();
         addToPanel(firstTxtF, constraints, 3, 2, 1, 1);
@@ -180,7 +199,9 @@ public class GUISimulator extends JFrame implements Runnable {
 
         economyTxtF = new JTextField();
         addToPanel(economyTxtF, constraints, 3, 5, 1, 1);
+    }
 
+    private void setUpOutputText(GridBagConstraints constraints) {
         label = new JLabel("Output Log");
         addToPanel(label, constraints, 0, 6, 1, 1);
 
@@ -195,13 +216,6 @@ public class GUISimulator extends JFrame implements Runnable {
         outputTextArea.setBorder(BorderFactory.createEtchedBorder());
         outputTextArea.setVisible(true);
         addToPanel(scrollText, constraints, 0, 7, 4, 5);
-
-        setUpChartVariables(constraints);
-
-        showTextPressed();
-
-        this.pack();
-        this.loadDefaults();
     }
 
     private void setUpChartVariables(GridBagConstraints constraints) {
