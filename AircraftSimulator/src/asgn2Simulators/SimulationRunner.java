@@ -6,10 +6,10 @@
  */
 package asgn2Simulators;
 
-import java.io.IOException;
-
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
+
+import java.io.IOException;
 
 /**
  * Class to operate the simulation, taking parameters and utility methods from the Simulator
@@ -26,16 +26,15 @@ public class SimulationRunner {
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
 	public static void main(String[] args) throws InterruptedException {
-
+        /*
 		if (true){
 			javax.swing.SwingUtilities.invokeLater(new GUISimulator("Aircraft Simulator"));
 			// Temporary to stop 2 copies of the SimRunner
 			return;
 		}
-
+		*/
 		final int NUM_ARGS = 9;
 		Simulator s = null;
-
 		Log l = null;
 
 		try {
@@ -44,12 +43,9 @@ public class SimulationRunner {
 					s = createSimulatorUsingArgs(args);
 					break;
 				}
-                case 10: {
-                    s = createSimulatorUsingArgs(args);
-                    break;
-                }
 				case 0: {
 					s = new Simulator();
+                    GUISimulator.main(args);
 					break;
 				}
 				default: {

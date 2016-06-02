@@ -6,16 +6,13 @@
  */
 package asgn2Simulators;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Arc2D;
-import java.io.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.*;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 
 /**
  * @author hogan
