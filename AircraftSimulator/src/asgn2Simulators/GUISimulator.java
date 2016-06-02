@@ -9,6 +9,7 @@ package asgn2Simulators;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Arc2D;
 import java.io.*;
 import javax.swing.*;
 
@@ -33,8 +34,8 @@ public class GUISimulator extends JFrame implements Runnable {
 			premiumTxtF,
 			economyTxtF;
 	JTextArea txtA;
-    private volatile double queueSize, cancellation, first, business, economy, premium;
-    private volatile int rngSeed, dailyMean;
+    private volatile double dailyMean, cancellation, first, business, economy, premium;
+    private volatile int rngSeed, queueSize;
 	private String[] simulatorArgs;
 	private Simulator sim;
 	private String forTxtA;
@@ -156,8 +157,8 @@ public class GUISimulator extends JFrame implements Runnable {
 
     private void loadDefaults() {
         rngSeedTxtF.setText(String.valueOf((int)(Constants.DEFAULT_DAILY_BOOKING_MEAN*0.33))); //TODO confirm this value and rest too(others are prob right)
-        dailyMeanTxtF.setText(String.valueOf((int)Constants.DEFAULT_DAILY_BOOKING_MEAN));
-        queueSizeTxtF.setText(String.valueOf(Constants.DEFAULT_MAX_QUEUE_SIZE));
+        dailyMeanTxtF.setText(String.valueOf(Constants.DEFAULT_DAILY_BOOKING_MEAN));
+        queueSizeTxtF.setText(String.valueOf((int)Constants.DEFAULT_MAX_QUEUE_SIZE));
         cancellationTxtF.setText(String.valueOf(Constants.DEFAULT_CANCELLATION_PROB));
         firstTxtF.setText(String.valueOf(Constants.DEFAULT_FIRST_PROB));
         businessTxtF.setText(String.valueOf(Constants.DEFAULT_BUSINESS_PROB));
@@ -171,9 +172,9 @@ public class GUISimulator extends JFrame implements Runnable {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
                 rngSeed = Integer.parseInt(rngSeedTxtF.getText());
-                dailyMean = Integer.parseInt(dailyMeanTxtF.getText());
+                queueSize = Integer.parseInt(queueSizeTxtF.getText());
+                dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
                 cancellation = Double.parseDouble(cancellationTxtF.getText());
-                queueSize = Double.parseDouble(queueSizeTxtF.getText());
                 first = Double.parseDouble(firstTxtF.getText());
                 business = Double.parseDouble(businessTxtF.getText());
                 premium = Double.parseDouble(premiumTxtF.getText());
@@ -182,7 +183,6 @@ public class GUISimulator extends JFrame implements Runnable {
                 txtA.setText("Works");
 
                 buildStringArgs();
-    /*
                 try {
                     runSimulation();
                 } catch (InterruptedException e1) {
@@ -193,21 +193,14 @@ public class GUISimulator extends JFrame implements Runnable {
                     e1.printStackTrace();
                 }
 
-                //TODO pass obtained values to simulation constructor!
-                try {
-                    getLog();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
                 txtA.setText(forTxtA);
-*/
             }
         }
     }
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
-
+        Log simLog = null;
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
-        Log simLog = new Log();
+        simLog = new Log();
         SimulationRunner sr = new SimulationRunner(s, simLog);
         try {
             sr.runSimulation();
@@ -229,7 +222,6 @@ public class GUISimulator extends JFrame implements Runnable {
         // Clean up
         fr.close();
         bf.close();
-
     }
     private void buildStringArgs() {
         simulatorArgs[0] = String.valueOf(this.rngSeed); // seed value
@@ -239,7 +231,7 @@ public class GUISimulator extends JFrame implements Runnable {
         simulatorArgs[4] = String.valueOf(this.first);
         simulatorArgs[5] = String.valueOf(this.business);
         simulatorArgs[6] = String.valueOf(this.premium);
-        simulatorArgs[7] = String.valueOf(this.economyTxtF);
+        simulatorArgs[7] = String.valueOf(this.economy);
         simulatorArgs[8] = String.valueOf(this.cancellation);
     }
     /**
