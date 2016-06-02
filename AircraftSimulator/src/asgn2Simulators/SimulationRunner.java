@@ -152,6 +152,7 @@ public class SimulationRunner {
 			}
 			if (guiSim != null){
 				guiSim.LogEntry(time, this.sim);
+				guiSim.chartFlightDetails(this.sim, time);
 			}
 
 			this.log.logQREntries(time, sim);

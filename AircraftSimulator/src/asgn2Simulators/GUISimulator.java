@@ -13,15 +13,20 @@ import java.awt.geom.Arc2D;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import javax.swing.*;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.general.Dataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import asgn2Aircraft.Bookings;
 
 /**
  * @author hogan
@@ -50,6 +55,8 @@ public class GUISimulator extends JFrame implements Runnable {
 	private String forTxtA;
 
     ChartPanel chartPanel1;
+    JFreeChart displayChart;
+
     XYSeriesCollection chart1DataSet;
 
     XYSeries firstSeries;
@@ -58,7 +65,6 @@ public class GUISimulator extends JFrame implements Runnable {
     XYSeries economySeries;
     XYSeries totalSeries;
     XYSeries emptySeries;
-
 
     JScrollPane scrollText;
     JPanel textPanel;
@@ -161,7 +167,7 @@ public class GUISimulator extends JFrame implements Runnable {
         txtA = new JTextArea();
         scrollText = new JScrollPane(textPanel);
         textPanel.add(txtA, BorderLayout.CENTER);
-        constraints.ipady = 200;
+        constraints.ipady = 300;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
         txtA.setFont(new Font("Arial",Font.BOLD,14));
@@ -185,16 +191,18 @@ public class GUISimulator extends JFrame implements Runnable {
         totalSeries = new XYSeries("Total");
         emptySeries = new XYSeries("Empty");
 
-
-        // Test stuff
-        firstSeries.add(0, 1);
-        firstSeries.add(1, 2);
-
         chart1DataSet.addSeries(firstSeries);
+        chart1DataSet.addSeries(businessSeries);
+        chart1DataSet.addSeries(premiumSeries);
+        chart1DataSet.addSeries(economySeries);
+        chart1DataSet.addSeries(totalSeries);
+        chart1DataSet.addSeries(emptySeries);
 
-        JFreeChart chart1 = ChartFactory.createXYLineChart("Test", "X Axis", "Y axis", chart1DataSet);
+        displayChart = ChartFactory.createXYLineChart("Simulation Results", "Passengers", "Day", chart1DataSet);
 
-        chartPanel1 = new ChartPanel(chart1);
+        chartPanel1 = new ChartPanel(displayChart);
+
+        chartPanel1.setVisible(false);
 
         addToPanel(chartPanel1, constraints, 0, 7, 4, 5);
     }
@@ -229,7 +237,7 @@ public class GUISimulator extends JFrame implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
-            if(source == runSimButton){ //TODO double check data types pls
+            if(source == runSimButton){
                 runSimulationPressed();
             }
             else if(source == showGraphButton){
@@ -242,12 +250,16 @@ public class GUISimulator extends JFrame implements Runnable {
         if (txtA.isVisible()){
             txtA.setVisible(false);
             scrollText.setVisible(false);
+
+            displayChart = ChartFactory.createXYLineChart("Simulation Results", "Passengers", "Day", chart1DataSet);
+            chartPanel1.setVisible(true);
         } else {
             txtA.setVisible(true);
             scrollText.setVisible(true);
+            chartPanel1.setVisible(false);
         }
     }
-    private void runSimulationPressed(){
+    private void runSimulationPressed() {
         runSimButton.setEnabled(false);
         showGraphButton.setEnabled(false);
         rngSeed = Integer.parseInt(rngSeedTxtF.getText());
@@ -260,6 +272,13 @@ public class GUISimulator extends JFrame implements Runnable {
         economy = Double.parseDouble(economyTxtF.getText());
 
         buildStringArgs();
+
+        firstSeries.clear();
+        businessSeries.clear();
+        premiumSeries.clear();
+        economySeries.clear();
+        totalSeries.clear();
+        emptySeries.clear();
 
         forTxtA = "";
 
@@ -328,9 +347,20 @@ public class GUISimulator extends JFrame implements Runnable {
         return timeLog;
     }
 
-    public void ChartFlightDetails() {
+    public void chartFlightDetails(Simulator sim, int time) throws SimulationException {
+        if (time < Constants.FIRST_FLIGHT)
+            return ;
 
+        Bookings currentBookings = sim.getFlights(time).getCurrentCounts();
+
+        firstSeries.add(time, currentBookings.getNumFirst());
+        businessSeries.add(time, currentBookings.getNumBusiness());
+        premiumSeries.add(time, currentBookings.getNumPremium());
+        economySeries.add(time, currentBookings.getNumEconomy());
+        totalSeries.add(time, currentBookings.getTotal());
+        emptySeries.add(time, currentBookings.getAvailable());
     }
+
     /**
 	 * @param args
 	 */
