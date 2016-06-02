@@ -329,15 +329,21 @@ public class GUISimulator extends JFrame implements Runnable {
                 showTextButton.setEnabled(true);
                 showGraph1Button.setEnabled(true);
                 showGraph2Button.setEnabled(true);
-
                 outputTextArea.setText(forTxtA);
             }
         };
 
         if(allValuesValid()) {
             runSimButton.setEnabled(false);
-
             simWorker.execute();
+        }
+        else if( allValuesValid() == false){
+            runSimButton.setEnabled(true);
+            showTextButton.setEnabled(true);
+            showGraph1Button.setEnabled(true);
+            showGraph2Button.setEnabled(true);
+            outputTextArea.setText(forTxtA);
+            this.loadDefaults();
         }
     }
 
