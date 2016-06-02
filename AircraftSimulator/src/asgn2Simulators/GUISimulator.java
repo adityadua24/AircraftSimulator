@@ -338,11 +338,12 @@ public class GUISimulator extends JFrame implements Runnable {
             simWorker.execute();
         }
         else if( allValuesValid() == false){
-            runSimButton.setEnabled(true);
+           /* runSimButton.setEnabled(true);
             showTextButton.setEnabled(true);
             showGraph1Button.setEnabled(true);
             showGraph2Button.setEnabled(true);
             outputTextArea.setText(forTxtA);
+            */
             this.loadDefaults();
         }
     }

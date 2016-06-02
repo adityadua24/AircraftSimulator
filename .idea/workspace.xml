@@ -61,8 +61,8 @@
       <file leaf-file-name="GUISimulator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="325" column="21" selection-start-line="325" selection-start-column="21" selection-end-line="325" selection-end-column="21" />
+            <state relative-caret-position="521">
+              <caret line="345" column="14" selection-start-line="345" selection-start-column="14" selection-end-line="345" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#536#563#0" expanded="true" />
@@ -844,7 +844,14 @@
       <option name="project" value="LOCAL" />
       <updated>1464870495261</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Value Checking Works">
+      <created>1464873227894</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1464873227894</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -853,7 +860,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13480000" />
+    <option name="totallyTimeSpent" value="13616000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -901,7 +908,8 @@
     <MESSAGE value="GUI values check" />
     <MESSAGE value="Minor code clean up and formatting." />
     <MESSAGE value="value checking" />
-    <option name="LAST_COMMIT_MESSAGE" value="value checking" />
+    <MESSAGE value="Value Checking Works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Value Checking Works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1321,8 +1329,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="325" column="21" selection-start-line="325" selection-start-column="21" selection-end-line="325" selection-end-column="21" />
+        <state relative-caret-position="521">
+          <caret line="345" column="14" selection-start-line="345" selection-start-column="14" selection-end-line="345" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#536#563#0" expanded="true" />
