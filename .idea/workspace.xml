@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3a545dd-fe09-46b7-97a9-4efdd286e236" name="Default" comment="">
+    <list default="true" id="a3a545dd-fe09-46b7-97a9-4efdd286e236" name="Default" comment="Minor code clean up and formatting.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AircraftSimulator/AircraftSimulator.iml" afterPath="$PROJECT_DIR$/AircraftSimulator/AircraftSimulator.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java" afterPath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java" afterPath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java" />
     </list>
     <ignored path="AircraftSimulator.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +31,7 @@
       <file leaf-file-name="Passenger.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Passengers/Passenger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="7752">
               <caret line="461" column="34" selection-start-line="461" selection-start-column="34" selection-end-line="461" selection-end-column="34" />
               <folding>
                 <element signature="n#!!doc" expanded="false" />
@@ -42,7 +45,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="680">
               <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
-              <folding />
+              <folding>
+                <element signature="n#!!doc" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -50,61 +55,12 @@
       <file leaf-file-name="GUISimulator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
+            <state relative-caret-position="390">
+              <caret line="425" column="49" selection-start-line="425" selection-start-column="49" selection-end-line="425" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#591#618#0" expanded="true" />
-                <element signature="e#7918#7919#0" expanded="true" />
-                <element signature="e#7943#7944#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FirstTests.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/FirstTests.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EconomyTests.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/EconomyTests.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DTSCTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/DTSCTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="61" column="48" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#3558#3559#0" expanded="false" />
-                <element signature="e#3625#3626#0" expanded="false" />
-                <element signature="e#4297#4298#0" expanded="false" />
-                <element signature="e#4326#4327#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RandomTimeSeries.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/RandomTimeSeries.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1377">
-              <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
-              <folding>
-                <element signature="e#1181#1208#0" expanded="false" />
+                <element signature="e#11683#11684#0" expanded="true" />
+                <element signature="e#11744#11745#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -113,12 +69,9 @@
       <file leaf-file-name="A380Tests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3757">
-              <caret line="228" column="5" selection-start-line="228" selection-start-column="5" selection-end-line="228" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
-              </folding>
+            <state relative-caret-position="351">
+              <caret line="373" column="45" selection-start-line="373" selection-start-column="45" selection-end-line="373" selection-end-column="45" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -147,15 +100,15 @@
         <option value="$PROJECT_DIR$/AircraftSimulator/src/org/junit/BeforeAll.groovy" />
         <option value="$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/Form1.form" />
         <option value="$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/GUISimulatorTests.java" />
+        <option value="$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java" />
         <option value="$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -167,8 +120,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="width" value="2576" />
+    <option name="height" value="1416" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -195,6 +148,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -202,6 +156,16 @@
               <option name="myItemId" value="AircraftSimulator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AircraftSimulator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -210,20 +174,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="AircraftSimulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AircraftSimulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AircraftSimulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -263,10 +213,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AircraftSimulator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AircraftSimulator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -650,9 +613,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -739,19 +699,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory />
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>DIRECTORY</test-kind>
-      <test-directory />
-      <recursive>false</recursive>
-      <method />
-    </configuration>
     <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
       <method />
     </configuration>
@@ -788,6 +735,7 @@
       <workItem from="1464448881464" duration="1480000" />
       <workItem from="1464500533398" duration="1280000" />
       <workItem from="1464862359203" duration="4390000" />
+      <workItem from="1464866835760" duration="3409000" />
     </task>
     <task id="LOCAL-00001" summary="GUI values check">
       <created>1464866699112</created>
@@ -805,25 +753,25 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9497000" />
+    <option name="totallyTimeSpent" value="12906000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17243335" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17228177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6962306" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924962" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13169985" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32575756" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18443497" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.184375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -851,10 +799,20 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="GUI values check" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI values check" />
+    <MESSAGE value="Minor code clean up and formatting." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor code clean up and formatting." />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java</url>
+          <line>267</line>
+          <properties />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -862,17 +820,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3706">
-          <caret line="227" column="5" selection-start-line="227" selection-start-column="5" selection-end-line="227" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/Flights.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -923,8 +870,6 @@
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#13353#13354#0" expanded="false" />
             <element signature="e#13427#13428#0" expanded="false" />
-            <marker date="1464862377967" expanded="false" signature="172:210" ph="..." />
-            <marker date="1464862377967" expanded="true" signature="13192:13195" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -943,7 +888,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8483">
           <caret line="504" column="26" selection-start-line="504" selection-start-column="26" selection-end-line="504" selection-end-column="26" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -951,10 +898,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377989" expanded="true" signature="4373:4382" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -962,10 +905,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3706">
           <caret line="227" column="5" selection-start-line="227" selection-start-column="5" selection-end-line="227" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1019,8 +959,6 @@
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#13353#13354#0" expanded="false" />
             <element signature="e#13427#13428#0" expanded="false" />
-            <marker date="1464862377967" expanded="false" signature="172:210" ph="..." />
-            <marker date="1464862377967" expanded="true" signature="13192:13195" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1039,7 +977,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9129">
           <caret line="542" column="26" selection-start-line="542" selection-start-column="26" selection-end-line="542" selection-end-column="26" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1047,10 +987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377989" expanded="true" signature="4373:4382" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1058,10 +994,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1103,8 +1036,6 @@
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#13353#13354#0" expanded="false" />
             <element signature="e#13427#13428#0" expanded="false" />
-            <marker date="1464862377967" expanded="false" signature="172:210" ph="..." />
-            <marker date="1464862377967" expanded="true" signature="13192:13195" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1123,7 +1054,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9129">
           <caret line="542" column="26" selection-start-line="542" selection-start-column="26" selection-end-line="542" selection-end-column="26" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1131,10 +1064,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377989" expanded="true" signature="4373:4382" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1142,10 +1071,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1187,8 +1113,6 @@
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#13353#13354#0" expanded="false" />
             <element signature="e#13427#13428#0" expanded="false" />
-            <marker date="1464862377967" expanded="false" signature="172:210" ph="..." />
-            <marker date="1464862377967" expanded="true" signature="13192:13195" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1212,10 +1136,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377989" expanded="true" signature="4373:4382" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1261,26 +1181,13 @@
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#13353#13354#0" expanded="false" />
             <element signature="e#13427#13428#0" expanded="false" />
-            <marker date="1464862377967" expanded="false" signature="172:210" ph="..." />
-            <marker date="1464862377967" expanded="true" signature="13192:13195" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3757">
-          <caret line="228" column="5" selection-start-line="228" selection-start-column="5" selection-end-line="228" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1464862377981" expanded="true" signature="19514:19520" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Passengers/Passenger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="7752">
           <caret line="461" column="34" selection-start-line="461" selection-start-column="34" selection-end-line="461" selection-end-column="34" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
@@ -1292,34 +1199,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/RandomTimeSeries.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
           <folding>
-            <element signature="e#1181#1208#0" expanded="false" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/DTSCTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="61" column="48" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#3558#3559#0" expanded="false" />
-            <element signature="e#3625#3626#0" expanded="false" />
-            <element signature="e#4297#4298#0" expanded="false" />
-            <element signature="e#4326#4327#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/RandomTimeSeries.java" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Temp1_asgn2Examples.zip/asgn2Examples/DTSCTest.java" />
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/org/junit/BeforeAll.groovy" />
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/GUISimulatorTests.groovy" />
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/Form1.form" />
+    <entry file="file://$PROJECT_DIR$/20160602_205155" />
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/GUISimulatorTests.java" />
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/EconomyTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1328,60 +1220,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/org/junit/BeforeAll.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/GUISimulatorTests.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/FirstTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="33" />
+        <state relative-caret-position="221">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/SimulationRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="19" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/Form1.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20160602_205155">
+    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/A380Tests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-676">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Tests/GUISimulatorTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state relative-caret-position="351">
+          <caret line="373" column="45" selection-start-line="373" selection-start-column="45" selection-end-line="373" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
+        <state relative-caret-position="390">
+          <caret line="425" column="49" selection-start-line="425" selection-start-column="49" selection-end-line="425" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#591#618#0" expanded="true" />
-            <element signature="e#7918#7919#0" expanded="true" />
-            <element signature="e#7943#7944#0" expanded="true" />
+            <element signature="e#11683#11684#0" expanded="true" />
+            <element signature="e#11744#11745#0" expanded="true" />
           </folding>
         </state>
       </provider>

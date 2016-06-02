@@ -15,7 +15,6 @@ import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -45,23 +44,27 @@ public class GUISimulator extends JFrame implements Runnable {
 			businessTxtF,
 			premiumTxtF,
 			economyTxtF;
-	JTextArea txtA;
+
+    private JTextArea simTextOutput;
 
     private volatile double dailyMean, cancellation, first, business, economy, premium;
     private volatile int rngSeed, queueSize;
 
 	private String[] simulatorArgs;
-	private String forTxtA;
 
+    // Chart 1 which displayed the passenger variables
     private ChartPanel chart1Panel;
     private JFreeChart chart1;
 
+    // Chart 2 which displayed the refused/queued variables
     private ChartPanel chart2Panel;
     private JFreeChart chart2;
 
+    // Series collections which group all the series into 1 variable
     private XYSeriesCollection chart1DataSet;
     private XYSeriesCollection chart2DataSet;
 
+    // Series variables which keep track of the values in real time
     private XYSeries firstSeries;
     private XYSeries businessSeries;
     private XYSeries premiumSeries;
@@ -75,16 +78,13 @@ public class GUISimulator extends JFrame implements Runnable {
     private JScrollPane scrollText;
     private JPanel textPanel;
 
-    private SwingWorker simWorker;
-
 	/**
-	 * @param arg0
+	 * @param arg0 arguments for the Simulation
 	 * @throws HeadlessException
 	 */
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
         simulatorArgs = new String[16];
-        forTxtA = "";
 	}
     private void createAndShowGUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +93,7 @@ public class GUISimulator extends JFrame implements Runnable {
 
         this.setResizable(false);
 
+        // Layout setup
         layoutManager = new GridBagLayout();
         getContentPane().setLayout(layoutManager);
         GridBagConstraints constraints = new GridBagConstraints();
@@ -102,6 +103,25 @@ public class GUISimulator extends JFrame implements Runnable {
         constraints.weightx = 100;
         constraints.weighty = 100;
 
+        // GUI creation
+        setUpButtons(constraints);
+
+        setUpTextFields(constraints);
+        setUpLabels(constraints);
+
+        setUpOutputLog(constraints);
+
+        setUpChartVariables(constraints);
+
+        showTextPressed();
+
+        this.pack();
+        this.loadDefaults();
+    }
+
+//region GUI creation
+
+    private void setUpButtons(GridBagConstraints constraints) {
         runSimButton = new JButton("Run Simulation");
         runSimButton.addActionListener(e ->  {
             runSimulationPressed();
@@ -126,7 +146,35 @@ public class GUISimulator extends JFrame implements Runnable {
             showGraph2Pressed();
         });
         addToPanel(showGraph2Button, constraints, 3, 0, 1, 1);
+    }
 
+    private void setUpTextFields(GridBagConstraints constraints) {
+        rngSeedTxtF = new JTextField();
+        addToPanel(rngSeedTxtF, constraints, 1, 2, 1, 1);
+
+        dailyMeanTxtF = new JTextField();
+        addToPanel(dailyMeanTxtF, constraints, 1, 3, 1, 1);
+
+        queueSizeTxtF = new JTextField();
+        addToPanel(queueSizeTxtF, constraints, 1, 4, 1, 1);
+
+        cancellationTxtF = new JTextField();
+        addToPanel(cancellationTxtF, constraints, 1, 5, 1, 1);
+
+        firstTxtF = new JTextField();
+        addToPanel(firstTxtF, constraints, 3, 2, 1, 1);
+
+        businessTxtF = new JTextField();
+        addToPanel(businessTxtF, constraints, 3, 3, 1, 1);
+
+        premiumTxtF = new JTextField();
+        addToPanel(premiumTxtF, constraints, 3, 4, 1, 1);
+
+        economyTxtF = new JTextField();
+        addToPanel(economyTxtF, constraints, 3, 5, 1, 1);
+    }
+
+    private void setUpLabels(GridBagConstraints constraints) {
         label = new JLabel("Simulation");
         addToPanel(label, constraints, 0, 1, 1, 1);
 
@@ -142,19 +190,6 @@ public class GUISimulator extends JFrame implements Runnable {
         label = new JLabel("Cancellation");
         addToPanel(label, constraints, 0, 5, 1, 1);
 
-        rngSeedTxtF = new JTextField();
-        addToPanel(rngSeedTxtF, constraints, 1, 2, 1, 1);
-
-        dailyMeanTxtF = new JTextField();
-        addToPanel(dailyMeanTxtF, constraints, 1, 3, 1, 1);
-
-        queueSizeTxtF = new JTextField();
-        addToPanel(queueSizeTxtF, constraints, 1, 4, 1, 1);
-
-        cancellationTxtF = new JTextField();
-        addToPanel(cancellationTxtF, constraints, 1, 5, 1, 1);
-
-
         label = new JLabel("Fare Classes");
         addToPanel(label, constraints, 2, 1, 2, 1);
 
@@ -169,43 +204,27 @@ public class GUISimulator extends JFrame implements Runnable {
 
         label = new JLabel("Economy");
         addToPanel(label, constraints, 2, 5, 1, 1);
+    }
 
-        firstTxtF = new JTextField();
-        addToPanel(firstTxtF, constraints, 3, 2, 1, 1);
-
-        businessTxtF = new JTextField();
-        addToPanel(businessTxtF, constraints, 3, 3, 1, 1);
-
-        premiumTxtF = new JTextField();
-        addToPanel(premiumTxtF, constraints, 3, 4, 1, 1);
-
-        economyTxtF = new JTextField();
-        addToPanel(economyTxtF, constraints, 3, 5, 1, 1);
-
+    private void setUpOutputLog(GridBagConstraints constraints) {
         label = new JLabel("Output Log");
         addToPanel(label, constraints, 0, 6, 1, 1);
 
         textPanel = new JPanel(new BorderLayout());
-        txtA = new JTextArea();
+        simTextOutput = new JTextArea();
         scrollText = new JScrollPane(textPanel);
-        textPanel.add(txtA, BorderLayout.CENTER);
+        textPanel.add(simTextOutput, BorderLayout.CENTER);
         constraints.ipady = 500;
-        txtA.setEditable(false);
-        txtA.setLineWrap(true);
-        txtA.setFont(new Font("Arial",Font.BOLD,14));
-        txtA.setBorder(BorderFactory.createEtchedBorder());
-        txtA.setVisible(true);
+        simTextOutput.setEditable(false);
+        simTextOutput.setLineWrap(true);
+        simTextOutput.setFont(new Font("Arial",Font.BOLD,14));
+        simTextOutput.setBorder(BorderFactory.createEtchedBorder());
+        simTextOutput.setVisible(true);
         addToPanel(scrollText, constraints, 0, 7, 4, 5);
-
-        setUpChartVariables(constraints);
-
-        showTextPressed();
-
-        this.pack();
-        this.loadDefaults();
     }
 
     private void setUpChartVariables(GridBagConstraints constraints) {
+        // Both these charts run passively in the background.
         // Chart 1 set up
         chart1DataSet = new XYSeriesCollection();
 
@@ -252,13 +271,6 @@ public class GUISimulator extends JFrame implements Runnable {
         constraints.gridheight = h;
         getContentPane().add(c, constraints);
     }
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public void run() {
-		createAndShowGUI();
-	}
 
     private void loadDefaults() {
         rngSeedTxtF.setText(String.valueOf((int)(Constants.DEFAULT_DAILY_BOOKING_MEAN*0.33))); //TODO confirm this value and rest too(others are prob right)
@@ -270,6 +282,20 @@ public class GUISimulator extends JFrame implements Runnable {
         premiumTxtF.setText(String.valueOf(Constants.DEFAULT_PREMIUM_PROB));
         economyTxtF.setText(String.valueOf(Constants.DEFAULT_ECONOMY_PROB));
     }
+
+    //endregion
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		createAndShowGUI();
+	}
+
+
+
+    //region GUI event functions
 
     private void showTextPressed(){
         showTextButton.setEnabled(false);
@@ -303,9 +329,6 @@ public class GUISimulator extends JFrame implements Runnable {
 
     private void runSimulationPressed() {
         runSimButton.setEnabled(false);
-        showTextButton.setEnabled(false);
-        showGraph1Button.setEnabled(false);
-        showGraph2Button.setEnabled(false);
         rngSeed = Integer.parseInt(rngSeedTxtF.getText());
         queueSize = Integer.parseInt(queueSizeTxtF.getText());
         dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
@@ -317,6 +340,7 @@ public class GUISimulator extends JFrame implements Runnable {
 
         buildStringArgs();
 
+        // Reset all the outputs
         firstSeries.clear();
         businessSeries.clear();
         premiumSeries.clear();
@@ -324,9 +348,13 @@ public class GUISimulator extends JFrame implements Runnable {
         totalSeries.clear();
         emptySeries.clear();
 
-        forTxtA = "";
+        queueSeries.clear();
+        refusedSeries.clear();
 
-        simWorker = new SwingWorker() {
+        simTextOutput.setText("");
+
+        // Creates a worker thread that will run the simulation in the background
+        SwingWorker workerThread = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
                 runSimulation();
@@ -336,17 +364,14 @@ public class GUISimulator extends JFrame implements Runnable {
             @Override
             protected void done() {
                 runSimButton.setEnabled(true);
-                showTextButton.setEnabled(true);
-                showGraph1Button.setEnabled(true);
-                showGraph2Button.setEnabled(true);
-
-                txtA.setText(forTxtA);
             }
         };
 
-        simWorker.execute();
-
+        // Runs the simulation on a background thread
+        workerThread.execute();
     }
+
+    //endregion
 
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
@@ -373,27 +398,28 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     private void setTextAreaVisible(boolean state) {
-        txtA.setVisible(state);
+        simTextOutput.setVisible(state);
         scrollText.setVisible(state);
     }
 
+    //region Log/output functions
 
     public void initialEntry(Simulator sim) throws IOException, SimulationException {
-        forTxtA += getLogTime() + ": Start of Simulation\n";
-        forTxtA += sim.toString() + "\n";
+        simTextOutput.append(getLogTime() + ": Start of Simulation\n");
+        simTextOutput.append(sim.toString() + "\n");
         String capacities = sim.getFlights(Constants.FIRST_FLIGHT).initialState();
-        forTxtA += capacities;
+        simTextOutput.append(capacities);
     }
 
     public void LogEntry(int time,Simulator sim) throws IOException, SimulationException {
         boolean flying = (time >= Constants.FIRST_FLIGHT);
-        forTxtA += sim.getSummary(time, flying);
+        simTextOutput.append(sim.getSummary(time, flying));
     }
 
     public void finalise(Simulator sim) throws IOException {
         String time = getLogTime();
-        forTxtA += "\n" + time + ": End of Simulation\n";
-        forTxtA += sim.finalState();
+        simTextOutput.append("\n" + time + ": End of Simulation\n");
+        simTextOutput.append(sim.finalState());
     }
 
     private String getLogTime() {
@@ -402,9 +428,11 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     public void chartFlightDetails(Simulator sim, int time) throws SimulationException {
+        // Keeps track of all the values in real time.
         queueSeries.add(time, sim.numInQueue());
         refusedSeries.add(time, sim.numRefused());
 
+        // If the first flight hasn't left yet, there are no values to graph
         if (time < Constants.FIRST_FLIGHT)
             return ;
 
@@ -417,6 +445,8 @@ public class GUISimulator extends JFrame implements Runnable {
         totalSeries.add(time, currentBookings.getTotal());
         emptySeries.add(time, currentBookings.getAvailable());
     }
+
+    //endregion
 
     /**
 	 * @param args

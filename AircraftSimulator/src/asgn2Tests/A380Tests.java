@@ -13,17 +13,19 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by eddy on 15/05/2016.
+ * Test methods to confirm the functionality of the aircraft class.
+ * This includes the functionality for both A380 and B747 classes
  *
- * Functionality by Curtis Fulton
+ * @author Curtis Fulton
+ *
  */
 public class A380Tests {
 
-    Aircraft basicAircraft;
+    private Aircraft basicAircraft;
 
-    Passenger testPassenger;
+    private Passenger testPassenger;
 
-    Class aircraftClass = Aircraft.class;
+    private Class aircraftClass = Aircraft.class;
 
     @org.junit.Before
     public void setUp() throws Exception {
