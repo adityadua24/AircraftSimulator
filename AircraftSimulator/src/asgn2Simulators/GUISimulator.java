@@ -9,8 +9,7 @@ package asgn2Simulators;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
+import java.io.*;
 import javax.swing.*;
 
 /**
@@ -21,15 +20,22 @@ import javax.swing.*;
 public class GUISimulator extends JFrame implements Runnable {
 
 	GridBagLayout layoutManager;
+    Log l;
 
 	JButton runSimButton, showGraphButton; JLabel label; JTextField rngSeedTxtF, dailyMeanTxtF, queueSizeTxtF, cancellationTxtF, firstTxtF, businessTxtF, premiumTxtF, economyTxtF; JTextArea txtA;
-    volatile double rngseed, dailymean, queueSize, cancellation, first, business, economy, premium;
+    private volatile double queueSize, cancellation, first, business, economy, premium;
+    private volatile int rngseed, dailymean;
+    String[] simulatorArgs;
+    Simulator sim;
+    String forTxtA;
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
 	 */
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
+        simulatorArgs = new String[16];
+        forTxtA = "";
 	}
     private void createAndShowGUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,13 +136,6 @@ public class GUISimulator extends JFrame implements Runnable {
         constraints.gridheight = h;
         getContentPane().add(c, constraints);
     }
-    /*
-    private JButton createButton(String str) {
-        JButton jb = new JButton(str);
-        jb.addActionListener(this);
-        return jb;
-    }
-    */
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
@@ -161,19 +160,76 @@ public class GUISimulator extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             Component source = (Component) e.getSource();
             if(source == runSimButton){ //TODO double check data types pls
-                rngseed = Double.parseDouble(rngSeedTxtF.getText());
-                dailymean = Double.parseDouble(dailyMeanTxtF.getText());
+                rngseed = Integer.parseInt(rngSeedTxtF.getText());
+                dailymean = Integer.parseInt(dailyMeanTxtF.getText());
                 cancellation = Double.parseDouble(cancellationTxtF.getText());
                 queueSize = Double.parseDouble(queueSizeTxtF.getText());
                 first = Double.parseDouble(firstTxtF.getText());
                 business = Double.parseDouble(businessTxtF.getText());
                 premium = Double.parseDouble(premiumTxtF.getText());
                 economy = Double.parseDouble(economyTxtF.getText());
+                txtA.setText("Works");
+
+                buildStringArgs();
+    /*
+                try {
+                    runSimulation();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                } catch (SimulationException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
 
                 //TODO pass obtained values to simulation constructor!
-
+                try {
+                    getLog();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                txtA.setText(forTxtA);
+*/
             }
         }
+    }
+    private void runSimulation() throws InterruptedException, SimulationException, IOException {
+
+        Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
+        l = new Log();
+        SimulationRunner sr = new SimulationRunner(s, l);
+        try {
+            sr.runSimulation();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+    private void getLog() throws IOException {
+        String file_path = "";
+        FileReader fr = new FileReader(file_path);
+        BufferedReader bf = new BufferedReader(fr);
+        String line = "";
+
+        while ((line = bf.readLine()) != null) {
+            forTxtA += line;
+        }
+
+        // Clean up
+        fr.close();
+        bf.close();
+
+    }
+    private void buildStringArgs() {
+        simulatorArgs[0] = String.valueOf(this.rngseed); // seed value
+        simulatorArgs[1] = String.valueOf(this.queueSize);
+        simulatorArgs[2] = String.valueOf(this.dailymean);
+        simulatorArgs[3] = String.valueOf(0.33*this.dailymean); //SD booking value
+        simulatorArgs[4] = String.valueOf(this.first);
+        simulatorArgs[5] = String.valueOf(this.business);
+        simulatorArgs[6] = String.valueOf(this.premium);
+        simulatorArgs[7] = String.valueOf(this.economyTxtF);
+        simulatorArgs[8] = String.valueOf(this.cancellation);
     }
     /**
 	 * @param args

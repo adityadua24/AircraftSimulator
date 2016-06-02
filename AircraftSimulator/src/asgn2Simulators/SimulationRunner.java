@@ -26,23 +26,30 @@ public class SimulationRunner {
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		final int NUM_ARGS = 9; 
+		final int NUM_ARGS = 9;
 		Simulator s = null;
         GUISimulator.main(args);
+        //Thread guiThread = new Thread(new GUISimulator("Aircraft Simulator"));
+        //guiThread.start();
+
 		Log l = null;
-		
+
 		try {
 			switch (args.length) {
 				case NUM_ARGS: {
 					s = createSimulatorUsingArgs(args);
 					break;
 				}
+                case 10: {
+                    s = createSimulatorUsingArgs(args);
+                    break;
+                }
 				case 0: {
-					s = new Simulator(); 
+					s = new Simulator();
 					break;
 				}
 				default: {
-					printErrorAndExit(); 
+					printErrorAndExit();
 				}
 			}
 			l = new Log();
@@ -50,15 +57,15 @@ public class SimulationRunner {
 			e1.printStackTrace();
 			System.exit(-1);
 		}
-	
-		//Run the simulation 
+
+		//Run the simulation
 		SimulationRunner sr = new SimulationRunner(s,l);
 		try {
 			sr.runSimulation();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
-		} 
+		}
 	}
 	/**
 	 * Helper to process args for Simulator  
@@ -68,7 +75,7 @@ public class SimulationRunner {
 	 * @throws SimulationException if invalid arguments. 
 	 * See {@link asgn2Simulators.Simulator#Simulator(int, int, double, double, double, double, double, double, double)}
 	 */
-	private static Simulator createSimulatorUsingArgs(String[] args) throws SimulationException {
+	public static Simulator createSimulatorUsingArgs(String[] args) throws SimulationException {
 		int seed = Integer.parseInt(args[0]);
 		int maxQueueSize = Integer.parseInt(args[1]);
 		double meanBookings = Double.parseDouble(args[2]);
