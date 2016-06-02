@@ -14,8 +14,14 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.*;
+
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.Dataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * @author hogan
@@ -43,8 +49,18 @@ public class GUISimulator extends JFrame implements Runnable {
 	private String[] simulatorArgs;
 	private String forTxtA;
 
-    JScrollPane scrollText, scrollGraph;
-    JPanel graphPanel;
+    ChartPanel chartPanel1;
+    XYSeriesCollection chart1DataSet;
+
+    XYSeries firstSeries;
+    XYSeries businessSeries;
+    XYSeries premiumSeries;
+    XYSeries economySeries;
+    XYSeries totalSeries;
+    XYSeries emptySeries;
+
+
+    JScrollPane scrollText;
     JPanel textPanel;
 
     private SwingWorker simWorker;
@@ -60,8 +76,10 @@ public class GUISimulator extends JFrame implements Runnable {
 	}
     private void createAndShowGUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(800, 500));
+        this.setPreferredSize(new Dimension(800, 700));
         this.setVisible(true);
+
+        this.setResizable(false);
 
         layoutManager = new GridBagLayout();
         getContentPane().setLayout(layoutManager);
@@ -78,6 +96,7 @@ public class GUISimulator extends JFrame implements Runnable {
         addToPanel(runSimButton, constraints, 0,0,2,1);
 
         showGraphButton = new JButton("Show Chart");
+        showGraphButton.addActionListener(new captureValues());
         addToPanel(showGraphButton, constraints, 2, 0, 2, 1);
 
         label = new JLabel("Simulation");
@@ -142,23 +161,44 @@ public class GUISimulator extends JFrame implements Runnable {
         txtA = new JTextArea();
         scrollText = new JScrollPane(textPanel);
         textPanel.add(txtA, BorderLayout.CENTER);
-        constraints.ipady = 100;
+        constraints.ipady = 200;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
         txtA.setFont(new Font("Arial",Font.BOLD,14));
         txtA.setBorder(BorderFactory.createEtchedBorder());
+        txtA.setVisible(true);
         addToPanel(scrollText, constraints, 0, 7, 4, 5);
 
-        graphPanel = new JPanel();
-        scrollGraph = new JScrollPane(graphPanel);
-        graphPanel.setOpaque(true);
-        graphPanel.setBackground(Color.black);
-        addToPanel(graphPanel, constraints, 0, 7, 4, 5);
-        graphPanel.setVisible(false);
+        setUpChartVariables(constraints);
 
         this.pack();
         this.loadDefaults();
     }
+
+    private void setUpChartVariables(GridBagConstraints constraints) {
+        chart1DataSet = new XYSeriesCollection();
+
+        firstSeries = new XYSeries("First");
+        businessSeries = new XYSeries("Business");
+        premiumSeries = new XYSeries("Premium");
+        economySeries = new XYSeries("Economy");
+        totalSeries = new XYSeries("Total");
+        emptySeries = new XYSeries("Empty");
+
+
+        // Test stuff
+        firstSeries.add(0, 1);
+        firstSeries.add(1, 2);
+
+        chart1DataSet.addSeries(firstSeries);
+
+        JFreeChart chart1 = ChartFactory.createXYLineChart("Test", "X Axis", "Y axis", chart1DataSet);
+
+        chartPanel1 = new ChartPanel(chart1);
+
+        addToPanel(chartPanel1, constraints, 0, 7, 4, 5);
+    }
+
     private void addToPanel(Component c, GridBagConstraints constraints,int x, int y, int w, int h) {
         constraints.gridx = x;
         constraints.gridy = y;
@@ -198,22 +238,18 @@ public class GUISimulator extends JFrame implements Runnable {
         }
     }
     private void showGraphPressed(){
-        //TODO - Charts implementation !! event handler proabaly not working
-        graphPanel.setVisible(true);
-        textPanel.setVisible(false);
-        this.revalidate();
-        JFrame graphFrame = new JFrame("Graphs");
-        graphFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        graphFrame.setPreferredSize(new Dimension(800, 500));
-        graphFrame.setVisible(true);
-        graphFrame.setVisible(true);
 
+        if (txtA.isVisible()){
+            txtA.setVisible(false);
+            scrollText.setVisible(false);
+        } else {
+            txtA.setVisible(true);
+            scrollText.setVisible(true);
+        }
     }
     private void runSimulationPressed(){
         runSimButton.setEnabled(false);
         showGraphButton.setEnabled(false);
-        textPanel.setVisible(true);
-        graphPanel.setVisible(false);
         rngSeed = Integer.parseInt(rngSeedTxtF.getText());
         queueSize = Integer.parseInt(queueSizeTxtF.getText());
         dailyMean = Double.parseDouble(dailyMeanTxtF.getText());
