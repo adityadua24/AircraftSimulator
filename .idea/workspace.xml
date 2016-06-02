@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a3a545dd-fe09-46b7-97a9-4efdd286e236" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/_mylyn.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AircraftSimulator/AircraftSimulator.iml" afterPath="$PROJECT_DIR$/AircraftSimulator/AircraftSimulator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java" afterPath="$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AircraftSimulator.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,10 +50,13 @@
       <file leaf-file-name="GUISimulator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-23">
-              <caret line="249" column="13" selection-start-line="249" selection-start-column="13" selection-end-line="249" selection-end-column="13" />
+            <state relative-caret-position="521">
+              <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#591#618#0" expanded="true" />
+                <element signature="e#7918#7919#0" expanded="true" />
+                <element signature="e#7943#7944#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -788,8 +787,16 @@
       <workItem from="1464441180465" duration="21000" />
       <workItem from="1464448881464" duration="1480000" />
       <workItem from="1464500533398" duration="1280000" />
-      <workItem from="1464862359203" duration="4302000" />
+      <workItem from="1464862359203" duration="4390000" />
     </task>
+    <task id="LOCAL-00001" summary="GUI values check">
+      <created>1464866699112</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1464866699112</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -798,7 +805,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9409000" />
+    <option name="totallyTimeSpent" value="9497000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -841,6 +848,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="GUI values check" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI values check" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1364,10 +1375,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AircraftSimulator/src/asgn2Simulators/GUISimulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23">
-          <caret line="249" column="13" selection-start-line="249" selection-start-column="13" selection-end-line="249" selection-end-column="13" />
+        <state relative-caret-position="521">
+          <caret line="279" column="13" selection-start-line="279" selection-start-column="13" selection-end-line="279" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#591#618#0" expanded="true" />
+            <element signature="e#7918#7919#0" expanded="true" />
+            <element signature="e#7943#7944#0" expanded="true" />
           </folding>
         </state>
       </provider>
