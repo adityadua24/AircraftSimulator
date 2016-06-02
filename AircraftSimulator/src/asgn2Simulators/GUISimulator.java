@@ -43,21 +43,7 @@ public class GUISimulator extends JFrame implements Runnable {
 
     JScrollPane scroll;
 
-    private SwingWorker simWorker = new SwingWorker() {
-        @Override
-        protected Object doInBackground() throws Exception {
-            runSimulation();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-            runSimButton.setEnabled(true);
-            showGraphButton.setEnabled(true);
-
-            txtA.setText(forTxtA);
-        }
-    };
+    private SwingWorker simWorker;
 
 
 	/**
@@ -207,21 +193,26 @@ public class GUISimulator extends JFrame implements Runnable {
 
                 buildStringArgs();
 
+                forTxtA = "";
+
+                simWorker = new SwingWorker() {
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        runSimulation();
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        runSimButton.setEnabled(true);
+                        showGraphButton.setEnabled(true);
+
+                        txtA.setText(forTxtA);
+                    }
+                };
+
                 simWorker.execute();
 
-/*
-
-
-                try {
-                    runSimulation();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                } catch (SimulationException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-*/
             }
         }
     }
