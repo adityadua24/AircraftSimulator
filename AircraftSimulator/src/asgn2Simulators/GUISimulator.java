@@ -51,7 +51,6 @@ public class GUISimulator extends JFrame implements Runnable {
     private volatile int rngSeed, queueSize;
 
 	private String[] simulatorArgs;
-	private String forTxtA;
 
     // Chart 1 which displayed the passenger variables
     private ChartPanel chart1Panel;
@@ -78,8 +77,6 @@ public class GUISimulator extends JFrame implements Runnable {
     private JScrollPane scrollText;
     private JPanel textPanel;
 
-    private SwingWorker simWorker;
-
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -87,7 +84,6 @@ public class GUISimulator extends JFrame implements Runnable {
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
         simulatorArgs = new String[16];
-        forTxtA = "";
 	}
     private void createAndShowGUI(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -305,8 +301,6 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 
     private void runSimulationPressed() {
-        buildStringArgs();
-
         firstSeries.clear();
         businessSeries.clear();
         premiumSeries.clear();
@@ -314,9 +308,12 @@ public class GUISimulator extends JFrame implements Runnable {
         totalSeries.clear();
         emptySeries.clear();
 
-        forTxtA = "";
+        queueSeries.clear();
+        refusedSeries.clear();
 
-        simWorker = new SwingWorker() {
+        outputTextArea.setText("");
+
+        SwingWorker workerThread = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
                 runSimulation();
@@ -326,41 +323,42 @@ public class GUISimulator extends JFrame implements Runnable {
             @Override
             protected void done() {
                 runSimButton.setEnabled(true);
-                showTextButton.setEnabled(true);
-                showGraph1Button.setEnabled(true);
-                showGraph2Button.setEnabled(true);
-                outputTextArea.setText(forTxtA);
             }
         };
 
         if(allValuesValid()) {
             runSimButton.setEnabled(false);
-            simWorker.execute();
+            buildStringArgs();
+
+            workerThread.execute();
+        } else {
+            showTextPressed();
+
+            this.loadDefaults();
         }
     }
 
     // This checks that the values valid inputs
     private boolean allValuesValid() {
         boolean shouldRun = true;
-        String valuechecks = "";
-        // Checks that all values are valid
+        String valueChecks = "";
+
         try {
             parseValues();
         } catch (NumberFormatException e) {
-            valuechecks += "One or more of the values are invalid. \nCheck that there are no letter in any inputs. \nAlso check that the Seed and Queue inputs do not contain decimal points.";
-            shouldRun = false;
+            valueChecks += "One or more of the values are invalid. \nCheck that there are no letter in any inputs. \nAlso check that the Seed and Queue inputs do not contain decimal points.";
         }
-
         if((rngSeed < 0) || (dailyMean < 0) || (queueSize< 0) || (cancellation < 0) || (first < 0) || (business < 0) || (premium < 0) || (economy <0)){
-            valuechecks += "negative values not allowed\n";
+            valueChecks += "negative values not allowed\n";
             shouldRun = false;
         }
         if ( !roughlyEquals(first + business + premium + economy,  1)) {
-            valuechecks += "Probabilities of Fare classes should sum up to 1\n";
+            valueChecks += "Probabilities of Fare classes should not sum up to more than 1\n";
             shouldRun = false;
         }
 
-        outputTextArea.setText(valuechecks);
+
+        outputTextArea.setText(valueChecks);
         return shouldRun;
 
     }
@@ -379,8 +377,6 @@ public class GUISimulator extends JFrame implements Runnable {
     // Allows for small floating point errors in floating point math
     private boolean roughlyEquals(double value, float expected) {
         double epsilon = 0.000001;
-
-        double test = value - expected;
 
         if (value == expected || Math.abs(value - expected) < epsilon){
             return true;
@@ -420,21 +416,21 @@ public class GUISimulator extends JFrame implements Runnable {
 
 
     public void initialEntry(Simulator sim) throws IOException, SimulationException {
-        forTxtA += getLogTime() + ": Start of Simulation\n";
-        forTxtA += sim.toString() + "\n";
+        outputTextArea.append(getLogTime() + ": Start of Simulation\n");
+        outputTextArea.append(sim.toString() + "\n");
         String capacities = sim.getFlights(Constants.FIRST_FLIGHT).initialState();
-        forTxtA += capacities;
+        outputTextArea.append(capacities);
     }
 
     public void LogEntry(int time,Simulator sim) throws IOException, SimulationException {
         boolean flying = (time >= Constants.FIRST_FLIGHT);
-        forTxtA += sim.getSummary(time, flying);
+        outputTextArea.append(sim.getSummary(time, flying));
     }
 
     public void finalise(Simulator sim) throws IOException {
         String time = getLogTime();
-        forTxtA += "\n" + time + ": End of Simulation\n";
-        forTxtA += sim.finalState();
+        outputTextArea.append("\n" + time + ": End of Simulation\n");
+        outputTextArea.append(sim.finalState());
     }
 
     private String getLogTime() {
