@@ -14,6 +14,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.*;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  * @author hogan
@@ -46,7 +48,6 @@ public class GUISimulator extends JFrame implements Runnable {
     JPanel textPanel;
 
     private SwingWorker simWorker;
-
 
 	/**
 	 * @param arg0
@@ -289,6 +290,10 @@ public class GUISimulator extends JFrame implements Runnable {
     private String getLogTime() {
         String timeLog = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         return timeLog;
+    }
+
+    public void ChartFlightDetails() {
+
     }
     /**
 	 * @param args
