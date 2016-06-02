@@ -337,35 +337,26 @@ public class GUISimulator extends JFrame implements Runnable {
             runSimButton.setEnabled(false);
             simWorker.execute();
         }
-        else if( allValuesValid() == false){
-           /* runSimButton.setEnabled(true);
-            showTextButton.setEnabled(true);
-            showGraph1Button.setEnabled(true);
-            showGraph2Button.setEnabled(true);
-            outputTextArea.setText(forTxtA);
-            */
-            this.loadDefaults();
-        }
     }
 
     // This checks that the values valid inputs
     private boolean allValuesValid() {
         boolean shouldRun = true;
         String valuechecks = "";
-        if((rngSeed < 0) || (dailyMean < 0) || (queueSize< 0) || (cancellation < 0) || (first < 0) || (business < 0) || (premium < 0) || (economy <0)){
-            valuechecks += "negative values not allowed\n";
-            shouldRun = false;
-        }
-        if ( roughlyEquals(first + business + premium + economy,  1)) {
-            valuechecks += "Probabilities of Fare classes should not sum up to more than 1\n";
-            shouldRun = false;
-        }
-
         // Checks that all values are valid
         try {
             parseValues();
         } catch (NumberFormatException e) {
             valuechecks += "One or more of the values are invalid. \nCheck that there are no letter in any inputs. \nAlso check that the Seed and Queue inputs do not contain decimal points.";
+            shouldRun = false;
+        }
+
+        if((rngSeed < 0) || (dailyMean < 0) || (queueSize< 0) || (cancellation < 0) || (first < 0) || (business < 0) || (premium < 0) || (economy <0)){
+            valuechecks += "negative values not allowed\n";
+            shouldRun = false;
+        }
+        if ( !roughlyEquals(first + business + premium + economy,  1)) {
+            valuechecks += "Probabilities of Fare classes should sum up to 1\n";
             shouldRun = false;
         }
 
@@ -388,6 +379,8 @@ public class GUISimulator extends JFrame implements Runnable {
     // Allows for small floating point errors in floating point math
     private boolean roughlyEquals(double value, float expected) {
         double epsilon = 0.000001;
+
+        double test = value - expected;
 
         if (value == expected || Math.abs(value - expected) < epsilon){
             return true;
