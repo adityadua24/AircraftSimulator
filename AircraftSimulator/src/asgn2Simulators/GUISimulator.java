@@ -9,23 +9,28 @@ package asgn2Simulators;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Arc2D;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import javax.swing.*;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.general.Dataset;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 import asgn2Aircraft.Bookings;
 
 /**
@@ -271,6 +276,8 @@ public class GUISimulator extends JFrame implements Runnable {
         premium = Double.parseDouble(premiumTxtF.getText());
         economy = Double.parseDouble(economyTxtF.getText());
 
+        //doValuesCheck();
+
         buildStringArgs();
 
         firstSeries.clear();
@@ -301,6 +308,15 @@ public class GUISimulator extends JFrame implements Runnable {
         simWorker.execute();
 
     }
+/*
+    private boolean doValuesCheck() {
+        if( rngSeed < 0 ){
+            txtA.setText("Invalid RNG seed value");
+            rngSeedTxtF.setText("");
+        }
+        return false;
+    }
+*/
     private void runSimulation() throws InterruptedException, SimulationException, IOException {
         Simulator s = SimulationRunner.createSimulatorUsingArgs(simulatorArgs);
         Log simLog = new Log();

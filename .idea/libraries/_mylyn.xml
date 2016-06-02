@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name=".mylyn">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.metadata/.mylyn/tasks.xml.zip!/" />
+      <root url="jar://$PROJECT_DIR$/.metadata/.mylyn/.tasks.xml.zip!/" />
+      <root url="jar://$PROJECT_DIR$/.metadata/.mylyn/repositories.xml.zip!/" />
+      <root url="jar://$USER_HOME$/Downloads/jfreechart-1.0.19/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
