@@ -28,6 +28,7 @@ public class GUISimulator extends JFrame implements Runnable {
     String[] simulatorArgs;
     Simulator sim;
     String forTxtA;
+    JScrollPane scroll;
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -118,13 +119,13 @@ public class GUISimulator extends JFrame implements Runnable {
         addToPanel(label, constraints, 0, 6, 1, 1);
 
         txtA = new JTextArea();
+        scroll = new JScrollPane(txtA);
         constraints.ipady = 60;
         txtA.setEditable(false);
         txtA.setLineWrap(true);
         txtA.setFont(new Font("Arial",Font.BOLD,24));
         txtA.setBorder(BorderFactory.createEtchedBorder());
-        addToPanel(txtA, constraints, 0, 7, 4, 5);
-
+        addToPanel(scroll, constraints, 0, 7, 4, 5);
 
         this.pack();
         this.loadDefaults();
